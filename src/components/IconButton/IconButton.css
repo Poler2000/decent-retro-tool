@@ -1,0 +1,17 @@
+.icon-button {
+  background-color: var(--primary-background-colour);
+  border: 1px solid;
+  border-color: var(--primary-text-colour);
+  border-radius: 0.8em;
+  padding: 0.6em 1.2em;
+}
+
+.icon-button:hover {
+  background-color: var(--primary-accent-colour);
+  border-color: var(--secondary-text-colour);
+}
+
+.icon-button-img {
+  width: 1.5em;
+  height: 1.5em;
+}

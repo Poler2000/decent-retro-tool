@@ -1,0 +1,113 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+
+  /* font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; */
+}
+
+
+:root {
+  --primary-background-colour: #FFE5D9;
+  --secondary-background-colour: #582630;
+
+  --primary-text-colour: #000; 
+  --secondary-text-colour: #FFE5D9;
+
+  --primary-accent-colour: #9FD139;
+  --secondary-accent-colour: #FE4A49;
+  --tertiary-accent-colour: #2AB7CA;
+}
+
+[data-theme="dark"] {
+  --primary-background-colour: #0D0520;
+  --secondary-background-colour: #EFD9CE;
+
+  --primary-text-colour: #EFD9CE; 
+  --secondary-text-colour: #000;
+
+  --primary-accent-colour: #de3c4b;
+  --secondary-accent-colour: #07BEB8;
+  --tertiary-accent-colour: #98DFEA;
+}
+
+[data-theme="sunset"] {
+  --primary-background-colour: #264653;
+  --secondary-background-colour: #F4A261;
+
+  --primary-text-colour: #FFF; 
+  --secondary-text-colour: #000;
+
+  --primary-accent-colour: #E9C46A;
+  --secondary-accent-colour: #2A9D8F;
+  --tertiary-accent-colour: #E76F51;
+}
+
+/* html {
+  color-scheme: dark light;
+}
+
+
+body {
+  color: var(--primary-text-colour);
+  background-color: var(--primary-background-colour);
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+} */
+
+/*button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}*/
+
+/* @media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+} */
