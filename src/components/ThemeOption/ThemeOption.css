@@ -1,0 +1,22 @@
+.theme-option {
+  height: 3em;
+  width: 3em;
+  border: 3px solid;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#theme-light {
+  background-color: #FFE5D9;
+  border-color: #582630;
+}
+
+#theme-dark {
+  background-color: #0D0520;
+  border-color: #EFD9CE;
+}
+
+#theme-sunset {
+  background-color: #264653;
+  border-color: #F4A261;
+}

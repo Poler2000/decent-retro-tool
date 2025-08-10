@@ -48,6 +48,12 @@
   --tertiary-accent-colour: #E76F51;
 }
 
+body {
+  color: var(--primary-text-colour);
+  background-color: var(--primary-background-colour);
+  transition:background-color 0.5s ease, color 0.5s ease;
+}
+
 /* html {
   color-scheme: dark light;
 }
