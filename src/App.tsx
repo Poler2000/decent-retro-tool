@@ -22,7 +22,9 @@ function App() {
   return (
     <>
       <div>
-        <img src={mainLogo} className="logo" alt="Decent Retro Tool logo" />
+        <a href="https://github.com/Poler2000/decent-retro-tool">
+          <img src={mainLogo} className="logo" alt="Decent Retro Tool logo" />
+        </a>
       </div>
       <ThemeSwitcher />
       <CardGrid titles={titles}></CardGrid>
