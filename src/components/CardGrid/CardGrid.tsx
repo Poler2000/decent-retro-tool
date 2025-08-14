@@ -5,6 +5,7 @@ import {
   closestCenter,
   DndContext,
   KeyboardSensor,
+  MouseSensor,
   PointerSensor,
   useSensor,
   useSensors,
@@ -15,9 +16,7 @@ import {
   rectSortingStrategy,
   SortableContext,
   sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import Card from "../Card/Card";
 
 export interface CardGridProps {
   titles: string[];
@@ -28,7 +27,12 @@ export interface CardGridProps {
 const CardGrid = (props: CardGridProps) => {
   const [items, setItems] = useState([...Array(props.titles.length).keys()]);
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 100,
+        tolerance: 5,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
