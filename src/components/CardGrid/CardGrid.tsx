@@ -33,10 +33,14 @@ const CardGrid = (props: CardGridProps) => {
         tolerance: 5,
       },
     }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
+    // useSensor(KeyboardSensor, {
+    //   coordinateGetter: sortableKeyboardCoordinates,
+    // })
   );
+
+  const handleDelete = (id: number) => {
+    setItems(l => l.filter(item => item !== id))
+  }
 
   const { titles } = props;
   return (
@@ -54,6 +58,7 @@ const CardGrid = (props: CardGridProps) => {
               title={titles[id]}
               backgroundColor="var(--primary-accent-colour)"
               textColor="var(--primary-text-colour)"
+              onDelete={handleDelete}
             ></RetroCard>
           ))}
         </SortableContext>

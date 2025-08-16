@@ -4,13 +4,12 @@ import "./Card.css";
 
 export interface CardProps extends React.PropsWithChildren {
   id: number;
-  title: string;
   backgroundColor: Color;
   textColor: Color;
 }
 
 const Card = (props: CardProps) => {
-  const { id, title, backgroundColor, textColor, children } = props;
+  const { id, backgroundColor, textColor, children } = props;
   // const { attributes, listeners, setNodeRef, transform } = useDraggable({
   //   id: `draggable_${title}`,
   // });
@@ -47,7 +46,6 @@ const Card = (props: CardProps) => {
       {...attributes}
       style={style}
     >
-      <h2 className="class-title">{title}</h2>
       {children}
     </div>
   );

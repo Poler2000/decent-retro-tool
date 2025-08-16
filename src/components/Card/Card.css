@@ -2,4 +2,8 @@
   border: 3px solid;
   border-color: var(--primary-text-colour);
   border-radius: 0.8em;
+  display: flex;
+  align-items: center;
+  flex-direction: column; /* stack children vertically */
+  gap: 0.5rem; 
 }

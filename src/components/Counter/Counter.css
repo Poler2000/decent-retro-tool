@@ -1,6 +1,8 @@
 .counter {
   display: flex;
-  padding: 10px;
+  padding: 5px;
+  margin-left: auto; 
+  margin-bottom: 0;
 } 
 
 .counter-value {
@@ -8,9 +10,9 @@
   border: 3px solid;
   border-color: var(--primary-text-colour);
   border-radius: 0.8em;
-  padding: 0.6em 1.2em;
-  margin: 0 0.6em;
-  width: 2.4em;
+  padding: 0.5em 1em;
+  margin: 0 0.5em;
+  width: 1.8em;
   line-height: normal;
   display: flex;
   align-items: center;
