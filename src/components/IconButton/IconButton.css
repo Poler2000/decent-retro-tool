@@ -1,12 +1,12 @@
 .icon-button {
-  background-color: var(--primary-background-colour);
+  /*background-color: var(--primary-background-colour);*/
   border: 3px solid;
-  border-color: var(--primary-text-colour);
   border-radius: 0.8em;
   padding: 0.5em 0.8em;
+  cursor: pointer;
 }
 
 .icon-button:hover {
-  background-color: var(--primary-accent-colour);
-  border-color: var(--secondary-text-colour);
+  /* background-color: var(--primary-accent-colour);
+  border-color: var(--secondary-text-colour); */
 }

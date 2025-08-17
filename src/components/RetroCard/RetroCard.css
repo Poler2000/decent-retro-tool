@@ -6,6 +6,9 @@
     font-size: 2em;
     padding: 5px;
     text-align: center;
+    color: inherit;
+    resize: none;
+    field-sizing: content;
 }
 
 .card-text:focus {

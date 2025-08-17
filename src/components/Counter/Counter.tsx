@@ -1,8 +1,13 @@
 import { useState } from "react";
 import IconButton from "../IconButton/IconButton";
 import "./Counter.css";
+import type { ColorPair } from "../../Colour";
 
-const Counter = () => {
+export interface CounterProps {
+  colors: ColorPair;
+}
+
+const Counter = (props: CounterProps) => {
   const [count, setCount] = useState(0);
   const handlePlus = () => {
     setCount(count + 1);
@@ -11,13 +16,26 @@ const Counter = () => {
     setCount(count - 1);
   };
 
+  const { colors } = props;
+  const style = {
+    borderColor: colors.text,
+  };
+
   return (
-    <div className="counter">
-      <IconButton icon="remove" onClick={handleMinus} />
+    <div className="counter" style={style}>
+      <IconButton
+        icon="remove"
+        colors={{ background: colors.background, text: colors.text }}
+        onClick={handleMinus}
+      />
       <div className="counter-value">
         <span>{count}</span>
       </div>
-      <IconButton icon="add" onClick={handlePlus} />
+      <IconButton
+        icon="add"
+        colors={{ background: colors.background, text: colors.text }}
+        onClick={handlePlus}
+      />
     </div>
   );
 };

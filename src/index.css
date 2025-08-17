@@ -20,8 +20,11 @@
   --secondary-text-colour: #FFE5D9;
 
   --primary-accent-colour: #9FD139;
+  --primary-accent-colour-highlight: #AFE149;
   --secondary-accent-colour: #FE4A49;
+  --secondary-accent-colour-highlight: #FF5A59;
   --tertiary-accent-colour: #2AB7CA;
+  --tertiary-accent-colour-highlight: #3AC7DA;
 }
 
 [data-theme="dark"] {
@@ -32,8 +35,11 @@
   --secondary-text-colour: #000;
 
   --primary-accent-colour: #de3c4b;
+  --primary-accent-colour-highlight: #EE4c5b;
   --secondary-accent-colour: #07BEB8;
+  --secondary-accent-colour-highlight: #17CEC8;
   --tertiary-accent-colour: #98DFEA;
+  --tertiary-accent-colour-highlight: #A8EFFA;
 }
 
 [data-theme="sunset"] {
@@ -44,8 +50,11 @@
   --secondary-text-colour: #000;
 
   --primary-accent-colour: #E9C46A;
+  --primary-accent-colour-highlight: #F9D47A;
   --secondary-accent-colour: #2A9D8F;
+  --secondary-accent-colour-highlight: #3AAD9F;
   --tertiary-accent-colour: #E76F51;
+  --tertiary-accent-colour-highlight: #F77F61;
 }
 
 body {

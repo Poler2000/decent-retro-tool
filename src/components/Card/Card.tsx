@@ -1,18 +1,13 @@
 import { useSortable } from "@dnd-kit/sortable";
-import type { Color } from "../../Colour";
 import "./Card.css";
 
 export interface CardProps extends React.PropsWithChildren {
   id: number;
-  backgroundColor: Color;
-  textColor: Color;
+  defaultStyle: React.CSSProperties;
 }
 
 const Card = (props: CardProps) => {
-  const { id, backgroundColor, textColor, children } = props;
-  // const { attributes, listeners, setNodeRef, transform } = useDraggable({
-  //   id: `draggable_${title}`,
-  // });
+  const { id, defaultStyle, children } = props;
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
@@ -23,18 +18,14 @@ const Card = (props: CardProps) => {
       },
     });
 
-  console.log(`${id} ${transition}`);
-
   const style = transform
     ? {
-        backgroundColor: backgroundColor,
-        color: textColor,
+        ...defaultStyle,
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
         transition,
       }
     : {
-        backgroundColor: backgroundColor,
-        color: textColor,
+        ...defaultStyle,
         transition,
       };
 

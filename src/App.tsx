@@ -2,17 +2,10 @@ import mainLogo from "./assets/decent-retro-tool-logo.png";
 import "./App.css";
 import CardGrid from "./components/CardGrid/CardGrid";
 import ThemeSwitcher from "./components/ThemeSwitcher/ThemeSwitcher";
+import { colorSequence } from "./ColourSequence";
 
 function App() {
-  const titles = [
-    "Hello",
-    "Hello2. Hello2 Hello2. Hello2",
-    "Hello3",
-    "Hello4",
-    "Hello5",
-    "Hello6",
-    "Hello7",
-  ];
+  const grids = ["Grid1", "Grid 2", "grid 3"];
 
   const selectedTheme = localStorage.getItem("theme");
   if (selectedTheme) {
@@ -27,7 +20,14 @@ function App() {
         </a>
       </div>
       <ThemeSwitcher />
-      <CardGrid titles={titles}></CardGrid>
+      {grids.map((_, id) => (
+        <CardGrid
+          key={id}
+          titles={["gwe", "fddfsfds"]}
+          backgroundColor={colorSequence[id].background}
+          textColor={colorSequence[id].text}
+        ></CardGrid>
+      ))}
     </>
   );
 }

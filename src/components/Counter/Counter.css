@@ -6,9 +6,7 @@
 } 
 
 .counter-value {
-  background-color: var(--primary-background-colour);
   border: 3px solid;
-  border-color: var(--primary-text-colour);
   border-radius: 0.8em;
   padding: 0.5em 1em;
   margin: 0 0.5em;

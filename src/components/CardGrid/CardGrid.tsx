@@ -1,11 +1,9 @@
 import RetroCard from "../RetroCard/RetroCard";
 import "./CardGrid.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   closestCenter,
   DndContext,
-  KeyboardSensor,
-  MouseSensor,
   PointerSensor,
   useSensor,
   useSensors,
@@ -15,34 +13,56 @@ import {
   arrayMove,
   rectSortingStrategy,
   SortableContext,
-  sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
+import AddCard from "../AddCard/AddCard";
+import type { Color } from "../../Colour";
 
 export interface CardGridProps {
   titles: string[];
+  backgroundColor: Color;
+  textColor: Color;
 }
-
-//export interface CardGridProps extends Array<typeof Card> {}
 
 const CardGrid = (props: CardGridProps) => {
   const [items, setItems] = useState([...Array(props.titles.length).keys()]);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
         delay: 100,
         tolerance: 5,
       },
-    }),
-    // useSensor(KeyboardSensor, {
-    //   coordinateGetter: sortableKeyboardCoordinates,
-    // })
+    })
   );
 
-  const handleDelete = (id: number) => {
-    setItems(l => l.filter(item => item !== id))
-  }
+  let [isFocus, setIsFocus] = useState(true);
 
-  const { titles } = props;
+  const handleDelete = (id: number) => {
+    setItems((l) => l.filter((item) => item !== id));
+  };
+
+  const focusOnNewElement = () => {
+    console.log(inputRef.current);
+    inputRef.current?.focus();
+  };
+
+  const { titles, backgroundColor, textColor } = props;
+  const handleAdd = () => {
+    setItems([...items, Math.max(...items) + 1]);
+    setIsFocus(false);
+  };
+
+  const itemsCount = items.length;
+
+  useEffect(() => {
+    console.log("hello");
+    if (isFocus === false) {
+      focusOnNewElement();
+    }
+    setIsFocus(true);
+  }, [isFocus]);
+
   return (
     <div className="card-grid">
       <DndContext
@@ -51,18 +71,33 @@ const CardGrid = (props: CardGridProps) => {
         onDragEnd={handleDragEnd}
       >
         <SortableContext items={items} strategy={rectSortingStrategy}>
-          {items.map((id) => (
+          {items.slice(0, itemsCount - 1).map((id) => (
             <RetroCard
               key={id}
               id={id}
               title={titles[id]}
-              backgroundColor="var(--primary-accent-colour)"
-              textColor="var(--primary-text-colour)"
+              backgroundColor={backgroundColor}
+              textColor={textColor}
               onDelete={handleDelete}
             ></RetroCard>
           ))}
+          <RetroCard
+            key={items[itemsCount - 1]}
+            id={items[itemsCount - 1]}
+            title={titles[items[itemsCount - 1]]}
+            backgroundColor={backgroundColor}
+            textColor={textColor}
+            onDelete={handleDelete}
+            ref={inputRef}
+          ></RetroCard>
         </SortableContext>
       </DndContext>
+      <AddCard
+        id={1324}
+        backgroundColor={backgroundColor}
+        textColor={textColor}
+        onClick={handleAdd}
+      />
     </div>
   );
 
