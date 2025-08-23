@@ -1,0 +1,25 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.menu-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.menu-buttons .icon-button {
+  padding: 1em 1.6em;
+  border-radius: 1.2em;
+}
+
+.menu-buttons .icon-button:hover {
+  background-color: var(--primary-accent-colour);
+}
+
+.menu-buttons .icon-button .material-icons-outlined {
+  font-size: 36px;
+}

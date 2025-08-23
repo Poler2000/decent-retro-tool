@@ -1,4 +1,4 @@
-import type RetroNoteModel from "./retroNoteModel";
+import type RetroNoteModel from "./RetroNoteModel";
 
 export default interface RetroSection {
   readonly title: string,

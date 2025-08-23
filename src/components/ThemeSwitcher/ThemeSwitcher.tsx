@@ -3,11 +3,14 @@ import "./ThemeSwitcher.css";
 
 const ThemeSwitcher = () => {
   return (
-    <div className="theme-switcher">
-      <ThemeOption theme="light" />
-      <ThemeOption theme="dark" />
-      <ThemeOption theme="sunset" />
-    </div>
+    <>
+      <span>Theme:</span>
+      <div className="theme-switcher">
+        <ThemeOption theme="light" />
+        <ThemeOption theme="dark" />
+        <ThemeOption theme="sunset" />
+      </div>
+    </>
   );
 };
 

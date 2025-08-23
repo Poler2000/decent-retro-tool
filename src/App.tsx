@@ -1,11 +1,10 @@
-import mainLogo from "./assets/decent-retro-tool-logo.png";
 import "./App.css";
-import ThemeSwitcher from "./components/ThemeSwitcher/ThemeSwitcher";
 import { Navigate, Route, Routes } from "react-router";
 import Home from "./components/Pages/Home/Home";
 import Retro from "./components/Pages/Retro/Retro";
 import Team from "./components/Pages/Team/Team";
 import NotFound from "./components/Pages/NotFound/NotFound";
+import Header from "./components/Header/Header";
 
 function App() {
   const selectedTheme = localStorage.getItem("theme");
@@ -15,12 +14,7 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://github.com/Poler2000/decent-retro-tool">
-          <img src={mainLogo} className="logo" alt="Decent Retro Tool logo" />
-        </a>
-      </div>
-      <ThemeSwitcher />
+      <Header />
       <Routes>
         <Route index element={<Navigate to={"home"} />} />
         <Route path="home" element={<Home />} />
