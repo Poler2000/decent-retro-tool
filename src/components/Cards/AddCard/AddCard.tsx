@@ -1,6 +1,6 @@
-import type { Color } from "../../Colour";
+import type { Color } from "../../../Colour";
 import Card from "../Card/Card";
-import IconButton from "../IconButton/IconButton";
+import IconButton from "../../IconButton/IconButton";
 import "./AddCard.css";
 
 export interface AddCardProps {

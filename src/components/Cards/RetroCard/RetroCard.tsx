@@ -1,7 +1,7 @@
-import type { Color } from "../../Colour";
+import type { Color } from "../../../Colour";
 import Card from "../Card/Card";
-import Counter from "../Counter/Counter";
-import IconButton from "../IconButton/IconButton";
+import Counter from "../../Counter/Counter";
+import IconButton from "../../IconButton/IconButton";
 import "./RetroCard.css";
 
 export interface RetroCardProps {

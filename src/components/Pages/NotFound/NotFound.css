@@ -1,0 +1,15 @@
+.not-found-main {
+  font-size: 10em;
+  color: var(--primary-accent-colour);
+}
+
+.not-found-info {
+  font-size: 5em;
+  color: var(--secondary-accent-colour);
+}
+
+.not-found-link {
+  text-decoration: none;
+  font-size: 5em;
+  color: var(--primary-accent-colour);
+}

@@ -15,7 +15,7 @@ import {
   SortableContext,
 } from "@dnd-kit/sortable";
 import AddCard from "../AddCard/AddCard";
-import type { Color } from "../../Colour";
+import type { Color } from "../../../Colour";
 
 export interface CardGridProps {
   titles: string[];

@@ -1,12 +1,13 @@
 import mainLogo from "./assets/decent-retro-tool-logo.png";
 import "./App.css";
-import CardGrid from "./components/CardGrid/CardGrid";
 import ThemeSwitcher from "./components/ThemeSwitcher/ThemeSwitcher";
-import { colorSequence } from "./ColourSequence";
+import { Navigate, Route, Routes } from "react-router";
+import Home from "./components/Pages/Home/Home";
+import Retro from "./components/Pages/Retro/Retro";
+import Team from "./components/Pages/Team/Team";
+import NotFound from "./components/Pages/NotFound/NotFound";
 
 function App() {
-  const grids = ["Grid1", "Grid 2", "grid 3"];
-
   const selectedTheme = localStorage.getItem("theme");
   if (selectedTheme) {
     document.querySelector("body")?.setAttribute("data-theme", selectedTheme);
@@ -20,14 +21,17 @@ function App() {
         </a>
       </div>
       <ThemeSwitcher />
-      {grids.map((_, id) => (
-        <CardGrid
-          key={id}
-          titles={["gwe", "fddfsfds"]}
-          backgroundColor={colorSequence[id].background}
-          textColor={colorSequence[id].text}
-        ></CardGrid>
-      ))}
+      <Routes>
+        <Route index element={<Navigate to={"home"} />} />
+        <Route path="home" element={<Home />} />
+        <Route path="team">
+          <Route path=":teamId" element={<Team />} />
+          <Route path=":teamId/retro">
+            <Route path=":retroId" element={<Retro />} />
+          </Route>
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </>
   );
 }
