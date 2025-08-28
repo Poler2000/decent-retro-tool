@@ -1,0 +1,14 @@
+﻿namespace DecentRetroTool.Api.Data.Models;
+
+public class Retro
+{
+    public int Id { get; set; }
+
+    public string Title { get; set; }
+    
+    public DateTime CreationDate { get; set; }
+    
+    public IList<Section> Sections;
+    
+    public int TeamId { get; set; }
+}
