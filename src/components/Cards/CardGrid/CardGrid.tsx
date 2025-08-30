@@ -16,15 +16,16 @@ import {
 } from "@dnd-kit/sortable";
 import AddCard from "../AddCard/AddCard";
 import type { Color } from "../../../Colour";
+import type TeamModel from "../../../models/TeamModel";
 
 export interface CardGridProps {
-  titles: string[];
+  teams: TeamModel[];
   backgroundColor: Color;
   textColor: Color;
 }
 
 const CardGrid = (props: CardGridProps) => {
-  const [items, setItems] = useState([...Array(props.titles.length).keys()]);
+  const [items, setItems] = useState<TeamModel[]>([]);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const sensors = useSensors(
@@ -39,7 +40,7 @@ const CardGrid = (props: CardGridProps) => {
   let [isFocus, setIsFocus] = useState(true);
 
   const handleDelete = (id: number) => {
-    setItems((l) => l.filter((item) => item !== id));
+    setItems((l) => l.filter((item) => item.id !== id));
   };
 
   const focusOnNewElement = () => {
@@ -47,11 +48,25 @@ const CardGrid = (props: CardGridProps) => {
     inputRef.current?.focus();
   };
 
-  const { titles, backgroundColor, textColor } = props;
+  const { teams, backgroundColor, textColor } = props;
   const handleAdd = () => {
-    setItems([...items, Math.max(...items) + 1]);
+    let newItem = {
+      id: Math.max(...items.map((item) => item.id)) + 1,
+      name: "",
+    };
+    setItems([...items, newItem]);
     setIsFocus(false);
   };
+
+  const handleEditTitle = (newTitle: string, id: number) => {
+    setItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, name: newTitle } : item))
+    );
+  };
+
+  useEffect(() => {
+    setItems(teams);
+  }, [teams]);
 
   const itemsCount = items.length;
 
@@ -65,33 +80,40 @@ const CardGrid = (props: CardGridProps) => {
 
   return (
     <div className="card-grid">
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext items={items} strategy={rectSortingStrategy}>
-          {items.slice(0, itemsCount - 1).map((id) => (
+      {items.length > 0 ? (
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={items} strategy={rectSortingStrategy}>
+            {items.slice(0, itemsCount - 1).map((team) => (
+              <RetroCard
+                key={team.id}
+                id={team.id}
+                title={team.name}
+                backgroundColor={backgroundColor}
+                textColor={textColor}
+                onDelete={handleDelete}
+                onEditTitle={handleEditTitle}
+              ></RetroCard>
+            ))}
             <RetroCard
-              key={id}
-              id={id}
-              title={titles[id]}
+              key={items[itemsCount - 1].id}
+              id={items[itemsCount - 1].id}
+              title={items[itemsCount - 1].name}
               backgroundColor={backgroundColor}
               textColor={textColor}
               onDelete={handleDelete}
+              onEditTitle={handleEditTitle}
+              ref={inputRef}
             ></RetroCard>
-          ))}
-          <RetroCard
-            key={items[itemsCount - 1]}
-            id={items[itemsCount - 1]}
-            title={titles[items[itemsCount - 1]]}
-            backgroundColor={backgroundColor}
-            textColor={textColor}
-            onDelete={handleDelete}
-            ref={inputRef}
-          ></RetroCard>
-        </SortableContext>
-      </DndContext>
+          </SortableContext>
+        </DndContext>
+      ) : (
+        <></>
+      )}
+
       <AddCard
         id={1324}
         backgroundColor={backgroundColor}
@@ -106,8 +128,9 @@ const CardGrid = (props: CardGridProps) => {
 
     if (active.id !== over?.id) {
       setItems((items) => {
-        const oldIndex = items.indexOf(parseInt(active.id.toString()));
-        const newIndex = items.indexOf(parseInt(over!.id.toString()));
+        const ids = items.map((item) => item.id);
+        const oldIndex = ids.indexOf(parseInt(active.id.toString()));
+        const newIndex = ids.indexOf(parseInt(over!.id.toString()));
 
         return arrayMove(items, oldIndex, newIndex);
       });

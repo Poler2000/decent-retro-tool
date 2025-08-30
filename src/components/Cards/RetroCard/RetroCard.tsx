@@ -11,10 +11,12 @@ export interface RetroCardProps {
   textColor: Color;
   ref?: React.RefObject<HTMLTextAreaElement | null>;
   onDelete: (id: number) => void;
+  onEditTitle: (newTitle: string, id: number) => void;
 }
 
 const RetroCard = (props: RetroCardProps) => {
-  const { id, title, backgroundColor, textColor, ref, onDelete } = props;
+  const { id, title, backgroundColor, textColor, ref, onDelete, onEditTitle } =
+    props;
 
   return (
     <>
@@ -38,6 +40,7 @@ const RetroCard = (props: RetroCardProps) => {
           required
           maxLength={100}
           ref={ref}
+          onChange={(event) => onEditTitle(event.target.value, id)}
         >
           {title}
         </textarea>

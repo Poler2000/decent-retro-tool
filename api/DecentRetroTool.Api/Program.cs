@@ -4,24 +4,46 @@ using DecentRetroTool.Api.Features.Retro;
 using DecentRetroTool.Api.Features.Team;
 using Microsoft.EntityFrameworkCore;
 
+const string AllowSpecificOrigins = "allowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<RetroDbContext>(
     o => o.UseSqlite(builder.Configuration.GetConnectionString("DataDbConnectionString")));
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: AllowSpecificOrigins, policy =>
+    {
+        policy.WithOrigins("https://localhost:5173", "http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
-app.RegisterTeamEndpoints();
-app.RegisterRetroEndpoints();
 
-if (app.Environment.IsDevelopment())
+app.Map("/decent-retro-tool.api", retroApp =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    retroApp.UseRouting();
+    
+    retroApp.UseCors(AllowSpecificOrigins);
 
-app.UseHttpsRedirection();
+    if (app.Environment.IsDevelopment())
+    {
+        retroApp.UseSwagger();
+        retroApp.UseSwaggerUI();
+    }
+
+    retroApp.UseEndpoints(endpoints =>
+    {
+        endpoints.RegisterTeamEndpoints();
+        endpoints.RegisterRetroEndpoints();
+    });
+
+    retroApp.UseHttpsRedirection();
+});
 
 using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.CreateScope())
 {
