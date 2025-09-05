@@ -1,4 +1,5 @@
-﻿using DecentRetroTool.Api.Data;
+﻿using DecentRetroTool.Api.Configuration;
+using DecentRetroTool.Api.Data;
 using DecentRetroTool.Api.DTOs;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -22,20 +23,46 @@ public static class RetroModule
             var retros = await dbContext.Retros
                 .Where(retro => retro.TeamId == teamId)
                 .ToListAsync();
-            return TypedResults.Ok(retros.Select(retro => new RetroDto() { Title = retro.Title, TeamId = retro.TeamId }).ToList());
+            return TypedResults.Ok(retros.Select(retro => new RetroDto()
+            {
+                Id = retro.Id,
+                Title = retro.Title, 
+                TeamId = retro.TeamId
+            }).ToList());
         });
         
-        builder.MapGet("/{id:int}", async Task<Results<Ok<RetroDto>, NotFound>>(RetroDbContext dbContext, int id) =>
+        builder.MapGet("/{id:int}", async Task<Results<Ok<RetroDetailsDto>, NotFound>>(RetroDbContext dbContext, int id) =>
         {
-            var retro = await dbContext.Retros.SingleOrDefaultAsync(retro => retro.Id == id);
+            var retro = await dbContext.Retros
+                .Include(retro => retro.Sections)
+                .ThenInclude(section => section.Notes)
+                .SingleOrDefaultAsync(retro => retro.Id == id);
+            
             return retro is not null 
-                ? TypedResults.Ok(new RetroDto() { Title = retro.Title, TeamId = retro.TeamId })
+                ? TypedResults.Ok(new RetroDetailsDto()
+                {
+                    Id = retro.Id,
+                    Title = retro.Title, 
+                    TeamId = retro.TeamId,
+                    CreationDate = retro.CreationDate,
+                    Sections = retro.Sections.Select(section => new SectionDto()
+                    {
+                        Id = section.Id,
+                        Title = section.Title,
+                        Notes = section.Notes.Select(note => new NoteDto()
+                        {
+                            Id = note.Id,
+                            Content = note.Text,
+                            Score = note.Score
+                        }).ToList()
+                    }).ToList()
+                })
                 : TypedResults.NotFound();
         });
 
-        builder.MapPost("/", async Task<Ok> (RetroDbContext dbContext, [FromBody] RetroDto retro) =>
+        builder.MapPost("/", async Task<Created> (RetroDbContext dbContext, [FromBody] RetroDto retro) =>
         {
-            dbContext.Retros.Add(new Data.Models.Retro()
+            var newRetro = dbContext.Retros.Add(new Data.Models.Retro()
             {
                 Title = retro.Title,
                 CreationDate = DateTime.Now,
@@ -43,7 +70,7 @@ public static class RetroModule
             });
             await dbContext.SaveChangesAsync();
 
-            return TypedResults.Ok();
+            return TypedResults.Created($"{ApiConfiguration.PathBase}/retros/{newRetro.Entity.Id}");
         });
         return builder;
     }

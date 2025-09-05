@@ -1,32 +1,51 @@
 import CardGrid from "../../Cards/CardGrid/CardGrid";
 import { colorSequence } from "../../../ColourSequence";
 import { useEffect, useState } from "react";
-import { getTeams } from "../../../teamClient";
-import type TeamModel from "../../../models/TeamModel";
+import { createTeam, getTeams, updateTeam } from "../../../teamClient";
+import TeamModel from "../../../models/TeamModel";
+import type Entity from "../../../models/Entity";
 
 const Home = () => {
-  const grids = ["Grid1", "Grid 2", "grid 3"];
-
   const [teams, setTeams] = useState<TeamModel[]>([]);
 
-  useEffect(() => {
+  const loadTeams = () => {
     getTeams()
       .then(setTeams)
       .catch((error) => console.log(error));
-  }, []);
+  };
+
+  useEffect(loadTeams, []);
+
+  const handleCreate = (entity: Entity) => {
+    const team = new TeamModel(
+      entity.id,
+      entity.name !== "" ? entity.name : `Team ${entity.id}`
+    );
+
+    createTeam(team)
+      .then(loadTeams)
+      .catch((error) => console.log(error));
+  };
+
+  const handleRename = (entity: Entity) => {
+    const team = new TeamModel(entity.id, entity.name);
+
+    updateTeam(team)
+      .then(loadTeams)
+      .catch((error) => console.log(error));
+  };
 
   console.log(teams);
 
   return (
     <>
-      {grids.map((_, id) => (
-        <CardGrid
-          key={id}
-          teams={teams}
-          backgroundColor={colorSequence[id].background}
-          textColor={colorSequence[id].text}
-        ></CardGrid>
-      ))}
+      <CardGrid
+        entities={teams}
+        backgroundColor={colorSequence[0].background}
+        textColor={colorSequence[0].text}
+        onCreate={handleCreate}
+        onUpdate={handleRename}
+      ></CardGrid>
     </>
   );
 };

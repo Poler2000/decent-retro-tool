@@ -1,3 +1,4 @@
+using DecentRetroTool.Api.Configuration;
 using DecentRetroTool.Api.Data;
 using DecentRetroTool.Api.Data.Models;
 using DecentRetroTool.Api.Features.Retro;
@@ -24,7 +25,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.Map("/decent-retro-tool.api", retroApp =>
+app.Map(ApiConfiguration.PathBase, retroApp =>
 {
     retroApp.UseRouting();
     

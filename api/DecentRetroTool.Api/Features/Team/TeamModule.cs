@@ -25,7 +25,10 @@ public static class TeamModule
         
         builder.MapGet("/{id:int}", async Task<Results<Ok<TeamDto>, NotFound>>(RetroDbContext dbContext, int id) =>
         {
-            var team = await dbContext.Teams.Where(team => team.Id == id).SingleOrDefaultAsync();
+            var team = await dbContext.Teams
+                .Where(team => team.Id == id)
+                .SingleOrDefaultAsync();
+            
             return team is not null
                 ? TypedResults.Ok(new TeamDto { Name = team.Name, Id = team.Id })
                 : TypedResults.NotFound();
@@ -33,10 +36,33 @@ public static class TeamModule
         
         builder.MapPost("/", async Task<Ok<int>> (RetroDbContext dbContext, [FromBody] TeamDto team) =>
         {
-            var result = dbContext.Teams.Add(new Data.Models.Team());
+            var newTeam = new Data.Models.Team()
+            {
+                Id = team.Id,
+                Name = team.Name,
+                Retros = []
+            };
+            var result = dbContext.Teams.Add(newTeam);
             await dbContext.SaveChangesAsync();
             
             return TypedResults.Ok(result.Entity.Id);
+        });
+        
+        builder.MapPut("/{id:int}", async Task<Results<Ok, NotFound>> (RetroDbContext dbContext, int id, [FromBody] TeamDto teamUpdate) =>
+        {
+            var team = await dbContext.Teams
+                .Where(team => team.Id == id)
+                .SingleOrDefaultAsync();
+
+            if (team is null)
+            {
+                return TypedResults.NotFound();
+            }
+            
+            team.Name = teamUpdate.Name;
+            //dbContext.Update(team); // TODO[PP]: check if needed (relates to entity tracking)
+            await dbContext.SaveChangesAsync();
+            return TypedResults.Ok();
         });
         
         return builder;

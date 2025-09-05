@@ -1,4 +1,11 @@
-export default interface TeamModel {
-  readonly name: string,
-  readonly id: number
+import type Entity from "./Entity";
+
+export default class TeamModel implements Entity {
+  id: number;
+  name: string;
+
+  constructor( id: number, name: string) {
+    this.id = id;
+    this.name = name;
+  }
 }

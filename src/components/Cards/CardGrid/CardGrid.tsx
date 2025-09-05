@@ -16,16 +16,18 @@ import {
 } from "@dnd-kit/sortable";
 import AddCard from "../AddCard/AddCard";
 import type { Color } from "../../../Colour";
-import type TeamModel from "../../../models/TeamModel";
+import type Entity from "../../../models/Entity";
 
 export interface CardGridProps {
-  teams: TeamModel[];
+  entities: Entity[];
   backgroundColor: Color;
   textColor: Color;
+  onCreate: (entity: Entity) => void;
+  onUpdate: (entity: Entity) => void;
 }
 
 const CardGrid = (props: CardGridProps) => {
-  const [items, setItems] = useState<TeamModel[]>([]);
+  const [items, setItems] = useState<Entity[]>([]);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const sensors = useSensors(
@@ -48,7 +50,13 @@ const CardGrid = (props: CardGridProps) => {
     inputRef.current?.focus();
   };
 
-  const { teams, backgroundColor, textColor } = props;
+  const {
+    entities,
+    backgroundColor,
+    textColor,
+    onCreate,
+    onUpdate: onRename,
+  } = props;
   const handleAdd = () => {
     let newItem = {
       id: Math.max(...items.map((item) => item.id)) + 1,
@@ -56,17 +64,23 @@ const CardGrid = (props: CardGridProps) => {
     };
     setItems([...items, newItem]);
     setIsFocus(false);
+    onCreate(newItem);
   };
 
+  console.log("entities:", entities);
+
   const handleEditTitle = (newTitle: string, id: number) => {
+    console.log("edit title!");
     setItems((prev) =>
       prev.map((item) => (item.id === id ? { ...item, name: newTitle } : item))
     );
+    onRename({ name: newTitle, id: id });
   };
 
   useEffect(() => {
-    setItems(teams);
-  }, [teams]);
+    console.log("setting items!:");
+    setItems(entities);
+  }, [entities]);
 
   const itemsCount = items.length;
 
@@ -87,11 +101,11 @@ const CardGrid = (props: CardGridProps) => {
           onDragEnd={handleDragEnd}
         >
           <SortableContext items={items} strategy={rectSortingStrategy}>
-            {items.slice(0, itemsCount - 1).map((team) => (
+            {items.slice(0, itemsCount - 1).map((item) => (
               <RetroCard
-                key={team.id}
-                id={team.id}
-                title={team.name}
+                key={item.id}
+                id={item.id}
+                title={item.name}
                 backgroundColor={backgroundColor}
                 textColor={textColor}
                 onDelete={handleDelete}

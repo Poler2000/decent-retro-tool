@@ -40,7 +40,7 @@ const RetroCard = (props: RetroCardProps) => {
           required
           maxLength={100}
           ref={ref}
-          onChange={(event) => onEditTitle(event.target.value, id)}
+          onBlur={(event) => onEditTitle(event.target.value, id)}
         >
           {title}
         </textarea>
