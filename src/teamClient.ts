@@ -12,6 +12,7 @@ export const getTeams = async (): Promise<TeamModel[]> => {
 
   const res = await fetch(request)
   const resJson = await res.json()
+  console.log("GOT!!!!!!!")
   return resJson as TeamModel[]
 } 
 
@@ -47,4 +48,18 @@ export const updateTeam = async (team: TeamModel): Promise<void> => {
 
   return fetch(request)
     .then(res => {console.log(res)})
+}
+
+export const deleteTeam = async (teamId: number): Promise<void> => {
+  const headers: Headers = new Headers()
+  headers.set('Content-Type', 'application/json')
+  headers.set('Accept', 'application/json')
+
+  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/teams/${teamId}`, {
+    method: 'DELETE',
+    headers: headers,
+  });
+
+  return fetch(request)
+    .then(res => {console.log(res); console.log("DELETED!!!!!!!")})
 }

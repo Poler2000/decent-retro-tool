@@ -8,14 +8,15 @@ export interface LinkCardProps {
   id: number;
   title: string;
   colors: ColorPair;
-  ref?: React.RefObject<HTMLTextAreaElement | null>;
+  isFocused?: boolean | null;
   onDelete: (id: number) => void;
   onEditTitle: (newTitle: string, id: number) => void;
 }
 
 const LinkCard = (props: LinkCardProps) => {
-  const { id, title, colors, ref, onDelete, onEditTitle } = props;
+  const { id, title, colors, isFocused, onDelete, onEditTitle } = props;
 
+  console.log(id, isFocused);
   return (
     <>
       <Card
@@ -31,9 +32,23 @@ const LinkCard = (props: LinkCardProps) => {
           icon="delete"
           onClick={() => onDelete(id)}
         />
-        <Link to={`/teams/${id}`} className="card-text">
-          {title}
-        </Link>
+        {isFocused ? (
+          <textarea
+            className="card-text"
+            id="name"
+            placeholder="title"
+            required
+            maxLength={100}
+            onBlur={(event) => onEditTitle(event.target.value, id)}
+            autoFocus={true}
+          >
+            {title}
+          </textarea>
+        ) : (
+          <Link to={`/teams/${id}`} className="card-text">
+            {title}
+          </Link>
+        )}
 
         {/* <textarea
           className="card-text"

@@ -1,4 +1,3 @@
-import { colorSequence } from "../../ColourSequence";
 import Button from "../Buttons/Button/Button";
 import "./ConfirmationDialog.css";
 

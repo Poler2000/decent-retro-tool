@@ -63,6 +63,22 @@ public static class TeamModule
             await dbContext.SaveChangesAsync();
             return TypedResults.Ok();
         });
+
+        builder.MapDelete("/{id:int}", async Task<Results<Ok, NotFound>> (RetroDbContext dbContext, int id) =>
+        {
+            var team = await dbContext.Teams
+                .Where(team => team.Id == id)
+                .SingleOrDefaultAsync();
+
+            if (team is null)
+            {
+                return TypedResults.NotFound();
+            }
+
+            dbContext.Teams.Remove(team);
+            await dbContext.SaveChangesAsync();
+            return TypedResults.Ok();
+        });
         
         return builder;
     }

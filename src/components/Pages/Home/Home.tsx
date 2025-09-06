@@ -1,7 +1,12 @@
 import CardGrid from "../../Cards/CardGrid/CardGrid";
 import { colorSequence } from "../../../ColourSequence";
 import { useEffect, useState } from "react";
-import { createTeam, getTeams, updateTeam } from "../../../teamClient";
+import {
+  createTeam,
+  deleteTeam,
+  getTeams,
+  updateTeam,
+} from "../../../teamClient";
 import TeamModel from "../../../models/TeamModel";
 import type Entity from "../../../models/Entity";
 import LinkCard from "../../Cards/LinkCard/LinkCard";
@@ -17,6 +22,7 @@ const Home = () => {
   };
 
   const [dialog, setDialog] = useState<React.ReactNode>();
+  const [currentlyEditing, setCurrentlyEditing] = useState(true);
 
   useEffect(loadTeams, []);
 
@@ -28,11 +34,15 @@ const Home = () => {
 
     createTeam(team)
       .then(loadTeams)
+      .then(() => setCurrentlyEditing(true))
       .catch((error) => console.log(error));
   };
 
   const deleteItem = (id: number) => {
     setDialog(null);
+    deleteTeam(id)
+      .then(loadTeams)
+      .catch((error) => console.log(error));
   };
 
   const handleDelete = (id: number) => {
@@ -52,10 +62,11 @@ const Home = () => {
 
     updateTeam(team)
       .then(loadTeams)
+      .then(() => setCurrentlyEditing(false))
       .catch((error) => console.log(error));
   };
 
-  const renderTeam = (team: Entity) => {
+  const renderTeam = (team: Entity, isFocused: boolean) => {
     return (
       <LinkCard
         key={team.id}
@@ -67,6 +78,7 @@ const Home = () => {
         }}
         onDelete={handleDelete}
         onEditTitle={handleRename}
+        isFocused={isFocused}
       ></LinkCard>
     );
   };
@@ -82,6 +94,7 @@ const Home = () => {
         }}
         onCreate={handleCreate}
         renderItem={renderTeam}
+        isEditing={currentlyEditing}
       ></CardGrid>
     </>
   );

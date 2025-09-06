@@ -1,4 +1,3 @@
-import RetroCard from "../RetroCard/RetroCard";
 import "./CardGrid.css";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -22,12 +21,12 @@ export interface CardGridProps {
   entities: Entity[];
   colors: ColorPair;
   onCreate: (item: Entity) => void;
-  renderItem: (item: Entity) => React.ReactNode;
+  renderItem: (item: Entity, isFocused: boolean) => React.ReactNode;
+  isEditing: boolean;
 }
 
 const CardGrid = (props: CardGridProps) => {
   const [items, setItems] = useState<Entity[]>([]);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -38,20 +37,16 @@ const CardGrid = (props: CardGridProps) => {
     })
   );
 
-  let [isFocus, setIsFocus] = useState(true);
+  let [isFocus, setIsFocus] = useState(false);
 
-  const { entities, colors, onCreate, renderItem } = props;
-
-  const focusOnNewElement = () => {
-    inputRef.current?.focus();
-  };
+  const { entities, colors, onCreate, renderItem, isEditing } = props;
 
   const handleAdd = () => {
     let newItem = {
       id: Math.max(...items.map((item) => item.id)) + 1,
       name: "",
     };
-    setIsFocus(false);
+    setIsFocus(true);
     onCreate(newItem);
   };
 
@@ -71,16 +66,17 @@ const CardGrid = (props: CardGridProps) => {
 
   useEffect(() => {
     setItems(entities);
+    //setIsFocus(false);
   }, [entities]);
 
   const itemsCount = items.length;
 
-  useEffect(() => {
-    if (isFocus === false) {
-      focusOnNewElement();
-    }
-    setIsFocus(true);
-  }, [isFocus]);
+  // useEffect(() => {
+  //   if (isFocus === false) {
+  //     focusOnNewElement();
+  //   }
+  //   setIsFocus(true);
+  // }, [isFocus]);
 
   return (
     <div className="card-grid">
@@ -91,29 +87,10 @@ const CardGrid = (props: CardGridProps) => {
           onDragEnd={handleDragEnd}
         >
           <SortableContext items={items} strategy={rectSortingStrategy}>
-            {items.slice(0, itemsCount - 1).map(
-              (item) => renderItem(item)
-              // <RetroCard
-              //   key={item.id}
-              //   id={item.id}
-              //   title={item.name}
-              //   backgroundColor={colors.background}
-              //   textColor={colors.text}
-              //   onDelete={handleDelete}
-              //   onEditTitle={handleEditTitle}
-              // ></RetroCard>
-            )}
-            {renderItem(items[itemsCount - 1])}
-            {/* <RetroCard
-              key={items[itemsCount - 1].id}
-              id={items[itemsCount - 1].id}
-              title={items[itemsCount - 1].name}
-              backgroundColor={colors.background}
-              textColor={colors.text}
-              onDelete={handleDelete}
-              onEditTitle={handleEditTitle}
-              ref={inputRef}
-            ></RetroCard> */}
+            {items
+              .slice(0, itemsCount - 1)
+              .map((item) => renderItem(item, false))}
+            {renderItem(items[itemsCount - 1], isFocus && isEditing)}
           </SortableContext>
         </DndContext>
       ) : (
