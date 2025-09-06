@@ -18,7 +18,7 @@ function App() {
       <Routes>
         <Route index element={<Navigate to={"home"} />} />
         <Route path="home" element={<Home />} />
-        <Route path="team">
+        <Route path="teams">
           <Route path=":teamId" element={<Team />} />
           <Route path=":teamId/retro">
             <Route path=":retroId" element={<Retro />} />

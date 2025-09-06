@@ -1,39 +1,41 @@
-import type { Color } from "../../../Colour";
-import Card from "../Card/Card";
-import Counter from "../../Counter/Counter";
+import { Link } from "react-router";
+import type { ColorPair } from "../../../Colour";
 import IconButton from "../../Buttons/IconButton/IconButton";
-import "./RetroCard.css";
+import Card from "../Card/Card";
+import "./LinkCard.css";
 
-export interface RetroCardProps {
+export interface LinkCardProps {
   id: number;
   title: string;
-  backgroundColor: Color;
-  textColor: Color;
+  colors: ColorPair;
   ref?: React.RefObject<HTMLTextAreaElement | null>;
   onDelete: (id: number) => void;
   onEditTitle: (newTitle: string, id: number) => void;
 }
 
-const RetroCard = (props: RetroCardProps) => {
-  const { id, title, backgroundColor, textColor, ref, onDelete, onEditTitle } =
-    props;
+const LinkCard = (props: LinkCardProps) => {
+  const { id, title, colors, ref, onDelete, onEditTitle } = props;
 
   return (
     <>
       <Card
         id={id}
         defaultStyle={{
-          backgroundColor: backgroundColor,
-          color: textColor,
+          backgroundColor: colors.background,
+          color: colors.text,
         }}
       >
         <IconButton
           additionalClass="remove-button"
-          colors={{ background: backgroundColor, text: textColor }}
+          colors={colors}
           icon="delete"
           onClick={() => onDelete(id)}
         />
-        <textarea
+        <Link to={`/teams/${id}`} className="card-text">
+          {title}
+        </Link>
+
+        {/* <textarea
           className="card-text"
           id="name"
           placeholder="title"
@@ -42,14 +44,11 @@ const RetroCard = (props: RetroCardProps) => {
           ref={ref}
           onBlur={(event) => onEditTitle(event.target.value, id)}
         >
-          {title}
-        </textarea>
-        <Counter
-          colors={{ background: backgroundColor, text: textColor }}
-        ></Counter>
+          <Link to={`/teams/${id}`}>{title}</Link>
+        </textarea> */}
       </Card>
     </>
   );
 };
 
-export default RetroCard;
+export default LinkCard;

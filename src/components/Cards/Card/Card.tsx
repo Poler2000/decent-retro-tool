@@ -1,8 +1,9 @@
 import { useSortable } from "@dnd-kit/sortable";
 import "./Card.css";
+import type { Id } from "../../../uuid";
 
 export interface CardProps extends React.PropsWithChildren {
-  id: number;
+  id: Id;
   defaultStyle: React.CSSProperties;
 }
 

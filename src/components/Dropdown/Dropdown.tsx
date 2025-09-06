@@ -1,5 +1,5 @@
 import { useState } from "react";
-import IconButton from "../IconButton/IconButton";
+import IconButton from "../Buttons/IconButton/IconButton";
 import "./Dropdown.css";
 
 const Dropdown = (props: React.PropsWithChildren) => {

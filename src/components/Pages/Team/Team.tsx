@@ -5,6 +5,7 @@ import CardGrid from "../../Cards/CardGrid/CardGrid";
 import RetroModel from "../../../models/RetroModel";
 import { colorSequence } from "../../../ColourSequence";
 import type Entity from "../../../models/Entity";
+import LinkCard from "../../Cards/LinkCard/LinkCard";
 
 const Team = () => {
   let params = useParams();
@@ -41,14 +42,32 @@ const Team = () => {
       .catch((error) => console.log(error));
   };
 
+  const renderRetro = (retro: Entity) => {
+    return (
+      <LinkCard
+        key={retro.id}
+        id={retro.id}
+        title={retro.name}
+        colors={{
+          background: colorSequence[0].background,
+          text: colorSequence[0].text,
+        }}
+        onDelete={handleDelete}
+        onEditTitle={handleRename}
+      ></LinkCard>
+    );
+  };
+
   return (
     <>
       <CardGrid
         entities={retros}
-        backgroundColor={colorSequence[1].background}
-        textColor={colorSequence[1].text}
+        colors={{
+          background: colorSequence[1].background,
+          text: colorSequence[1].text,
+        }}
         onCreate={handleCreate}
-        onUpdate={handleRename}
+        renderItem={renderRetro}
       ></CardGrid>
     </>
   );

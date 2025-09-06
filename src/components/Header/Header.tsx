@@ -1,5 +1,5 @@
 import mainLogo from "../../assets/decent-retro-tool-logo.png";
-import IconButton from "../IconButton/IconButton";
+import IconButton from "../Buttons/IconButton/IconButton";
 import SettingsMenu from "../SettingsMenu/SettingsMenu";
 import "./Header.css";
 
