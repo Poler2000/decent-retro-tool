@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { createTeam, getTeams, updateTeam } from "../../../teamClient";
 import TeamModel from "../../../models/TeamModel";
 import type Entity from "../../../models/Entity";
+import LinkCard from "../../Cards/LinkCard/LinkCard";
+import ConfirmationDialog from "../../ConfirmationDialog/ConfirmationDialog";
 
 const Home = () => {
   const [teams, setTeams] = useState<TeamModel[]>([]);
@@ -13,6 +15,8 @@ const Home = () => {
       .then(setTeams)
       .catch((error) => console.log(error));
   };
+
+  const [dialog, setDialog] = useState<React.ReactNode>();
 
   useEffect(loadTeams, []);
 
@@ -27,24 +31,57 @@ const Home = () => {
       .catch((error) => console.log(error));
   };
 
-  const handleRename = (entity: Entity) => {
-    const team = new TeamModel(entity.id, entity.name);
+  const deleteItem = (id: number) => {
+    setDialog(null);
+  };
+
+  const handleDelete = (id: number) => {
+    setDialog(() => (
+      <ConfirmationDialog
+        message="Are you sure?"
+        onConfirm={() => deleteItem(id)}
+        onCancel={() => {
+          setDialog(null);
+        }}
+      />
+    ));
+  };
+
+  const handleRename = (newTitle: string, id: number) => {
+    const team = new TeamModel(id, newTitle);
 
     updateTeam(team)
       .then(loadTeams)
       .catch((error) => console.log(error));
   };
 
-  console.log(teams);
+  const renderTeam = (team: Entity) => {
+    return (
+      <LinkCard
+        key={team.id}
+        id={team.id}
+        title={team.name}
+        colors={{
+          background: colorSequence[0].background,
+          text: colorSequence[0].text,
+        }}
+        onDelete={handleDelete}
+        onEditTitle={handleRename}
+      ></LinkCard>
+    );
+  };
 
   return (
     <>
+      {dialog}
       <CardGrid
         entities={teams}
-        backgroundColor={colorSequence[0].background}
-        textColor={colorSequence[0].text}
+        colors={{
+          background: colorSequence[0].background,
+          text: colorSequence[0].text,
+        }}
         onCreate={handleCreate}
-        onUpdate={handleRename}
+        renderItem={renderTeam}
       ></CardGrid>
     </>
   );

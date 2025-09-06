@@ -1,10 +1,11 @@
 import type { Color } from "../../../Colour";
 import Card from "../Card/Card";
-import IconButton from "../../IconButton/IconButton";
+import IconButton from "../../Buttons/IconButton/IconButton";
 import "./AddCard.css";
+import type { Id } from "../../../uuid";
 
 export interface AddCardProps {
-  id: number;
+  id: Id;
   backgroundColor: Color;
   textColor: Color;
   onClick: () => void;

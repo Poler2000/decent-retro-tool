@@ -1,5 +1,5 @@
 import { useState } from "react";
-import IconButton from "../IconButton/IconButton";
+import IconButton from "../Buttons/IconButton/IconButton";
 import "./Counter.css";
 import type { ColorPair } from "../../Colour";
 
@@ -8,7 +8,7 @@ export interface CounterProps {
 }
 
 const Counter = (props: CounterProps) => {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
   const handlePlus = () => {
     setCount(count + 1);
   };
