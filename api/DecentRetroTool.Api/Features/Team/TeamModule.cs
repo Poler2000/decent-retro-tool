@@ -38,7 +38,6 @@ public static class TeamModule
         {
             var newTeam = new Data.Models.Team()
             {
-                Id = team.Id,
                 Name = team.Name,
                 Retros = []
             };

@@ -1,4 +1,61 @@
 import type RetroModel from "./models/RetroModel";
 
 export const getRetros = async (teamId: number): Promise<RetroModel[]> => {
+  const headers: Headers = new Headers()
+  headers.set('Content-Type', 'application/json')
+  headers.set('Accept', 'application/json')
+
+  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/retros/teamId=${teamId}`, {
+    method: 'GET',
+    headers: headers
+  });
+
+  const res = await fetch(request)
+  const resJson = await res.json()
+  return resJson as RetroModel[]
+} 
+
+export const getRetro = async (retroId: number): Promise<RetroModel> => {
+  const headers: Headers = new Headers()
+  headers.set('Content-Type', 'application/json')
+  headers.set('Accept', 'application/json')
+
+  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/retros/${retroId}`, {
+    method: 'GET',
+    headers: headers
+  });
+
+  const res = await fetch(request)
+  const resJson = await res.json()
+  return resJson as RetroModel
+} 
+
+export const createRetro = async (retro: RetroModel): Promise<void> => {
+  const headers: Headers = new Headers()
+  headers.set('Content-Type', 'application/json')
+  headers.set('Accept', 'application/json')
+
+  const request: RequestInfo = new Request('https://localhost:7235/decent-retro-tool.api/retros', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(retro)
+  });
+
+  return fetch(request)
+    .then(res => {console.log(res)})
+}
+
+export const updateRetro = async (retro: RetroModel): Promise<void> => {
+  const headers: Headers = new Headers()
+  headers.set('Content-Type', 'application/json')
+  headers.set('Accept', 'application/json')
+
+  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/retros/${retro.id}`, {
+    method: 'PUT',
+    headers: headers,
+    body: JSON.stringify(retro)
+  });
+
+  return fetch(request)
+    .then(res => {console.log(res)})
 }

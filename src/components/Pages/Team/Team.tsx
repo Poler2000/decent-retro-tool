@@ -1,32 +1,55 @@
 import { useParams } from "react-router";
-import { getRetros } from "../../../retroClient";
+import { createRetro, getRetros, updateRetro } from "../../../retroClient";
 import { useEffect, useState } from "react";
 import CardGrid from "../../Cards/CardGrid/CardGrid";
+import RetroModel from "../../../models/RetroModel";
+import { colorSequence } from "../../../ColourSequence";
+import type Entity from "../../../models/Entity";
 
 const Team = () => {
   let params = useParams();
-  const teamId = params.teamId;
+  const teamId = parseInt(params.teamId!);
 
-  const grids = ["Grid1", "Grid 2", "grid 3"];
+  const [retros, setRetros] = useState<RetroModel[]>([]);
 
-  // const [teams, setTeams] = useState<TeamModel[]>([]);
+  const loadRetros = () => {
+    getRetros(teamId)
+      .then(setRetros)
+      .catch((error) => console.log(error));
+  };
 
-  // useEffect(() => {
-  //   getRetros(teamId)
-  //     .then(setTeams)
-  //     .catch((error) => console.log(error));
-  // }, []);
+  useEffect(loadRetros, []);
+
+  const handleCreate = (entity: Entity) => {
+    const retro = new RetroModel(
+      entity.id,
+      entity.name !== "" ? entity.name : `Retro ${entity.id}`,
+      [],
+      teamId
+    );
+
+    createRetro(retro)
+      .then(loadRetros)
+      .catch((error) => console.log(error));
+  };
+
+  const handleRename = (entity: Entity) => {
+    const retro = new RetroModel(entity.id, entity.name, [], teamId);
+
+    updateRetro(retro)
+      .then(loadRetros)
+      .catch((error) => console.log(error));
+  };
 
   return (
     <>
-      {/* {grids.map((_, id) => (
-        <CardGrid
-          key={id}
-          entities={teams}
-          backgroundColor={colorSequence[id].background}
-          textColor={colorSequence[id].text}
-        ></CardGrid>
-      ))} */}
+      <CardGrid
+        entities={retros}
+        backgroundColor={colorSequence[1].background}
+        textColor={colorSequence[1].text}
+        onCreate={handleCreate}
+        onUpdate={handleRename}
+      ></CardGrid>
     </>
   );
 };
