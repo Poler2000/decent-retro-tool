@@ -22,19 +22,16 @@ const Home = () => {
   };
 
   const [dialog, setDialog] = useState<React.ReactNode>();
-  const [currentlyEditing, setCurrentlyEditing] = useState(true);
+  const [isEditingEnabled, setIsEditingEnabled] = useState(true);
 
   useEffect(loadTeams, []);
 
-  const handleCreate = (entity: Entity) => {
-    const team = new TeamModel(
-      entity.id,
-      entity.name !== "" ? entity.name : `Team ${entity.id}`
-    );
+  const handleCreate = (content: string) => {
+    const team = new TeamModel(-1, content !== "" ? content : `New Team`);
 
     createTeam(team)
       .then(loadTeams)
-      .then(() => setCurrentlyEditing(true))
+      .then(() => setIsEditingEnabled(true))
       .catch((error) => console.log(error));
   };
 
@@ -46,9 +43,11 @@ const Home = () => {
   };
 
   const handleDelete = (id: number) => {
+    const title = teams.find((t) => t.id === id)?.getContent() ?? "Unknown";
+
     setDialog(() => (
       <ConfirmationDialog
-        message="Are you sure?"
+        message={`Are you sure to delete the team: ${title}?`}
         onConfirm={() => deleteItem(id)}
         onCancel={() => {
           setDialog(null);
@@ -62,7 +61,7 @@ const Home = () => {
 
     updateTeam(team)
       .then(loadTeams)
-      .then(() => setCurrentlyEditing(false))
+      .then(() => setIsEditingEnabled(false))
       .catch((error) => console.log(error));
   };
 
@@ -71,7 +70,7 @@ const Home = () => {
       <LinkCard
         key={team.id}
         id={team.id}
-        title={team.name}
+        title={(team as TeamModel).getContent()}
         colors={{
           background: colorSequence[0].background,
           text: colorSequence[0].text,
@@ -79,6 +78,7 @@ const Home = () => {
         onDelete={handleDelete}
         onEditTitle={handleRename}
         isFocused={isFocused}
+        linkAddress={`/teams/${team.id}`}
       ></LinkCard>
     );
   };
@@ -94,7 +94,7 @@ const Home = () => {
         }}
         onCreate={handleCreate}
         renderItem={renderTeam}
-        isEditing={currentlyEditing}
+        isEditing={isEditingEnabled}
       ></CardGrid>
     </>
   );

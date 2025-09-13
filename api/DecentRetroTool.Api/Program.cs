@@ -57,7 +57,31 @@ using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.Creat
         new()
         {
             CreationDate = DateTime.Today,
-            Title = "Stork 1"
+            Title = "Stork 1",
+            Sections = new List<Section>()
+            {
+                new Section()
+                {
+                    Title = "Section 1",
+                    Notes = [
+                        new Note()
+                        {
+                            Score = 4,
+                            Content = "sdflksdfj asj sdhjhsdf hashjn jsdh sdh"
+                        },
+                        new Note()
+                        {
+                            Score = 2,
+                            Content = "Toto"
+                        }
+                    ]
+                },
+                new Section()
+                {
+                    Title = "Section 2 - Hello",
+                    Notes = []
+                }
+            }
         },
         new()
         {

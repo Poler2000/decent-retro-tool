@@ -11,12 +11,13 @@ export interface LinkCardProps {
   isFocused?: boolean | null;
   onDelete: (id: number) => void;
   onEditTitle: (newTitle: string, id: number) => void;
+  linkAddress: string;
 }
 
 const LinkCard = (props: LinkCardProps) => {
-  const { id, title, colors, isFocused, onDelete, onEditTitle } = props;
+  const { id, title, colors, isFocused, onDelete, onEditTitle, linkAddress } =
+    props;
 
-  console.log(id, isFocused);
   return (
     <>
       <Card
@@ -41,26 +42,17 @@ const LinkCard = (props: LinkCardProps) => {
             maxLength={100}
             onBlur={(event) => onEditTitle(event.target.value, id)}
             autoFocus={true}
-          >
-            {title}
-          </textarea>
+            onFocus={(e) => {
+              e.currentTarget.selectionStart = 0;
+              e.currentTarget.selectionEnd = e.currentTarget.value.length;
+            }}
+            defaultValue={title}
+          />
         ) : (
-          <Link to={`/teams/${id}`} className="card-text">
+          <Link to={linkAddress} className="card-text">
             {title}
           </Link>
         )}
-
-        {/* <textarea
-          className="card-text"
-          id="name"
-          placeholder="title"
-          required
-          maxLength={100}
-          ref={ref}
-          onBlur={(event) => onEditTitle(event.target.value, id)}
-        >
-          <Link to={`/teams/${id}`}>{title}</Link>
-        </textarea> */}
       </Card>
     </>
   );

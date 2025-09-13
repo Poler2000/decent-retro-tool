@@ -26,7 +26,7 @@ public static class RetroModule
             return TypedResults.Ok(retros.Select(retro => new RetroDto()
             {
                 Id = retro.Id,
-                Name = retro.Title, 
+                Title = retro.Title, 
                 TeamId = retro.TeamId
             }).ToList());
         });
@@ -42,7 +42,7 @@ public static class RetroModule
                 ? TypedResults.Ok(new RetroDetailsDto()
                 {
                     Id = retro.Id,
-                    Name = retro.Title, 
+                    Title = retro.Title, 
                     TeamId = retro.TeamId,
                     CreationDate = retro.CreationDate,
                     Sections = retro.Sections.Select(section => new SectionDto()
@@ -52,7 +52,7 @@ public static class RetroModule
                         Notes = section.Notes.Select(note => new NoteDto()
                         {
                             Id = note.Id,
-                            Content = note.Text,
+                            Content = note.Content,
                             Score = note.Score
                         }).ToList()
                     }).ToList()
@@ -64,7 +64,7 @@ public static class RetroModule
         {
             var newRetro = dbContext.Retros.Add(new Data.Models.Retro()
             {
-                Title = retro.Name,
+                Title = retro.Title,
                 CreationDate = DateTime.Now,
                 TeamId = retro.TeamId,
                 Sections = []
@@ -77,19 +77,34 @@ public static class RetroModule
         builder.MapPut("/{id:int}", async Task<Results<Ok, NotFound>> (RetroDbContext dbContext, int id, [FromBody] RetroDto retroUpdate) =>
         {
             var retro = await dbContext.Retros
-                .Where(r => r.Id == id)
-                .SingleOrDefaultAsync();
+                .SingleOrDefaultAsync(r => r.Id == id);
 
             if (retro is null)
             {
                 return TypedResults.NotFound();
             }
             
-            retro.Title = retroUpdate.Name;
+            retro.Title = retroUpdate.Title;
             //dbContext.Update(team); // TODO[PP]: check if needed (relates to entity tracking)
             await dbContext.SaveChangesAsync();
             return TypedResults.Ok();
         });
+        
+        builder.MapDelete("/{id:int}", async Task<Results<Ok, NotFound>> (RetroDbContext dbContext, int id) =>
+        {
+            var retro = await dbContext.Retros
+                .SingleOrDefaultAsync(team => team.Id == id);
+
+            if (retro is null)
+            {
+                return TypedResults.NotFound();
+            }
+
+            dbContext.Retros.Remove(retro);
+            await dbContext.SaveChangesAsync();
+            return TypedResults.Ok();
+        });
+        
         return builder;
     }
 

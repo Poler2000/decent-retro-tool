@@ -1,18 +1,18 @@
-import type RetroModel from "./models/RetroModel";
+import RetroModel from "./models/RetroModel";
 
 export const getRetros = async (teamId: number): Promise<RetroModel[]> => {
   const headers: Headers = new Headers()
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
 
-  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/retros/teamId=${teamId}`, {
+  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/retros?teamId=${teamId}`, {
     method: 'GET',
     headers: headers
   });
 
   const res = await fetch(request)
   const resJson = await res.json()
-  return resJson as RetroModel[]
+  return resJson.map((t: any) => RetroModel.fromJson(t));
 } 
 
 export const getRetro = async (retroId: number): Promise<RetroModel> => {
@@ -27,7 +27,7 @@ export const getRetro = async (retroId: number): Promise<RetroModel> => {
 
   const res = await fetch(request)
   const resJson = await res.json()
-  return resJson as RetroModel
+  return RetroModel.fromJson(resJson);
 } 
 
 export const createRetro = async (retro: RetroModel): Promise<void> => {
@@ -58,4 +58,18 @@ export const updateRetro = async (retro: RetroModel): Promise<void> => {
 
   return fetch(request)
     .then(res => {console.log(res)})
+}
+
+export const deleteRetro = async (retroId: number): Promise<void> => {
+  const headers: Headers = new Headers()
+  headers.set('Content-Type', 'application/json')
+  headers.set('Accept', 'application/json')
+
+  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/retros/${retroId}`, {
+    method: 'DELETE',
+    headers: headers,
+  });
+
+  return fetch(request)
+    .then(res => {console.log(res); console.log("DELETED!!!!!!!")})
 }

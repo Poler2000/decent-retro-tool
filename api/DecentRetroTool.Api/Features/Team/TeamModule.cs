@@ -67,8 +67,7 @@ public static class TeamModule
         builder.MapDelete("/{id:int}", async Task<Results<Ok, NotFound>> (RetroDbContext dbContext, int id) =>
         {
             var team = await dbContext.Teams
-                .Where(team => team.Id == id)
-                .SingleOrDefaultAsync();
+                .SingleOrDefaultAsync(team => team.Id == id);
 
             if (team is null)
             {

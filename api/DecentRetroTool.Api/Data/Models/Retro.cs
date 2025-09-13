@@ -7,8 +7,8 @@ public class Retro
     public string Title { get; set; }
     
     public DateTime CreationDate { get; set; }
-    
-    public IList<Section> Sections;
-    
+
+    public ICollection<Section> Sections { get; set; }
+
     public int TeamId { get; set; }
 }

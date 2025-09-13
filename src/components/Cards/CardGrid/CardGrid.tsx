@@ -20,7 +20,7 @@ import type Entity from "../../../models/Entity";
 export interface CardGridProps {
   entities: Entity[];
   colors: ColorPair;
-  onCreate: (item: Entity) => void;
+  onCreate: (content: string) => void;
   renderItem: (item: Entity, isFocused: boolean) => React.ReactNode;
   isEditing: boolean;
 }
@@ -42,12 +42,8 @@ const CardGrid = (props: CardGridProps) => {
   const { entities, colors, onCreate, renderItem, isEditing } = props;
 
   const handleAdd = () => {
-    let newItem = {
-      id: Math.max(...items.map((item) => item.id)) + 1,
-      name: "",
-    };
     setIsFocus(true);
-    onCreate(newItem);
+    onCreate("");
   };
 
   const handleDragEnd = (event: DragEndEvent) => {

@@ -6,5 +6,5 @@ public class Section
 
     public string Title { get; set; }
     
-    public IList<Note> Notes { get; set; }
+    public ICollection<Note> Notes { get; set; }
 }
