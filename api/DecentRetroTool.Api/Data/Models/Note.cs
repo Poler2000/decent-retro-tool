@@ -7,4 +7,6 @@ public class Note
     public string Content { get; set; }
     
     public int Score { get; set; }
+    
+    public int SectionId { get; set; }
 }

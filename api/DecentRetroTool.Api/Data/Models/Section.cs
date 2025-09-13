@@ -7,4 +7,8 @@ public class Section
     public string Title { get; set; }
     
     public ICollection<Note> Notes { get; set; }
+    
+    public bool IsHidden { get; set; }
+    
+    public int RetroId { get; set; }
 }

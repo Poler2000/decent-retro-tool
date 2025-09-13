@@ -1,4 +1,4 @@
-import type { Color } from "../../../Colour";
+import type { Color, ColorPair } from "../../../Colour";
 import Card from "../Card/Card";
 import Counter from "../../Counter/Counter";
 import IconButton from "../../Buttons/IconButton/IconButton";
@@ -7,29 +7,27 @@ import "./RetroCard.css";
 export interface RetroCardProps {
   id: number;
   title: string;
-  backgroundColor: Color;
-  textColor: Color;
+  colors: ColorPair;
   ref?: React.RefObject<HTMLTextAreaElement | null>;
   onDelete: (id: number) => void;
   onEditTitle: (newTitle: string, id: number) => void;
 }
 
 const RetroCard = (props: RetroCardProps) => {
-  const { id, title, backgroundColor, textColor, ref, onDelete, onEditTitle } =
-    props;
+  const { id, title, colors, ref, onDelete, onEditTitle } = props;
 
   return (
     <>
       <Card
         id={id}
         defaultStyle={{
-          backgroundColor: backgroundColor,
-          color: textColor,
+          backgroundColor: colors.background,
+          color: colors.text,
         }}
       >
         <IconButton
           additionalClass="remove-button"
-          colors={{ background: backgroundColor, text: textColor }}
+          colors={colors}
           icon="delete"
           onClick={() => onDelete(id)}
         />
@@ -44,9 +42,7 @@ const RetroCard = (props: RetroCardProps) => {
         >
           {title}
         </textarea>
-        <Counter
-          colors={{ background: backgroundColor, text: textColor }}
-        ></Counter>
+        <Counter colors={colors}></Counter>
       </Card>
     </>
   );

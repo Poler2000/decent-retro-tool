@@ -13,7 +13,7 @@ public static class NoteModule
     {
         builder.MapGroup("notes")
             .RegisterEndpoints()
-            .WithTags("Retros");
+            .WithTags("Notes");
     }
 
     private static RouteGroupBuilder RegisterEndpoints(this RouteGroupBuilder builder)
@@ -31,12 +31,13 @@ public static class NoteModule
         //     return TypedResults.Created();
         // });
         
-        builder.MapPost("/", async Task<Created> (RetroDbContext dbContext, [FromBody] NoteDto node) =>
+        builder.MapPost("/", async Task<Created> (RetroDbContext dbContext, [FromBody] NoteDto note) =>
         {
             dbContext.Notes.Add(new Data.Models.Note()
             {
-                Score = node.Score,
-                Content = node.Content,
+                Score = note.Score,
+                Content = note.Content,
+                SectionId = note.SectionId
             });
 
             await dbContext.SaveChangesAsync();

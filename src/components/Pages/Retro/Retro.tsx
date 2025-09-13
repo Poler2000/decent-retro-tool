@@ -41,9 +41,6 @@ const Retro = () => {
     );
   };
 
-  console.log(retro?.sections);
-  console.log(retro?.sections.map((section) => `$section ${section}`));
-
   return (
     <>
       {retro?.sections.map((section, id) => (

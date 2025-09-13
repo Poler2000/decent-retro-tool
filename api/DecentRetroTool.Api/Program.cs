@@ -1,7 +1,9 @@
 using DecentRetroTool.Api.Configuration;
 using DecentRetroTool.Api.Data;
 using DecentRetroTool.Api.Data.Models;
+using DecentRetroTool.Api.Features.Note;
 using DecentRetroTool.Api.Features.Retro;
+using DecentRetroTool.Api.Features.Section;
 using DecentRetroTool.Api.Features.Team;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,6 +43,8 @@ app.Map(ApiConfiguration.PathBase, retroApp =>
     {
         endpoints.RegisterTeamEndpoints();
         endpoints.RegisterRetroEndpoints();
+        endpoints.RegisterSectionEndpoints();
+        endpoints.RegisterNoteEndpoints();
     });
 
     retroApp.UseHttpsRedirection();

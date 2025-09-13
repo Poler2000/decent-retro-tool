@@ -9,4 +9,6 @@ public record SectionDto
     public bool IsHidden { get; set; } = false;
 
     public List<NoteDto> Notes { get; set; } = [];
+    
+    public required int RetroId { get; set; }
 }

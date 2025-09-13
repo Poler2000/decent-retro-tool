@@ -7,4 +7,7 @@ public record NoteDto
     public required string Content { get; set; }
     
     public required int Score { get; set; }
+    
+    public required int SectionId { get; set; }
+
 }

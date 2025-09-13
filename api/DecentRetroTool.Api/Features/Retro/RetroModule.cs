@@ -53,8 +53,11 @@ public static class RetroModule
                         {
                             Id = note.Id,
                             Content = note.Content,
-                            Score = note.Score
-                        }).ToList()
+                            Score = note.Score,
+                            SectionId = note.SectionId
+                        }).ToList(),
+                        IsHidden = section.IsHidden,
+                        RetroId = section.RetroId
                     }).ToList()
                 })
                 : TypedResults.NotFound();

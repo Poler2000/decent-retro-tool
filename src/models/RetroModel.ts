@@ -1,16 +1,24 @@
 import type Entity from "./Entity"
-import type RetroSection from "./RetroSection"
+import RetroSectionModel from "./RetroSection"
 
 export default class RetroModel implements Entity {
   readonly id: number;
-  readonly name: string;
-  readonly sections: RetroSection[];
+  readonly title: string;
+  readonly sections: RetroSectionModel[];
   readonly teamId: number;
 
-  constructor(id: number, name: string, sections: RetroSection[], teamId: number) {
+  constructor(id: number, title: string, sections: RetroSectionModel[], teamId: number) {
   this.id = id;
-  this.name = name;
+  this.title = title;
   this.sections = sections;
   this.teamId = teamId;
   }
+
+  static fromJson(json: any): RetroModel {
+    return new RetroModel(json.id, json.title, json.sections.map((s: any) => RetroSectionModel.fromJson(s)), json.teamId);
+  }
+
+  getContent(): string {
+    return this.title;
+  };
 }

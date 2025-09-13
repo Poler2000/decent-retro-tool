@@ -1,4 +1,4 @@
-import type TeamModel from "./models/TeamModel"
+import TeamModel from "./models/TeamModel"
 
 export const getTeams = async (): Promise<TeamModel[]> => {
   const headers: Headers = new Headers()
@@ -12,8 +12,7 @@ export const getTeams = async (): Promise<TeamModel[]> => {
 
   const res = await fetch(request)
   const resJson = await res.json()
-  console.log("GOT!!!!!!!")
-  return resJson as TeamModel[]
+  return resJson.map((t: any) => TeamModel.fromJson(t));
 } 
 
 export const createTeam = async (team: TeamModel): Promise<void> => {

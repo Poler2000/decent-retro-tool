@@ -7,7 +7,7 @@ public class RetroDbContext : DbContext
 {
     public DbSet<Team> Teams { get; set; }
     public DbSet<Retro> Retros { get; set; }
-    
+    public DbSet<Section> Sections { get; set; }
     public DbSet<Note> Notes { get; set; }
     
     public RetroDbContext(DbContextOptions<RetroDbContext> options) : base(options) {}
@@ -16,6 +16,10 @@ public class RetroDbContext : DbContext
     {
         modelBuilder.Entity<Team>()
             .HasIndex(team => team.Name)
+            .IsUnique();
+        
+        modelBuilder.Entity<Retro>()
+            .HasIndex(retro => retro.Title)
             .IsUnique();
     }
 }
