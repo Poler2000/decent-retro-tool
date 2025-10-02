@@ -8,13 +8,14 @@ export interface RetroCardProps {
   id: number;
   title: string;
   colors: ColorPair;
-  ref?: React.RefObject<HTMLTextAreaElement | null>;
+  isFocused?: boolean | null;
   onDelete: (id: number) => void;
-  onEditTitle: (newTitle: string, id: number) => void;
+  onUpdate: (newTitle: string, score: number, id: number) => void;
+  score: number;
 }
 
 const RetroCard = (props: RetroCardProps) => {
-  const { id, title, colors, ref, onDelete, onEditTitle } = props;
+  const { id, title, colors, isFocused, onDelete, onUpdate, score } = props;
 
   return (
     <>
@@ -37,12 +38,19 @@ const RetroCard = (props: RetroCardProps) => {
           placeholder="title"
           required
           maxLength={100}
-          ref={ref}
-          onBlur={(event) => onEditTitle(event.target.value, id)}
-        >
-          {title}
-        </textarea>
-        <Counter colors={colors}></Counter>
+          onBlur={(event) => onUpdate(event.target.value, 1, id)}
+          autoFocus={isFocused ?? false}
+          onFocus={(e) => {
+            e.currentTarget.selectionStart = 0;
+            e.currentTarget.selectionEnd = e.currentTarget.value.length;
+          }}
+          defaultValue={title}
+        />
+        <Counter
+          colors={colors}
+          score={score}
+          onUpdate={(newCount: number) => onUpdate(title, newCount, id)}
+        ></Counter>
       </Card>
     </>
   );

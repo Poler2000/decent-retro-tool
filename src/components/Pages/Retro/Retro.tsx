@@ -6,9 +6,13 @@ import CardGrid from "../../Cards/CardGrid/CardGrid";
 import { colorSequence } from "../../../ColourSequence";
 import type Entity from "../../../models/Entity";
 import RetroCard from "../../Cards/RetroCard/RetroCard";
+import { createNote, deleteNote, updateNote } from "../../../noteClient";
+import RetroNoteModel from "../../../models/RetroNoteModel";
+import "./Retro.css";
 
 const Retro = () => {
   const { teamId, retroId } = useParams();
+  const [isEditingEnabled, setIsEditingEnabled] = useState(true);
 
   const [retro, setRetro] = useState<RetroModel>();
 
@@ -20,31 +24,65 @@ const Retro = () => {
 
   useEffect(loadRetro, []);
 
-  const handleCreate = (content: string) => {};
+  const handleCreate = (content: string, sectionId: number) => {
+    const note = new RetroNoteModel(-1, content, 1, sectionId);
 
-  const handleDelete = (id: number) => {};
+    createNote(note)
+      .then(loadRetro)
+      .then(() => setIsEditingEnabled(true))
+      .catch((e) => console.log(e));
+  };
 
-  const handleUpdate = (newTitle: string, id: number) => {};
+  const handleDelete = (id: number) => {
+    deleteNote(id)
+      .then(loadRetro)
+      .catch((e) => console.log(e));
+  };
 
-  const renderItem = (item: Entity, isFocused: boolean) => {
+  const handleUpdate = (
+    newTitle: string,
+    score: number,
+    id: number,
+    sectionId: number
+  ) => {
+    const note = new RetroNoteModel(id, newTitle, score, sectionId);
+
+    updateNote(note)
+      .then(loadRetro)
+      .then(() => setIsEditingEnabled(false))
+      .catch((e) => console.log(e));
+  };
+
+  const renderItem = (
+    item: Entity,
+    isFocused: boolean,
+    sectionSequence: number
+  ) => {
+    const note = item as RetroNoteModel;
+    console.log(note);
     return (
       <RetroCard
+        key={item.id}
         id={item.id}
         title={item.getContent()}
         colors={{
-          background: colorSequence[0].background,
-          text: colorSequence[0].text,
+          background: colorSequence[sectionSequence].background,
+          text: colorSequence[sectionSequence].text,
         }}
         onDelete={handleDelete}
-        onEditTitle={handleUpdate}
+        onUpdate={(newTitle: string, score: number, id: number) =>
+          handleUpdate(newTitle, score, id, note.sectionId)
+        }
+        isFocused={isFocused}
+        score={note.score}
       ></RetroCard>
     );
   };
 
   return (
-    <>
+    <div className="grids-container">
       {retro?.sections.map((section, id) => (
-        <div>
+        <div key={section.id}>
           <h1>{section.getContent()}</h1>
           <CardGrid
             entities={section.notes}
@@ -52,13 +90,15 @@ const Retro = () => {
               background: colorSequence[id].background,
               text: colorSequence[id].text,
             }}
-            onCreate={handleCreate}
-            renderItem={renderItem}
-            isEditing={false}
+            onCreate={(content: string) => handleCreate(content, section.id)}
+            renderItem={(item: Entity, isFocused: boolean) =>
+              renderItem(item, isFocused, id)
+            }
+            isEditing={isEditingEnabled}
           ></CardGrid>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

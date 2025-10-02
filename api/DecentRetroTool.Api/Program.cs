@@ -84,13 +84,64 @@ using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.Creat
                 {
                     Title = "Section 2 - Hello",
                     Notes = []
-                }
+                },
+                new Section()
+                {
+                    Title = "Section 3",
+                    Notes = [
+                        new Note()
+                        {
+                            Score = 4,
+                            Content = "sdflksdfj asj sdhjhsdf hashjn jsdh sdh"
+                        },
+                        new Note()
+                        {
+                            Score = 2,
+                            Content = "Toto"
+                        }
+                    ]
+                },
+                new Section()
+                {
+                    Title = "Section 4",
+                    Notes = [
+                        new Note()
+                        {
+                            Score = 4,
+                            Content = "sdflksdfj asj sdhjhsdf hashjn jsdh sdh"
+                        },
+                        new Note()
+                        {
+                            Score = 2,
+                            Content = "Toto"
+                        }
+                    ]
+                },
             }
         },
         new()
         {
             CreationDate = DateTime.Today,
-            Title = "Stork 2"
+            Title = "Stork 2",
+            Sections = new List<Section>()
+            {
+                new Section()
+                {
+                    Title = "Section 1",
+                    Notes = [
+                        new Note()
+                        {
+                            Score = 4,
+                            Content = "sdflksdfj asj sdhjhsdf hashjn jsdh sdh"
+                        },
+                        new Note()
+                        {
+                            Score = 2,
+                            Content = "Toto"
+                        }
+                    ]
+                },
+            },
         },
         new()
         {

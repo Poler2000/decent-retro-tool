@@ -1,5 +1,4 @@
-﻿using DecentRetroTool.Api.Configuration;
-using DecentRetroTool.Api.Data;
+﻿using DecentRetroTool.Api.Data;
 using DecentRetroTool.Api.DTOs;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
