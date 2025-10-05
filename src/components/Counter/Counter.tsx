@@ -7,20 +7,31 @@ export interface CounterProps {
   colors: ColorPair;
   onUpdate: (newCount: number) => void;
   score: number;
+  delayUpdate?: boolean;
 }
 
 const Counter = (props: CounterProps) => {
-  const { colors, score } = props;
+  const { colors, score, onUpdate, delayUpdate } = props;
 
   const [count, setCount] = useState(() => score);
   const [isEditing, setIsEditing] = useState(false);
   const handlePlus = () => {
     setCount(count + 1);
-    setIsEditing(true);
+
+    if (!delayUpdate) {
+      onUpdate(count + 1);
+    } else {
+      setIsEditing(true);
+    }
   };
   const handleMinus = () => {
     setCount(count - 1);
-    setIsEditing(true);
+
+    if (!delayUpdate) {
+      onUpdate(count - 1);
+    } else {
+      setIsEditing(true);
+    }
   };
 
   const style = {
@@ -34,8 +45,8 @@ const Counter = (props: CounterProps) => {
       className="counter"
       style={style}
       onMouseLeave={() => {
-        if (isEditing) {
-          props.onUpdate(count);
+        if (isEditing && delayUpdate) {
+          onUpdate(count);
         }
         setIsEditing(false);
       }}

@@ -1,0 +1,88 @@
+import { useState } from "react";
+import RetroSectionModel from "../../models/RetroSection";
+import Button from "../Buttons/Button/Button";
+import Counter from "../Counter/Counter";
+import SectionConfigItem from "../SectionConfigItem/SectionConfigItem";
+import "./SectionConfigDialog.css";
+
+export interface SectionConfigDialogProps {
+  retroSections: RetroSectionModel[];
+  onConfirm: () => void;
+  onCancel: () => void;
+}
+
+const SectionConfigDialog = (props: SectionConfigDialogProps) => {
+  const { retroSections, onConfirm, onCancel } = props;
+
+  const [sections, setSections] = useState(() => retroSections);
+
+  const handleCountChange = (newCount: number) => {
+    console.log("handleCountChange");
+    console.log(newCount);
+    console.log(sections.length);
+    if (newCount > sections.length) {
+      const newSection = new RetroSectionModel(-1, "", [], false);
+      setSections([...sections, newSection]);
+    } else if (newCount < sections.length) {
+      const updatedSections = sections.slice(0, newCount);
+      setSections(updatedSections);
+    }
+  };
+
+  console.log(sections);
+  console.log(retroSections);
+
+  return (
+    <div className="section-config-dialog-backdrop">
+      <div className="section-config-dialog">
+        <span className="section-config-count-label">Sections</span>
+        <Counter
+          colors={{
+            background: "var(--primary-background-colour)",
+            text: "var(--primary-text-colour)",
+          }}
+          score={sections?.length ?? 0}
+          onUpdate={handleCountChange}
+          delayUpdate={false}
+        ></Counter>
+        <ul className="section-list">
+          {sections?.map((section) => (
+            <li>
+              <SectionConfigItem
+                key={section.id}
+                id={section.id}
+                title={section.getContent()}
+                isChecked={!section.isHidden}
+                onToggle={() => {}}
+              />
+            </li>
+          ))}
+        </ul>
+        <div className="confirm-dialog-btn-container">
+          <Button
+            colors={{
+              background: "var(--primary-background-colour)",
+              text: "var(--primary-text-colour)",
+            }}
+            onClick={onCancel}
+            additionalClass="confirm-dialog-btn confirm-dialog-btn-cancel"
+          >
+            Cancel
+          </Button>
+          <Button
+            colors={{
+              background: "var(--primary-background-colour)",
+              text: "var(--primary-text-colour)",
+            }}
+            onClick={onConfirm}
+            additionalClass="confirm-dialog-btn confirm-dialog-btn-confirm"
+          >
+            Confirm
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SectionConfigDialog;

@@ -9,10 +9,13 @@ import RetroCard from "../../Cards/RetroCard/RetroCard";
 import { createNote, deleteNote, updateNote } from "../../../noteClient";
 import RetroNoteModel from "../../../models/RetroNoteModel";
 import "./Retro.css";
+import Header from "../../Header/Header";
+import SectionConfigDialog from "../../SectionConfigDialog/SectionConfigDialog";
 
 const Retro = () => {
   const { teamId, retroId } = useParams();
   const [isEditingEnabled, setIsEditingEnabled] = useState(true);
+  const [dialog, setDialog] = useState<React.ReactNode>();
 
   const [retro, setRetro] = useState<RetroModel>();
 
@@ -79,26 +82,44 @@ const Retro = () => {
     );
   };
 
+  const handleEditSections = () => {
+    setDialog(() => (
+      <SectionConfigDialog
+        retroSections={retro?.sections ?? []}
+        onConfirm={() => setDialog(null)}
+        onCancel={() => setDialog(null)}
+      />
+    ));
+  };
+
   return (
-    <div className="grids-container">
-      {retro?.sections.map((section, id) => (
-        <div key={section.id}>
-          <h1>{section.getContent()}</h1>
-          <CardGrid
-            entities={section.notes}
-            colors={{
-              background: colorSequence[id].background,
-              text: colorSequence[id].text,
-            }}
-            onCreate={(content: string) => handleCreate(content, section.id)}
-            renderItem={(item: Entity, isFocused: boolean) =>
-              renderItem(item, isFocused, id)
-            }
-            isEditing={isEditingEnabled}
-          ></CardGrid>
-        </div>
-      ))}
-    </div>
+    <>
+      <Header
+        onEdit={handleEditSections}
+        onImport={() => {}}
+        onExport={() => {}}
+      />
+      {dialog}
+      <div className="grids-container">
+        {retro?.sections.map((section, id) => (
+          <div key={section.id}>
+            <h1>{section.getContent()}</h1>
+            <CardGrid
+              entities={section.notes}
+              colors={{
+                background: colorSequence[id].background,
+                text: colorSequence[id].text,
+              }}
+              onCreate={(content: string) => handleCreate(content, section.id)}
+              renderItem={(item: Entity, isFocused: boolean) =>
+                renderItem(item, isFocused, id)
+              }
+              isEditing={isEditingEnabled}
+            ></CardGrid>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 

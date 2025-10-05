@@ -12,6 +12,7 @@ import { colorSequence } from "../../../ColourSequence";
 import type Entity from "../../../models/Entity";
 import LinkCard from "../../Cards/LinkCard/LinkCard";
 import ConfirmationDialog from "../../ConfirmationDialog/ConfirmationDialog";
+import Header from "../../Header/Header";
 
 const Team = () => {
   let params = useParams();
@@ -95,6 +96,7 @@ const Team = () => {
 
   return (
     <>
+      <Header />
       {dialog}
       <CardGrid
         entities={retros}

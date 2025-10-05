@@ -4,7 +4,6 @@ import Home from "./components/Pages/Home/Home";
 import Retro from "./components/Pages/Retro/Retro";
 import Team from "./components/Pages/Team/Team";
 import NotFound from "./components/Pages/NotFound/NotFound";
-import Header from "./components/Header/Header";
 
 function App() {
   const selectedTheme = localStorage.getItem("theme");
@@ -14,7 +13,6 @@ function App() {
 
   return (
     <>
-      <Header />
       <Routes>
         <Route index element={<Navigate to={"home"} />} />
         <Route path="home" element={<Home />} />
