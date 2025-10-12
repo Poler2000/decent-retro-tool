@@ -1,5 +1,6 @@
 ﻿using DecentRetroTool.Api.Configuration;
 using DecentRetroTool.Api.Data;
+using DecentRetroTool.Api.Data.Models;
 using DecentRetroTool.Api.DTOs;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -80,6 +81,7 @@ public static class RetroModule
         builder.MapPut("/{id:int}", async Task<Results<Ok, NotFound>> (RetroDbContext dbContext, int id, [FromBody] RetroDto retroUpdate) =>
         {
             var retro = await dbContext.Retros
+                .Include(retro => retro.Sections)
                 .SingleOrDefaultAsync(r => r.Id == id);
 
             if (retro is null)
@@ -88,6 +90,22 @@ public static class RetroModule
             }
             
             retro.Title = retroUpdate.Title;
+            
+            retro.Sections = retroUpdate.Sections
+                .Select(s => retro.Sections.Any(section => section.Id == s.Id) 
+                    ? new Section() 
+                    {
+                        RetroId = s.RetroId,
+                        Id = s.Id,
+                        IsHidden = s.IsHidden,
+                        Title = s.Title 
+                    } : new Section()
+                    {
+                        RetroId = s.RetroId,
+                        IsHidden = s.IsHidden,
+                        Title = s.Title 
+                    }).ToList();
+            
             //dbContext.Update(team); // TODO[PP]: check if needed (relates to entity tracking)
             await dbContext.SaveChangesAsync();
             return TypedResults.Ok();

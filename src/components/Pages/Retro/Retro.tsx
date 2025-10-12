@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import type RetroModel from "../../../models/RetroModel";
-import { getRetro } from "../../../retroClient";
+import { getRetro, updateRetro } from "../../../retroClient";
 import CardGrid from "../../Cards/CardGrid/CardGrid";
-import { colorSequence } from "../../../ColourSequence";
+import { getColorPair } from "../../../ColourSequence";
 import type Entity from "../../../models/Entity";
 import RetroCard from "../../Cards/RetroCard/RetroCard";
 import { createNote, deleteNote, updateNote } from "../../../noteClient";
@@ -11,6 +11,7 @@ import RetroNoteModel from "../../../models/RetroNoteModel";
 import "./Retro.css";
 import Header from "../../Header/Header";
 import SectionConfigDialog from "../../SectionConfigDialog/SectionConfigDialog";
+import type RetroSectionModel from "../../../models/RetroSection";
 
 const Retro = () => {
   const { teamId, retroId } = useParams();
@@ -62,16 +63,12 @@ const Retro = () => {
     sectionSequence: number
   ) => {
     const note = item as RetroNoteModel;
-    console.log(note);
     return (
       <RetroCard
         key={item.id}
         id={item.id}
         title={item.getContent()}
-        colors={{
-          background: colorSequence[sectionSequence].background,
-          text: colorSequence[sectionSequence].text,
-        }}
+        colors={getColorPair(sectionSequence)}
         onDelete={handleDelete}
         onUpdate={(newTitle: string, score: number, id: number) =>
           handleUpdate(newTitle, score, id, note.sectionId)
@@ -82,11 +79,23 @@ const Retro = () => {
     );
   };
 
+  const onSectionsEdited = (sections: RetroSectionModel[]) => {
+    console.log("onSectionsEdited");
+    console.log(sections);
+
+    const updatedRetro = Object.assign({}, retro, { sections: sections });
+    updateRetro(updatedRetro)
+      .then(loadRetro)
+      .catch((e) => console.log(e));
+    setDialog(null);
+  };
+
   const handleEditSections = () => {
     setDialog(() => (
       <SectionConfigDialog
+        retroId={retro?.id!}
         retroSections={retro?.sections ?? []}
-        onConfirm={() => setDialog(null)}
+        onConfirm={onSectionsEdited}
         onCancel={() => setDialog(null)}
       />
     ));
@@ -106,10 +115,7 @@ const Retro = () => {
             <h1>{section.getContent()}</h1>
             <CardGrid
               entities={section.notes}
-              colors={{
-                background: colorSequence[id].background,
-                text: colorSequence[id].text,
-              }}
+              colors={getColorPair(id)}
               onCreate={(content: string) => handleCreate(content, section.id)}
               renderItem={(item: Entity, isFocused: boolean) =>
                 renderItem(item, isFocused, id)

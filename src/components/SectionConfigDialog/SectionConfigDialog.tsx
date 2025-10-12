@@ -6,13 +6,14 @@ import SectionConfigItem from "../SectionConfigItem/SectionConfigItem";
 import "./SectionConfigDialog.css";
 
 export interface SectionConfigDialogProps {
+  retroId: number;
   retroSections: RetroSectionModel[];
-  onConfirm: () => void;
+  onConfirm: (sections: RetroSectionModel[]) => void;
   onCancel: () => void;
 }
 
 const SectionConfigDialog = (props: SectionConfigDialogProps) => {
-  const { retroSections, onConfirm, onCancel } = props;
+  const { retroId, retroSections, onConfirm, onCancel } = props;
 
   const [sections, setSections] = useState(() => retroSections);
 
@@ -21,7 +22,7 @@ const SectionConfigDialog = (props: SectionConfigDialogProps) => {
     console.log(newCount);
     console.log(sections.length);
     if (newCount > sections.length) {
-      const newSection = new RetroSectionModel(-1, "", [], false);
+      const newSection = new RetroSectionModel(-1, "", [], false, retroId);
       setSections([...sections, newSection]);
     } else if (newCount < sections.length) {
       const updatedSections = sections.slice(0, newCount);
@@ -46,14 +47,27 @@ const SectionConfigDialog = (props: SectionConfigDialogProps) => {
           delayUpdate={false}
         ></Counter>
         <ul className="section-list">
-          {sections?.map((section) => (
-            <li>
+          {sections?.map((section, order) => (
+            <li key={order}>
               <SectionConfigItem
-                key={section.id}
-                id={section.id}
+                id={order}
                 title={section.getContent()}
                 isChecked={!section.isHidden}
                 onToggle={() => {}}
+                onEditTitle={(order: number, newTitle: string) => {
+                  const updatedSections = sections.map((s, idx) => {
+                    return idx === order
+                      ? new RetroSectionModel(
+                          s.id,
+                          newTitle,
+                          s.notes,
+                          s.isHidden,
+                          s.retroId!
+                        )
+                      : s;
+                  });
+                  setSections(updatedSections);
+                }}
               />
             </li>
           ))}
@@ -74,7 +88,7 @@ const SectionConfigDialog = (props: SectionConfigDialogProps) => {
               background: "var(--primary-background-colour)",
               text: "var(--primary-text-colour)",
             }}
-            onClick={onConfirm}
+            onClick={() => onConfirm(sections)}
             additionalClass="confirm-dialog-btn confirm-dialog-btn-confirm"
           >
             Confirm
