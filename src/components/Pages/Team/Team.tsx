@@ -8,7 +8,7 @@ import {
 import { useEffect, useState } from "react";
 import CardGrid from "../../Cards/CardGrid/CardGrid";
 import RetroModel from "../../../models/RetroModel";
-import { colorSequence } from "../../../ColourSequence";
+import { getColorPair } from "../../../ColourSequence";
 import type Entity from "../../../models/Entity";
 import LinkCard from "../../Cards/LinkCard/LinkCard";
 import ConfirmationDialog from "../../ConfirmationDialog/ConfirmationDialog";
@@ -80,10 +80,7 @@ const Team = () => {
         key={retro.id}
         id={retro.id}
         title={retro.getContent()}
-        colors={{
-          background: colorSequence[1].background,
-          text: colorSequence[1].text,
-        }}
+        colors={getColorPair(1)}
         onDelete={handleDelete}
         onEditTitle={handleRename}
         isFocused={isFocused}
@@ -100,10 +97,7 @@ const Team = () => {
       {dialog}
       <CardGrid
         entities={retros}
-        colors={{
-          background: colorSequence[1].background,
-          text: colorSequence[1].text,
-        }}
+        colors={getColorPair(1)}
         onCreate={handleCreate}
         renderItem={renderRetro}
         isEditing={isEditingEnabled}

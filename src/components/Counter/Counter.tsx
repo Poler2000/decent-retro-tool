@@ -38,8 +38,6 @@ const Counter = (props: CounterProps) => {
     borderColor: colors.text,
   };
 
-  console.log(score);
-
   return (
     <div
       className="counter"

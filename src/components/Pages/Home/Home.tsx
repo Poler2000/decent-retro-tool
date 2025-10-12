@@ -1,5 +1,5 @@
 import CardGrid from "../../Cards/CardGrid/CardGrid";
-import { colorSequence } from "../../../ColourSequence";
+import { getColorPair } from "../../../ColourSequence";
 import { useEffect, useState } from "react";
 import {
   createTeam,
@@ -72,10 +72,7 @@ const Home = () => {
         key={team.id}
         id={team.id}
         title={(team as TeamModel).getContent()}
-        colors={{
-          background: colorSequence[0].background,
-          text: colorSequence[0].text,
-        }}
+        colors={getColorPair(0)}
         onDelete={handleDelete}
         onEditTitle={handleRename}
         isFocused={isFocused}
@@ -90,10 +87,7 @@ const Home = () => {
       {dialog}
       <CardGrid
         entities={teams}
-        colors={{
-          background: colorSequence[0].background,
-          text: colorSequence[0].text,
-        }}
+        colors={getColorPair(0)}
         onCreate={handleCreate}
         renderItem={renderTeam}
         isEditing={isEditingEnabled}

@@ -1,5 +1,5 @@
 import type RetroSectionModel from "./models/RetroSection";
-
+//TODO: RM
 export const createSection = async (section: RetroSectionModel) : Promise<void> => {
   const headers: Headers = new Headers()
   headers.set('Content-Type', 'application/json')

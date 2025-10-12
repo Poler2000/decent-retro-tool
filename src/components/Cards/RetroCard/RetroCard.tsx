@@ -50,6 +50,7 @@ const RetroCard = (props: RetroCardProps) => {
           colors={colors}
           score={score}
           onUpdate={(newCount: number) => onUpdate(title, newCount, id)}
+          delayUpdate={true}
         ></Counter>
       </Card>
     </>
