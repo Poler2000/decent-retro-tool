@@ -33,6 +33,15 @@ const SectionConfigDialog = (props: SectionConfigDialogProps) => {
   console.log(sections);
   console.log(retroSections);
 
+  const handleUpdate = (order: number, newTitle: string, newState: boolean) => {
+    const updatedSections = sections.map((s, idx) => {
+      return idx === order
+        ? new RetroSectionModel(s.id, newTitle, s.notes, newState, s.retroId!)
+        : s;
+    });
+    setSections(updatedSections);
+  };
+
   return (
     <div className="section-config-dialog-backdrop">
       <div className="section-config-dialog">
@@ -53,21 +62,12 @@ const SectionConfigDialog = (props: SectionConfigDialogProps) => {
                 id={order}
                 title={section.getContent()}
                 isChecked={!section.isHidden}
-                onToggle={() => {}}
-                onEditTitle={(order: number, newTitle: string) => {
-                  const updatedSections = sections.map((s, idx) => {
-                    return idx === order
-                      ? new RetroSectionModel(
-                          s.id,
-                          newTitle,
-                          s.notes,
-                          s.isHidden,
-                          s.retroId!
-                        )
-                      : s;
-                  });
-                  setSections(updatedSections);
-                }}
+                onToggle={(order: number, newState: boolean) =>
+                  handleUpdate(order, section.getContent(), newState)
+                }
+                onEditTitle={(order: number, newTitle: string) =>
+                  handleUpdate(order, newTitle, section.isHidden)
+                }
               />
             </li>
           ))}

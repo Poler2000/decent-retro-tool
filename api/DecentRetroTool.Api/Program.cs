@@ -75,6 +75,11 @@ using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.Creat
                         {
                             Score = 2,
                             Content = "Toto"
+                        },
+                        new Note()
+                        {
+                            Score = 3,
+                            Content = "fsdhjbh "
                         }
                     ]
                 },
@@ -95,7 +100,7 @@ using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.Creat
                         new Note()
                         {
                             Score = 2,
-                            Content = "Toto"
+                            Content = "Toto 2"
                         }
                     ]
                 },
@@ -111,7 +116,7 @@ using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.Creat
                         new Note()
                         {
                             Score = 2,
-                            Content = "Toto"
+                            Content = "Toto 3"
                         }
                     ]
                 },

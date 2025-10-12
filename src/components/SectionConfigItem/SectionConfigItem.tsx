@@ -17,7 +17,7 @@ const SectionConfigItem = (props: SectionConfigItemProps) => {
         type="checkbox"
         id={`sectionHidden_${id}`}
         name={`sectionHidden_${id}`}
-        onClick={() => onToggle(id, !isChecked)}
+        onClick={() => onToggle(id, isChecked)}
         defaultChecked={isChecked}
       />
       <input

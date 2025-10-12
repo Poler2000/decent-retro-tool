@@ -61,7 +61,17 @@ const CardGrid = (props: CardGridProps) => {
   };
 
   useEffect(() => {
-    setItems(entities);
+    console.log("Entities changed, updating items");
+    console.log(entities.map((e) => items.findIndex((i) => i.id === e.id)));
+    console.log(items);
+
+    setItems(
+      entities.sort(
+        (e1, e2) =>
+          items.findIndex((i) => i.id === e1.id) -
+          items.findIndex((i) => i.id === e2.id)
+      )
+    );
     //setIsFocus(false);
   }, [entities]);
 

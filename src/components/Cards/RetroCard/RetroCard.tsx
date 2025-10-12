@@ -38,7 +38,7 @@ const RetroCard = (props: RetroCardProps) => {
           placeholder="title"
           required
           maxLength={100}
-          onBlur={(event) => onUpdate(event.target.value, 1, id)}
+          onBlur={(event) => onUpdate(event.target.value, score, id)}
           autoFocus={isFocused ?? false}
           onFocus={(e) => {
             e.currentTarget.selectionStart = 0;

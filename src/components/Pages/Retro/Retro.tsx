@@ -110,20 +110,24 @@ const Retro = () => {
       />
       {dialog}
       <div className="grids-container">
-        {retro?.sections.map((section, id) => (
-          <div key={section.id}>
-            <h1>{section.getContent()}</h1>
-            <CardGrid
-              entities={section.notes}
-              colors={getColorPair(id)}
-              onCreate={(content: string) => handleCreate(content, section.id)}
-              renderItem={(item: Entity, isFocused: boolean) =>
-                renderItem(item, isFocused, id)
-              }
-              isEditing={isEditingEnabled}
-            ></CardGrid>
-          </div>
-        ))}
+        {retro?.sections.map((section, id) =>
+          section.isHidden ? null : (
+            <div key={section.id}>
+              <h1>{section.getContent()}</h1>
+              <CardGrid
+                entities={section.notes}
+                colors={getColorPair(id)}
+                onCreate={(content: string) =>
+                  handleCreate(content, section.id)
+                }
+                renderItem={(item: Entity, isFocused: boolean) =>
+                  renderItem(item, isFocused, id)
+                }
+                isEditing={isEditingEnabled}
+              ></CardGrid>
+            </div>
+          )
+        )}
       </div>
     </>
   );
