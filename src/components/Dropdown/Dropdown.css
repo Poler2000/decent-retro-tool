@@ -3,18 +3,32 @@
 }
 
 .setting-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
   position: absolute;
   right: 0;
   top: 105%;
   background-color: var(--primary-background-colour);
-  width: 24rem;
+  width: fit-content;
   text-align: left;
+  align-items: center;
 
   border: 3px solid;
   border-radius: 0.8em;
-  padding: 0.5em 0.8em;
+  padding: 1em 1.2em;
+}
+
+hr {
+  width: 100%;
+  margin: 0;
 }
 
 .setting-dropdown span {
+  font-size: 2em;
+  margin-left: 0;
+}
+
+.setting-dropdown a {
   font-size: 2em;
 }

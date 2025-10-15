@@ -35,7 +35,7 @@ const LinkCard = (props: LinkCardProps) => {
         />
         {isFocused ? (
           <textarea
-            className="card-text"
+            className="card-text "
             id="name"
             placeholder="title"
             required
@@ -49,7 +49,7 @@ const LinkCard = (props: LinkCardProps) => {
             defaultValue={title}
           />
         ) : (
-          <Link to={linkAddress} className="card-text">
+          <Link to={linkAddress} className="card-text card-link">
             {title}
           </Link>
         )}

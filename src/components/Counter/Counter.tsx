@@ -11,11 +11,15 @@ export interface CounterProps {
 }
 
 const Counter = (props: CounterProps) => {
+  const MaxCount = 999;
+  const MinCount = 0;
+
   const { colors, score, onUpdate, delayUpdate } = props;
 
   const [count, setCount] = useState(() => score);
   const [isEditing, setIsEditing] = useState(false);
   const handlePlus = () => {
+    if (count >= MaxCount) return;
     setCount(count + 1);
 
     if (!delayUpdate) {
@@ -25,6 +29,7 @@ const Counter = (props: CounterProps) => {
     }
   };
   const handleMinus = () => {
+    if (count <= MinCount) return;
     setCount(count - 1);
 
     if (!delayUpdate) {

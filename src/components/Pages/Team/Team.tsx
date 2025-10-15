@@ -13,10 +13,21 @@ import type Entity from "../../../models/Entity";
 import LinkCard from "../../Cards/LinkCard/LinkCard";
 import ConfirmationDialog from "../../ConfirmationDialog/ConfirmationDialog";
 import Header from "../../Header/Header";
+import type TeamModel from "../../../models/TeamModel";
+import { getTeam } from "../../../teamClient";
 
 const Team = () => {
   let params = useParams();
   const teamId = parseInt(params.teamId!);
+
+  const loadTeam = (teamId: number) => {
+    getTeam(teamId)
+      .then(setTeam)
+      .catch((error) => console.log(error));
+  };
+  const [team, setTeam] = useState<TeamModel>();
+
+  useEffect(() => loadTeam(teamId), [teamId]);
 
   const [retros, setRetros] = useState<RetroModel[]>([]);
   const [dialog, setDialog] = useState<React.ReactNode>();
@@ -93,7 +104,12 @@ const Team = () => {
 
   return (
     <>
-      <Header />
+      <Header
+        breadcrumbs={[
+          { link: "/home", text: "Home" },
+          { link: `/teams/${teamId}`, text: `${team?.name ?? "Team"}` },
+        ]}
+      />
       {dialog}
       <CardGrid
         entities={retros}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import type RetroModel from "../../../models/RetroModel";
-import { getRetro, updateRetro } from "../../../retroClient";
+import { downloadRetro, getRetro, updateRetro } from "../../../retroClient";
 import CardGrid from "../../Cards/CardGrid/CardGrid";
 import { getColorPair } from "../../../ColourSequence";
 import type Entity from "../../../models/Entity";
@@ -12,11 +12,22 @@ import "./Retro.css";
 import Header from "../../Header/Header";
 import SectionConfigDialog from "../../SectionConfigDialog/SectionConfigDialog";
 import type RetroSectionModel from "../../../models/RetroSection";
+import { getTeam } from "../../../teamClient";
+import type TeamModel from "../../../models/TeamModel";
 
 const Retro = () => {
   const { teamId, retroId } = useParams();
   const [isEditingEnabled, setIsEditingEnabled] = useState(true);
   const [dialog, setDialog] = useState<React.ReactNode>();
+
+  const loadTeam = (teamId: number) => {
+    getTeam(teamId)
+      .then(setTeam)
+      .catch((error) => console.log(error));
+  };
+  const [team, setTeam] = useState<TeamModel>();
+
+  useEffect(() => loadTeam(parseInt(teamId!)), [teamId]);
 
   const [retro, setRetro] = useState<RetroModel>();
 
@@ -104,9 +115,21 @@ const Retro = () => {
   return (
     <>
       <Header
+        breadcrumbs={[
+          { link: "/home", text: "Home" },
+          { link: `/teams/${teamId}`, text: `${team?.name ?? "Team"}` },
+          {
+            link: `/teams/${teamId}/retro/${retroId}`,
+            text: retro?.title ?? "Retro",
+          },
+        ]}
         onEdit={handleEditSections}
         onImport={() => {}}
-        onExport={() => {}}
+        onExport={() => {
+          console.log("export");
+          console.log(JSON.stringify(retro));
+          downloadRetro(retro?.id!);
+        }}
       />
       {dialog}
       <div className="grids-container">

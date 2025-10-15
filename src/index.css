@@ -71,6 +71,23 @@ body {
   'opsz' 24
 }
 
+a {
+  font-weight: 500;
+  color: var(--primary-accent-colour);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary-accent-colour-highlight);
+}
+
+::selection {
+    background: rgba(255, 255, 255, 0.3);
+}
+::-moz-selection {
+    background: transparent;
+}
+
 /* html {
   color-scheme: dark light;
 }

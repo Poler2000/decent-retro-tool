@@ -15,6 +15,21 @@ export const getTeams = async (): Promise<TeamModel[]> => {
   return resJson.map((t: any) => TeamModel.fromJson(t));
 } 
 
+export const getTeam = async (teamId: number): Promise<TeamModel> => {
+  const headers: Headers = new Headers()
+  headers.set('Content-Type', 'application/json')
+  headers.set('Accept', 'application/json')
+
+  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/teams/${teamId}`, {
+    method: 'GET',
+    headers: headers
+  });
+
+  const res = await fetch(request)
+  const resJson = await res.json()
+  return TeamModel.fromJson(resJson);
+} 
+
 export const createTeam = async (team: TeamModel): Promise<void> => {
   const headers: Headers = new Headers()
   headers.set('Content-Type', 'application/json')

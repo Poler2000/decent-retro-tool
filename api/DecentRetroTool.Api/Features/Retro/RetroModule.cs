@@ -1,4 +1,6 @@
-﻿using DecentRetroTool.Api.Configuration;
+﻿using System.Text;
+using System.Text.Json;
+using DecentRetroTool.Api.Configuration;
 using DecentRetroTool.Api.Data;
 using DecentRetroTool.Api.Data.Models;
 using DecentRetroTool.Api.DTOs;
@@ -62,6 +64,53 @@ public static class RetroModule
                     }).ToList()
                 })
                 : TypedResults.NotFound();
+        });
+        
+        builder.MapGet("/{id:int}/download", async Task<Results<FileContentHttpResult, NotFound>>(RetroDbContext dbContext, int id) =>
+        {
+            var retro = await dbContext.Retros
+                .Include(retro => retro.Sections)
+                .ThenInclude(section => section.Notes)
+                .SingleOrDefaultAsync(retro => retro.Id == id);
+
+            if (retro is null)
+            {
+                return TypedResults.NotFound();
+            }
+
+            var result = new RetroDetailsDto()
+            {
+                Id = retro.Id,
+                Title = retro.Title,
+                TeamId = retro.TeamId,
+                CreationDate = retro.CreationDate,
+                Sections = retro.Sections.Select(section => new SectionDto()
+                {
+                    Id = section.Id,
+                    Title = section.Title,
+                    Notes = section.Notes.Select(note => new NoteDto()
+                    {
+                        Id = note.Id,
+                        Content = note.Content,
+                        Score = note.Score,
+                        SectionId = note.SectionId
+                    }).ToList(),
+                    IsHidden = section.IsHidden,
+                    RetroId = section.RetroId
+                }).ToList()
+            };
+            
+            var json = JsonSerializer.Serialize(result, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+            var bytes = Encoding.UTF8.GetBytes(json);
+
+            return TypedResults.File(
+                bytes,
+                contentType: "application/json",
+                fileDownloadName: $"retro_{retro.Id}.json"
+            ); 
         });
 
         builder.MapPost("/", async Task<Created> (RetroDbContext dbContext, [FromBody] RetroDto retro) =>

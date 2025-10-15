@@ -33,7 +33,7 @@ const RetroCard = (props: RetroCardProps) => {
           onClick={() => onDelete(id)}
         />
         <textarea
-          className="card-text"
+          className="card-text editable"
           id="name"
           placeholder="title"
           required

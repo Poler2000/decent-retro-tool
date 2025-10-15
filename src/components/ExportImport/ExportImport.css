@@ -1,0 +1,31 @@
+.export-import-container {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.export-import-container > span {
+  display: inline-block;
+  width: 10em;
+  text-align: left;
+}
+
+.export-import-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.export-import-buttons .icon-button {
+  padding: 1em 2.4em;
+  border-radius: 1.2em;
+}
+
+.export-import-buttons .icon-button:hover {
+  background-color: var(--primary-accent-colour);
+}
+
+.export-import-buttons .icon-button .material-icons-outlined {
+  font-size: 36px;
+}

@@ -3,15 +3,20 @@ import mainLogo from "../../assets/decent-retro-tool-logo.png";
 import IconButton from "../Buttons/IconButton/IconButton";
 import SettingsMenu from "../SettingsMenu/SettingsMenu";
 import "./Header.css";
+import Breadcrumbs, {
+  type BreadcrumbFragment,
+} from "../Breadcrumbs/Breadcrumbs";
 
 export interface HeaderProps {
+  breadcrumbs?: BreadcrumbFragment[];
   onEdit?: () => void;
   onImport?: () => void;
   onExport?: () => void;
+  onSort?: () => void;
 }
 
 const Header = (props: HeaderProps) => {
-  const { onEdit, onImport, onExport } = props;
+  const { breadcrumbs, onEdit, onImport, onExport, onSort } = props;
 
   return (
     <div className="header">
@@ -20,6 +25,7 @@ const Header = (props: HeaderProps) => {
           <img src={mainLogo} className="logo" alt="Decent Retro Tool logo" />
         </Link>
       </div>
+      {breadcrumbs && <Breadcrumbs parts={breadcrumbs} />}
       <div className="menu-buttons">
         {onEdit && (
           <IconButton
@@ -31,31 +37,17 @@ const Header = (props: HeaderProps) => {
             }}
           />
         )}
-        {onImport && (
+        {onSort && (
           <IconButton
-            icon="upload"
-            onClick={() => {
-              console.log("import not implemented");
-            }}
+            icon="sort"
+            onClick={onSort}
             colors={{
               background: "var(--primary-background-colour)",
               text: "var(--primary-text-colour)",
             }}
           />
         )}
-        {onExport && (
-          <IconButton
-            icon="download"
-            onClick={() => {
-              console.log("export not implemented");
-            }}
-            colors={{
-              background: "var(--primary-background-colour)",
-              text: "var(--primary-text-colour)",
-            }}
-          />
-        )}
-        <SettingsMenu />
+        <SettingsMenu onImport={onImport} onExport={onExport} />
       </div>
     </div>
   );

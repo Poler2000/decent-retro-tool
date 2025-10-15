@@ -1,3 +1,8 @@
+.theme-switcher-header {
+  text-align: left;
+  align-self: flex-start;
+}
+
 .theme-switcher {
   display: flex;
   gap: 1em;

@@ -60,17 +60,14 @@ const CardGrid = (props: CardGridProps) => {
     }
   };
 
-  useEffect(() => {
-    console.log("Entities changed, updating items");
-    console.log(entities.map((e) => items.findIndex((i) => i.id === e.id)));
-    console.log(items);
+  const findIndexById = (id: number) => {
+    const idx = items.findIndex((item) => item.id === id);
+    return idx == -1 ? 999 : idx;
+  };
 
+  useEffect(() => {
     setItems(
-      entities.sort(
-        (e1, e2) =>
-          items.findIndex((i) => i.id === e1.id) -
-          items.findIndex((i) => i.id === e2.id)
-      )
+      entities.sort((e1, e2) => findIndexById(e1.id) - findIndexById(e2.id))
     );
     //setIsFocus(false);
   }, [entities]);

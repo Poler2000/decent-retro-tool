@@ -1,22 +1,5 @@
-.card-text {
-    align-self: stretch;
-    flex: 1; 
-    background-color: transparent;
-    border: none;
-    font-size: 2em;
-    padding: 5px;
-    text-align: center;
-    color: inherit;
-    resize: none;
-    field-sizing: content;
-}
-
-.card-text:focus {
-    outline:none!important;
-}
-
-.remove-button {
-    align-self: flex-end;
-    margin-right: 5px; 
-    margin-top: 5px;
+.card-link:hover {
+    scale: 1.05;
+    transition: all 0.2s ease-in-out;
+    color: var(--primary-text-colour);
 }
