@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { useParams } from "react-router";
-import type RetroModel from "../../../models/RetroModel";
+import RetroModel from "../../../models/RetroModel";
 import { downloadRetro, getRetro, updateRetro } from "../../../retroClient";
 import CardGrid from "../../Cards/CardGrid/CardGrid";
 import { getColorPair } from "../../../ColourSequence";
@@ -10,10 +10,10 @@ import { createNote, deleteNote, updateNote } from "../../../noteClient";
 import RetroNoteModel from "../../../models/RetroNoteModel";
 import "./Retro.css";
 import Header from "../../Header/Header";
-import SectionConfigDialog from "../../SectionConfigDialog/SectionConfigDialog";
 import type RetroSectionModel from "../../../models/RetroSection";
 import { getTeam } from "../../../teamClient";
 import type TeamModel from "../../../models/TeamModel";
+import SectionConfigDialog from "../../Dialogs/SectionConfig/SectionConfigDialog/SectionConfigDialog";
 
 const Retro = () => {
   const { teamId, retroId } = useParams();
@@ -112,6 +112,39 @@ const Retro = () => {
     ));
   };
 
+  const handleFileChange = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== "application/json" && !file.name.endsWith(".json")) {
+      alert("Please upload a valid JSON file.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      try {
+        const text = e.target?.result as string;
+        const parsed = JSON.parse(text);
+        const importedRetro = RetroModel.fromJson(parsed);
+        console.log("Loaded JSON:", parsed);
+        console.log("Loaded RETRO:", importedRetro);
+        updateRetro(importedRetro)
+          .then(loadRetro)
+          .catch((err) => console.error("Error updating retro:", err));
+
+        setRetro(importedRetro);
+      } catch (err) {
+        console.error("Error parsing JSON file:", err);
+        alert("Invalid JSON file.");
+      }
+    };
+
+    reader.readAsText(file);
+  };
+
   return (
     <>
       <Header
@@ -124,7 +157,15 @@ const Retro = () => {
           },
         ]}
         onEdit={handleEditSections}
-        onImport={() => {}}
+        onImport={() => {
+          const input = document.createElement("input");
+          input.type = "file";
+          input.accept = ".json,application/json";
+          input.onchange = handleFileChange;
+          document.body.appendChild(input);
+          input.click();
+          document.body.removeChild(input);
+        }}
         onExport={() => {
           console.log("export");
           console.log(JSON.stringify(retro));

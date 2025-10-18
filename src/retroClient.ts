@@ -1,3 +1,4 @@
+import type { ChangeEvent } from "react";
 import RetroModel from "./models/RetroModel";
 
 export const getRetros = async (teamId: number): Promise<RetroModel[]> => {

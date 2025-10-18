@@ -10,7 +10,7 @@ import {
 import TeamModel from "../../../models/TeamModel";
 import type Entity from "../../../models/Entity";
 import LinkCard from "../../Cards/LinkCard/LinkCard";
-import ConfirmationDialog from "../../ConfirmationDialog/ConfirmationDialog";
+import ConfirmationDialog from "../../Dialogs/ConfirmationDialog/ConfirmationDialog";
 import Header from "../../Header/Header";
 
 const Home = () => {

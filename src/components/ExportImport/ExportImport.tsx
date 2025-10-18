@@ -28,9 +28,7 @@ const ExportImport = (props: ExportImportProps) => {
         {onImport && (
           <IconButton
             icon="upload"
-            onClick={() => {
-              console.log("import not implemented");
-            }}
+            onClick={onImport}
             colors={{
               background: "var(--primary-background-colour)",
               text: "var(--primary-text-colour)",

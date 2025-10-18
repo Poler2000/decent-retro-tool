@@ -10,13 +10,15 @@ import Breadcrumbs, {
 export interface HeaderProps {
   breadcrumbs?: BreadcrumbFragment[];
   onEdit?: () => void;
+  onEntityRename?: (newTitle: string) => void;
   onImport?: () => void;
   onExport?: () => void;
   onSort?: () => void;
 }
 
 const Header = (props: HeaderProps) => {
-  const { breadcrumbs, onEdit, onImport, onExport, onSort } = props;
+  const { breadcrumbs, onEdit, onEntityRename, onImport, onExport, onSort } =
+    props;
 
   return (
     <div className="header">
@@ -25,7 +27,9 @@ const Header = (props: HeaderProps) => {
           <img src={mainLogo} className="logo" alt="Decent Retro Tool logo" />
         </Link>
       </div>
-      {breadcrumbs && <Breadcrumbs parts={breadcrumbs} />}
+      {breadcrumbs && (
+        <Breadcrumbs parts={breadcrumbs} onEdit={onEntityRename!} />
+      )}
       <div className="menu-buttons">
         {onEdit && (
           <IconButton

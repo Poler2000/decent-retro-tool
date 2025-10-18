@@ -1,4 +1,4 @@
-import Button from "../Buttons/Button/Button";
+import Button from "../../Buttons/Button/Button";
 import "./ConfirmationDialog.css";
 
 export interface ConfirmationDialogProps {

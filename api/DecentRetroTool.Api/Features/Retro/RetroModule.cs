@@ -102,7 +102,8 @@ public static class RetroModule
             
             var json = JsonSerializer.Serialize(result, new JsonSerializerOptions
             {
-                WriteIndented = true
+                WriteIndented = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             });
             var bytes = Encoding.UTF8.GetBytes(json);
 
@@ -131,6 +132,7 @@ public static class RetroModule
         {
             var retro = await dbContext.Retros
                 .Include(retro => retro.Sections)
+                .ThenInclude(section => section.Notes)
                 .SingleOrDefaultAsync(r => r.Id == id);
 
             if (retro is null)
@@ -147,11 +149,22 @@ public static class RetroModule
                         RetroId = s.RetroId,
                         Id = s.Id,
                         IsHidden = s.IsHidden,
+                        Notes = s.Notes.Select(note => new Data.Models.Note
+                        {
+                            Content = note.Content,
+                            SectionId = s.Id,
+                            Score = note.Id
+                        }).ToList(),
                         Title = s.Title 
                     } : new Section()
                     {
                         RetroId = s.RetroId,
                         IsHidden = s.IsHidden,
+                        Notes = s.Notes.Select(note => new Data.Models.Note
+                        {
+                            Content = note.Content,
+                            Score = note.Id
+                        }).ToList(),
                         Title = s.Title 
                     }).ToList();
             

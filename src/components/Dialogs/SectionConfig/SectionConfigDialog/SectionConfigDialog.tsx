@@ -1,9 +1,9 @@
 import { useState } from "react";
-import RetroSectionModel from "../../models/RetroSection";
-import Button from "../Buttons/Button/Button";
-import Counter from "../Counter/Counter";
 import SectionConfigItem from "../SectionConfigItem/SectionConfigItem";
 import "./SectionConfigDialog.css";
+import RetroSectionModel from "../../../../models/RetroSection";
+import Counter from "../../../Counter/Counter";
+import Button from "../../../Buttons/Button/Button";
 
 export interface SectionConfigDialogProps {
   retroId: number;

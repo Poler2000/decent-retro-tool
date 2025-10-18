@@ -11,7 +11,7 @@ import RetroModel from "../../../models/RetroModel";
 import { getColorPair } from "../../../ColourSequence";
 import type Entity from "../../../models/Entity";
 import LinkCard from "../../Cards/LinkCard/LinkCard";
-import ConfirmationDialog from "../../ConfirmationDialog/ConfirmationDialog";
+import ConfirmationDialog from "../../Dialogs/ConfirmationDialog/ConfirmationDialog";
 import Header from "../../Header/Header";
 import type TeamModel from "../../../models/TeamModel";
 import { getTeam } from "../../../teamClient";
