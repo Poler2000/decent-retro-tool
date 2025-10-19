@@ -25,12 +25,21 @@ public static class RetroModule
         {
             var retros = await dbContext.Retros
                 .Where(retro => retro.TeamId == teamId)
+                .Include(retro => retro.Sections)
                 .ToListAsync();
             return TypedResults.Ok(retros.Select(retro => new RetroDto()
             {
                 Id = retro.Id,
                 Title = retro.Title, 
-                TeamId = retro.TeamId
+                TeamId = retro.TeamId,
+                Sections = retro.Sections.Select(section => new SectionDto
+                {
+                    Id = section.Id,
+                    IsHidden = section.IsHidden,
+                    Notes = [],
+                    RetroId = retro.Id,
+                    Title = section.Title
+                }).ToList()
             }).ToList());
         });
         
@@ -121,7 +130,12 @@ public static class RetroModule
                 Title = retro.Title,
                 CreationDate = DateTime.Now,
                 TeamId = retro.TeamId,
-                Sections = []
+                Sections = RetroConfiguration.DefaultSections.Select(title => new Section()
+                {
+                    Title = title,
+                    IsHidden = false,
+                    Notes = []
+                }).ToList() 
             });
             await dbContext.SaveChangesAsync();
 

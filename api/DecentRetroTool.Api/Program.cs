@@ -23,6 +23,7 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+builder.Services.AddHttpLogging(o => { });
 
 var app = builder.Build();
 
@@ -36,6 +37,7 @@ app.Map(ApiConfiguration.PathBase, retroApp =>
     {
         retroApp.UseSwagger();
         retroApp.UseSwaggerUI();
+        retroApp.UseHttpLogging();
     }
 
     retroApp.UseEndpoints(endpoints =>
