@@ -12,3 +12,23 @@
 .breadcrumbs a {
   padding: 5px;
 }
+
+.breadcrumb-title-input {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 500;
+  font-size: 1em;
+  padding: 0 5px;
+  
+  background: var(--primary-background-color);
+  border: none;
+  outline: none;
+  field-sizing: content;
+  width: auto;
+  height: auto;
+  max-width: 200px;
+}
+
+.title-edit-button {
+  margin-left: 20px;
+}

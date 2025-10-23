@@ -1,3 +1,5 @@
+import { useState } from "react";
+import IconButton from "../Buttons/IconButton/IconButton";
 import "./Breadcrumbs.css";
 
 export interface BreadcrumbFragment {
@@ -11,17 +13,51 @@ export interface BreadcrumbsProps {
 }
 
 const Breadcrumbs = (props: BreadcrumbsProps) => {
-  const { parts } = props;
+  const { parts, onEdit } = props;
+
+  const [isEditing, setIsEditing] = useState(false);
+  const partsCount = parts.length;
+
+  const renderPart = (part: BreadcrumbFragment, index: number) => (
+    <>
+      <span> / </span>
+      <a href={part.link} key={index}>
+        {part.text}
+      </a>
+    </>
+  );
+
   return (
     <div className="breadcrumbs">
-      {parts.map((part, index) => (
+      {isEditing ? (
         <>
+          {parts
+            .slice(0, partsCount - 1)
+            .map((part, index) => renderPart(part, index))}
           <span> / </span>
-          <a href={part.link} key={index}>
-            {part.text}
-          </a>
+          <input
+            className="breadcrumb-title-input"
+            type="text"
+            defaultValue={parts[partsCount - 1].text}
+            onBlur={(event) => {
+              setIsEditing(false);
+              onEdit(event.target.value);
+            }}
+            autoFocus={true}
+          />
         </>
-      ))}
+      ) : (
+        parts.map((part, index) => renderPart(part, index))
+      )}
+      <IconButton
+        additionalClass="title-edit-button"
+        icon="edit"
+        onClick={() => setIsEditing(!isEditing)}
+        colors={{
+          background: "var(--primary-background-colour)",
+          text: "var(--primary-text-colour)",
+        }}
+      />
     </div>
   );
 };

@@ -39,6 +39,13 @@ const Retro = () => {
 
   useEffect(loadRetro, []);
 
+  const handleRetroRename = (newTitle: string) => {
+    const updatedRetro = Object.assign({}, retro, { title: newTitle });
+    updateRetro(updatedRetro)
+      .then(loadRetro)
+      .catch((e) => console.log(e));
+  };
+
   const handleCreate = (content: string, sectionId: number) => {
     const note = new RetroNoteModel(-1, content, 1, sectionId);
 
@@ -148,6 +155,7 @@ const Retro = () => {
   return (
     <>
       <Header
+        onEntityRename={(newTitle: string) => handleRetroRename(newTitle)}
         breadcrumbs={[
           { link: "/home", text: "Home" },
           { link: `/teams/${teamId}`, text: `${team?.name ?? "Team"}` },

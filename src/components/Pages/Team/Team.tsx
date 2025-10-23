@@ -77,9 +77,16 @@ const Team = () => {
   };
 
   const handleRename = (newTitle: string, id: number) => {
-    const retro = new RetroModel(id, newTitle, [], teamId);
+    const retro = retros.find((r) => r.id === id);
+    console.log(retro);
+    const retroUpdate = new RetroModel(
+      id,
+      newTitle,
+      retro?.sections ?? [],
+      teamId
+    );
 
-    updateRetro(retro)
+    updateRetro(retroUpdate)
       .then(loadRetros)
       .then(() => setIsEditingEnabled(false))
       .catch((error) => console.log(error));
