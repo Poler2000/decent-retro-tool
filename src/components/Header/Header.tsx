@@ -6,6 +6,8 @@ import "./Header.css";
 import Breadcrumbs, {
   type BreadcrumbFragment,
 } from "../Breadcrumbs/Breadcrumbs";
+import Dropdown from "../Dropdown/Dropdown";
+import SortMenu from "../SortMenu/SortMenu";
 
 export interface HeaderProps {
   breadcrumbs?: BreadcrumbFragment[];
@@ -31,20 +33,11 @@ const Header = (props: HeaderProps) => {
         <Breadcrumbs parts={breadcrumbs} onEdit={onEntityRename!} />
       )}
       <div className="menu-buttons">
+        {onSort && <SortMenu />}
         {onEdit && (
           <IconButton
             icon="edit"
             onClick={onEdit}
-            colors={{
-              background: "var(--primary-background-colour)",
-              text: "var(--primary-text-colour)",
-            }}
-          />
-        )}
-        {onSort && (
-          <IconButton
-            icon="sort"
-            onClick={onSort}
             colors={{
               background: "var(--primary-background-colour)",
               text: "var(--primary-text-colour)",

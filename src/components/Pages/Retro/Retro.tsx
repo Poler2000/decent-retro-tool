@@ -179,6 +179,7 @@ const Retro = () => {
           console.log(JSON.stringify(retro));
           downloadRetro(retro?.id!);
         }}
+        onSort={() => {}}
       />
       {dialog}
       <div className="grids-container">

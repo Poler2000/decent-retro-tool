@@ -11,7 +11,7 @@ const SettingsMenu = (props: SettingsMenuProps) => {
   const { onImport, onExport } = props;
 
   return (
-    <Dropdown>
+    <Dropdown icon="menu">
       <ThemeSwitcher />
       <hr />
       {onExport || onImport ? (

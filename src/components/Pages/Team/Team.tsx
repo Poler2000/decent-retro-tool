@@ -14,7 +14,7 @@ import LinkCard from "../../Cards/LinkCard/LinkCard";
 import ConfirmationDialog from "../../Dialogs/ConfirmationDialog/ConfirmationDialog";
 import Header from "../../Header/Header";
 import type TeamModel from "../../../models/TeamModel";
-import { getTeam } from "../../../teamClient";
+import { getTeam, updateTeam } from "../../../teamClient";
 
 const Team = () => {
   let params = useParams();
@@ -107,11 +107,19 @@ const Team = () => {
     );
   };
 
+  const handleTeamRename = (newTitle: string) => {
+    const updatedTeam = Object.assign({}, team, { name: newTitle });
+    updateTeam(updatedTeam)
+      .then(() => loadTeam(teamId))
+      .catch((e) => console.log(e));
+  };
+
   console.log(retros);
 
   return (
     <>
       <Header
+        onEntityRename={(newTitle: string) => handleTeamRename(newTitle)}
         breadcrumbs={[
           { link: "/home", text: "Home" },
           { link: `/teams/${teamId}`, text: `${team?.name ?? "Team"}` },

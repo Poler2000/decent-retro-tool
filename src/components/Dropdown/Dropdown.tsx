@@ -2,13 +2,18 @@ import { useState } from "react";
 import IconButton from "../Buttons/IconButton/IconButton";
 import "./Dropdown.css";
 
-const Dropdown = (props: React.PropsWithChildren) => {
+export interface DropdownProps extends React.PropsWithChildren {
+  icon: string;
+}
+
+const Dropdown = (props: DropdownProps) => {
   const [isOpen, setOpen] = useState(false);
+  const { children, icon } = props;
 
   return (
     <div className="dropdown-menu">
       <IconButton
-        icon="menu"
+        icon={icon}
         onClick={() => {
           setOpen(!isOpen);
         }}
@@ -17,11 +22,7 @@ const Dropdown = (props: React.PropsWithChildren) => {
           text: "var(--primary-text-colour)",
         }}
       />
-      {isOpen ? (
-        <div className="setting-dropdown">{props.children}</div>
-      ) : (
-        <></>
-      )}
+      {isOpen ? <div className="setting-dropdown">{children}</div> : <></>}
     </div>
   );
 };

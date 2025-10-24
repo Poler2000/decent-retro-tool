@@ -1,0 +1,37 @@
+.sort-options {
+  font-size: 2em;
+  gap: 0.5em;
+  display: flex;
+  align-items: center;
+}
+
+.sort-select {
+  appearance: none;
+  -webkit-appearance: none; /* For WebKit-based browsers */
+  -moz-appearance: none; /* For Firefox */
+  width: 100%;
+  font-family: inherit;
+  font-size: 1em;
+  padding: 0.2em 1em 0.2em 0.5em;
+  background: var(--primary-background-colour);
+  color: var(--primary-text-colour);
+  outline: none;
+  border: 3px solid;
+  border-radius: 0.5em;
+  height: 100%;
+  background-image: url('data:image/svg+xml;utf8,<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 12 L18 25 L30 12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="white"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 18px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+select option:checked {
+    background-color: var(--primary-accent-colour);
+    box-shadow: 0 0 10px 100px #1882A8 inset;
+}
+
+.sort-select option:disabled {
+  display: none;
+}
