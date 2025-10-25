@@ -14,11 +14,13 @@ import type RetroSectionModel from "../../../models/RetroSection";
 import { getTeam } from "../../../teamClient";
 import type TeamModel from "../../../models/TeamModel";
 import SectionConfigDialog from "../../Dialogs/SectionConfig/SectionConfigDialog/SectionConfigDialog";
+import { getSortFunction, type SortOption } from "../../../sortOptions";
 
 const Retro = () => {
   const { teamId, retroId } = useParams();
   const [isEditingEnabled, setIsEditingEnabled] = useState(true);
   const [dialog, setDialog] = useState<React.ReactNode>();
+  const [sortOption, setSortOption] = useState<SortOption>();
 
   const loadTeam = (teamId: number) => {
     getTeam(teamId)
@@ -179,7 +181,10 @@ const Retro = () => {
           console.log(JSON.stringify(retro));
           downloadRetro(retro?.id!);
         }}
-        onSort={() => {}}
+        onSort={(option) => {
+          setSortOption(option);
+          console.log("Sort option selected:", option);
+        }}
       />
       {dialog}
       <div className="grids-container">
@@ -197,6 +202,7 @@ const Retro = () => {
                   renderItem(item, isFocused, id)
                 }
                 isEditing={isEditingEnabled}
+                sortFunction={getSortFunction(sortOption) ?? undefined}
               ></CardGrid>
             </div>
           )

@@ -23,6 +23,7 @@ export interface CardGridProps {
   onCreate: (content: string) => void;
   renderItem: (item: Entity, isFocused: boolean) => React.ReactNode;
   isEditing: boolean;
+  sortFunction?: (a: Entity, b: Entity) => number;
 }
 
 const CardGrid = (props: CardGridProps) => {
@@ -39,7 +40,10 @@ const CardGrid = (props: CardGridProps) => {
 
   let [isFocus, setIsFocus] = useState(false);
 
-  const { entities, colors, onCreate, renderItem, isEditing } = props;
+  const { entities, colors, onCreate, renderItem, isEditing, sortFunction } =
+    props;
+
+  console.log("sort function:", sortFunction);
 
   const handleAdd = () => {
     setIsFocus(true);
@@ -67,19 +71,14 @@ const CardGrid = (props: CardGridProps) => {
 
   useEffect(() => {
     setItems(
-      entities.sort((e1, e2) => findIndexById(e1.id) - findIndexById(e2.id))
+      [...entities].sort(
+        sortFunction ??
+          ((e1, e2) => findIndexById(e1.id) - findIndexById(e2.id))
+      )
     );
-    //setIsFocus(false);
-  }, [entities]);
+  }, [entities, sortFunction]);
 
   const itemsCount = items.length;
-
-  // useEffect(() => {
-  //   if (isFocus === false) {
-  //     focusOnNewElement();
-  //   }
-  //   setIsFocus(true);
-  // }, [isFocus]);
 
   return (
     <div className="card-grid">

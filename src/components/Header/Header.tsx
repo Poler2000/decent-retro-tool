@@ -6,8 +6,8 @@ import "./Header.css";
 import Breadcrumbs, {
   type BreadcrumbFragment,
 } from "../Breadcrumbs/Breadcrumbs";
-import Dropdown from "../Dropdown/Dropdown";
 import SortMenu from "../SortMenu/SortMenu";
+import type { SortOption } from "../../sortOptions";
 
 export interface HeaderProps {
   breadcrumbs?: BreadcrumbFragment[];
@@ -15,7 +15,7 @@ export interface HeaderProps {
   onEntityRename?: (newTitle: string) => void;
   onImport?: () => void;
   onExport?: () => void;
-  onSort?: () => void;
+  onSort?: (option: SortOption) => void;
 }
 
 const Header = (props: HeaderProps) => {
@@ -33,7 +33,7 @@ const Header = (props: HeaderProps) => {
         <Breadcrumbs parts={breadcrumbs} onEdit={onEntityRename!} />
       )}
       <div className="menu-buttons">
-        {onSort && <SortMenu />}
+        {onSort && <SortMenu onSortChange={onSort} />}
         {onEdit && (
           <IconButton
             icon="edit"
