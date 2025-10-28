@@ -9,4 +9,6 @@ public class Note
     public int Score { get; set; }
     
     public int SectionId { get; set; }
+    
+    public DateTime CreationTime { get; set; }
 }

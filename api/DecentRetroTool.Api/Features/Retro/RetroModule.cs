@@ -4,6 +4,9 @@ using DecentRetroTool.Api.Configuration;
 using DecentRetroTool.Api.Data;
 using DecentRetroTool.Api.Data.Models;
 using DecentRetroTool.Api.DTOs;
+using DecentRetroTool.Api.DTOs.Create;
+using DecentRetroTool.Api.DTOs.Get;
+using DecentRetroTool.Api.DTOs.Update;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,18 +24,30 @@ public static class RetroModule
 
     private static RouteGroupBuilder RegisterEndpoints(this RouteGroupBuilder builder)
     {
-        builder.MapGet("/", async Task<Ok<List<RetroDto>>>(RetroDbContext dbContext, [FromQuery] int? teamId) =>
+        MapGet(builder);
+        MapGetAsFile(builder);
+        MapPost(builder);
+        MapPut(builder);
+        MapDelete(builder);
+        
+        return builder;
+    }
+    
+    private static void MapGet(RouteGroupBuilder builder)
+    {
+        builder.MapGet("/", async Task<Ok<List<RetroGetDto>>>(RetroDbContext dbContext, [FromQuery] int? teamId) =>
         {
             var retros = await dbContext.Retros
                 .Where(retro => retro.TeamId == teamId)
                 .Include(retro => retro.Sections)
                 .ToListAsync();
-            return TypedResults.Ok(retros.Select(retro => new RetroDto()
+            
+            return TypedResults.Ok(retros.Select(retro => new RetroGetDto()
             {
                 Id = retro.Id,
                 Title = retro.Title, 
                 TeamId = retro.TeamId,
-                Sections = retro.Sections.Select(section => new SectionDto
+                Sections = retro.Sections.Select(section => new SectionGetDto
                 {
                     Id = section.Id,
                     IsHidden = section.IsHidden,
@@ -42,8 +57,8 @@ public static class RetroModule
                 }).ToList()
             }).ToList());
         });
-        
-        builder.MapGet("/{id:int}", async Task<Results<Ok<RetroDetailsDto>, NotFound>>(RetroDbContext dbContext, int id) =>
+
+        builder.MapGet("/{id:int}", async Task<Results<Ok<RetroGetDto>, NotFound>>(RetroDbContext dbContext, int id) =>
         {
             var retro = await dbContext.Retros
                 .Include(retro => retro.Sections)
@@ -51,22 +66,23 @@ public static class RetroModule
                 .SingleOrDefaultAsync(retro => retro.Id == id);
             
             return retro is not null 
-                ? TypedResults.Ok(new RetroDetailsDto()
+                ? TypedResults.Ok(new RetroGetDto()
                 {
                     Id = retro.Id,
                     Title = retro.Title, 
                     TeamId = retro.TeamId,
                     CreationDate = retro.CreationDate,
-                    Sections = retro.Sections.Select(section => new SectionDto()
+                    Sections = retro.Sections.Select(section => new SectionGetDto()
                     {
                         Id = section.Id,
                         Title = section.Title,
-                        Notes = section.Notes.Select(note => new NoteDto()
+                        Notes = section.Notes.Select(note => new NoteGetDto()
                         {
                             Id = note.Id,
                             Content = note.Content,
                             Score = note.Score,
-                            SectionId = note.SectionId
+                            SectionId = note.SectionId,
+                            CreationTime = note.CreationTime
                         }).ToList(),
                         IsHidden = section.IsHidden,
                         RetroId = section.RetroId
@@ -74,7 +90,10 @@ public static class RetroModule
                 })
                 : TypedResults.NotFound();
         });
-        
+    }
+    
+    private static void MapGetAsFile(RouteGroupBuilder builder)
+    {
         builder.MapGet("/{id:int}/download", async Task<Results<FileContentHttpResult, NotFound>>(RetroDbContext dbContext, int id) =>
         {
             var retro = await dbContext.Retros
@@ -87,22 +106,23 @@ public static class RetroModule
                 return TypedResults.NotFound();
             }
 
-            var result = new RetroDetailsDto()
+            var result = new RetroGetDto()
             {
                 Id = retro.Id,
                 Title = retro.Title,
                 TeamId = retro.TeamId,
                 CreationDate = retro.CreationDate,
-                Sections = retro.Sections.Select(section => new SectionDto()
+                Sections = retro.Sections.Select(section => new SectionGetDto()
                 {
                     Id = section.Id,
                     Title = section.Title,
-                    Notes = section.Notes.Select(note => new NoteDto()
+                    Notes = section.Notes.Select(note => new NoteGetDto()
                     {
                         Id = note.Id,
                         Content = note.Content,
                         Score = note.Score,
-                        SectionId = note.SectionId
+                        SectionId = note.SectionId,
+                        CreationTime = note.CreationTime
                     }).ToList(),
                     IsHidden = section.IsHidden,
                     RetroId = section.RetroId
@@ -121,28 +141,34 @@ public static class RetroModule
                 contentType: "application/json",
                 fileDownloadName: $"retro_{retro.Id}.json"
             ); 
-        });
-
-        builder.MapPost("/", async Task<Created> (RetroDbContext dbContext, [FromBody] RetroDto retro) =>
+        }).Produces(StatusCodes.Status200OK);
+    }
+    
+    private static void MapPost(RouteGroupBuilder builder)
+    {
+        builder.MapPost("/", async Task<Created> (RetroDbContext dbContext, [FromBody] RetroCreateDto retroCreate) =>
         {
             var newRetro = dbContext.Retros.Add(new Data.Models.Retro()
             {
-                Title = retro.Title,
+                Title = retroCreate.Title,
                 CreationDate = DateTime.Now,
-                TeamId = retro.TeamId,
+                TeamId = retroCreate.TeamId,
                 Sections = RetroConfiguration.DefaultSections.Select(title => new Section()
                 {
                     Title = title,
                     IsHidden = false,
                     Notes = []
-                }).ToList() 
+                }).ToList()
             });
             await dbContext.SaveChangesAsync();
 
             return TypedResults.Created($"{ApiConfiguration.PathBase}/retros/{newRetro.Entity.Id}");
         });
-        
-        builder.MapPut("/{id:int}", async Task<Results<Ok, NotFound>> (RetroDbContext dbContext, int id, [FromBody] RetroDto retroUpdate) =>
+    }
+    
+    private static void MapPut(RouteGroupBuilder builder)
+    {
+        builder.MapPut("/{id:int}", async Task<Results<Ok, NotFound>> (RetroDbContext dbContext, int id, [FromBody] RetroUpdateDto retroUpdate) =>
         {
             var retro = await dbContext.Retros
                 .Include(retro => retro.Sections)
@@ -160,24 +186,24 @@ public static class RetroModule
                 .Select(s => retro.Sections.Any(section => section.Id == s.Id) 
                     ? new Section() 
                     {
-                        RetroId = s.RetroId,
+                        RetroId = id,
                         Id = s.Id,
                         IsHidden = s.IsHidden,
                         Notes = s.Notes.Select(note => new Data.Models.Note
                         {
                             Content = note.Content,
                             SectionId = s.Id,
-                            Score = note.Id
+                            Score = note.Score
                         }).ToList(),
                         Title = s.Title 
                     } : new Section()
                     {
-                        RetroId = s.RetroId,
+                        RetroId = id,
                         IsHidden = s.IsHidden,
                         Notes = s.Notes.Select(note => new Data.Models.Note
                         {
                             Content = note.Content,
-                            Score = note.Id
+                            Score = note.Score
                         }).ToList(),
                         Title = s.Title 
                     }).ToList();
@@ -186,7 +212,10 @@ public static class RetroModule
             await dbContext.SaveChangesAsync();
             return TypedResults.Ok();
         });
-        
+    }
+    
+    private static void MapDelete(RouteGroupBuilder builder)
+    {
         builder.MapDelete("/{id:int}", async Task<Results<Ok, NotFound>> (RetroDbContext dbContext, int id) =>
         {
             var retro = await dbContext.Retros
@@ -201,8 +230,5 @@ public static class RetroModule
             await dbContext.SaveChangesAsync();
             return TypedResults.Ok();
         });
-        
-        return builder;
     }
-
 }

@@ -1,5 +1,6 @@
 ﻿using DecentRetroTool.Api.Data;
-using DecentRetroTool.Api.DTOs;
+using DecentRetroTool.Api.DTOs.Create;
+using DecentRetroTool.Api.DTOs.Get;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,28 +18,41 @@ public static class TeamModule
 
     private static RouteGroupBuilder RegisterEndpoints(this RouteGroupBuilder builder)
     {
-        builder.MapGet("/", async Task<Ok<List<TeamDto>>>(RetroDbContext dbContext) =>
+        MapGet(builder);
+        MapPost(builder);
+        MapPut(builder);
+        MapDelete(builder);
+        
+        return builder;
+    }
+
+    private static void MapGet(RouteGroupBuilder builder)
+    {
+        builder.MapGet("/", async Task<Ok<List<TeamGetDto>>>(RetroDbContext dbContext) =>
         {
             var teams = await dbContext.Teams.ToListAsync();
-            return TypedResults.Ok(teams.Select(team => new TeamDto { Name = team.Name, Id = team.Id }).ToList());
+            return TypedResults.Ok(teams.Select(team => new TeamGetDto { Name = team.Name, Id = team.Id }).ToList());
         });
-        
-        builder.MapGet("/{id:int}", async Task<Results<Ok<TeamDto>, NotFound>>(RetroDbContext dbContext, int id) =>
+
+        builder.MapGet("/{id:int}", async Task<Results<Ok<TeamGetDto>, NotFound>>(RetroDbContext dbContext, int id) =>
         {
             var team = await dbContext.Teams
                 .Where(team => team.Id == id)
                 .SingleOrDefaultAsync();
             
             return team is not null
-                ? TypedResults.Ok(new TeamDto { Name = team.Name, Id = team.Id })
+                ? TypedResults.Ok(new TeamGetDto { Name = team.Name, Id = team.Id })
                 : TypedResults.NotFound();
         });
-        
-        builder.MapPost("/", async Task<Ok<int>> (RetroDbContext dbContext, [FromBody] TeamDto team) =>
+    }
+    
+    private static void MapPost(RouteGroupBuilder builder)
+    {
+        builder.MapPost("/", async Task<Ok<int>> (RetroDbContext dbContext, [FromBody] TeamCreateDto teamCreate) =>
         {
             var newTeam = new Data.Models.Team()
             {
-                Name = team.Name,
+                Name = teamCreate.Name,
                 Retros = []
             };
             var result = dbContext.Teams.Add(newTeam);
@@ -46,8 +60,11 @@ public static class TeamModule
             
             return TypedResults.Ok(result.Entity.Id);
         });
-        
-        builder.MapPut("/{id:int}", async Task<Results<Ok, NotFound>> (RetroDbContext dbContext, int id, [FromBody] TeamDto teamUpdate) =>
+    }
+    
+    private static void MapPut(RouteGroupBuilder builder)
+    {
+        builder.MapPut("/{id:int}", async Task<Results<Ok, NotFound>> (RetroDbContext dbContext, int id, [FromBody] TeamCreateDto teamUpdate) =>
         {
             var team = await dbContext.Teams
                 .Where(team => team.Id == id)
@@ -63,7 +80,10 @@ public static class TeamModule
             await dbContext.SaveChangesAsync();
             return TypedResults.Ok();
         });
-
+    }
+    
+    private static void MapDelete(RouteGroupBuilder builder)
+    {
         builder.MapDelete("/{id:int}", async Task<Results<Ok, NotFound>> (RetroDbContext dbContext, int id) =>
         {
             var team = await dbContext.Teams
@@ -78,7 +98,5 @@ public static class TeamModule
             await dbContext.SaveChangesAsync();
             return TypedResults.Ok();
         });
-        
-        return builder;
     }
 }
