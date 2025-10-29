@@ -4,7 +4,7 @@ import {
   deleteRetro,
   getRetros,
   updateRetro,
-} from "../../../retroClient";
+} from "../../../api/retroClient";
 import { useEffect, useState } from "react";
 import CardGrid from "../../Cards/CardGrid/CardGrid";
 import RetroModel from "../../../models/RetroModel";
@@ -14,7 +14,11 @@ import LinkCard from "../../Cards/LinkCard/LinkCard";
 import ConfirmationDialog from "../../Dialogs/ConfirmationDialog/ConfirmationDialog";
 import Header from "../../Header/Header";
 import type TeamModel from "../../../models/TeamModel";
-import { getTeam, updateTeam } from "../../../teamClient";
+import { getTeam, updateTeam } from "../../../api/teamClient";
+import RetroCreateModel from "../../../models/create/RetroCreateModel";
+import RetroUpdateModel from "../../../models/update/RetroUpdateModel";
+import TeamCreateModel from "../../../models/create/TeamCreateModel";
+import type { SortOption } from "../../../sortOptions";
 
 const Team = () => {
   let params = useParams();
@@ -32,6 +36,7 @@ const Team = () => {
   const [retros, setRetros] = useState<RetroModel[]>([]);
   const [dialog, setDialog] = useState<React.ReactNode>();
   const [isEditingEnabled, setIsEditingEnabled] = useState(true);
+  const [sortOption, setSortOption] = useState<SortOption>();
 
   const loadRetros = () => {
     getRetros(teamId)
@@ -42,10 +47,8 @@ const Team = () => {
   useEffect(loadRetros, []);
 
   const handleCreate = (content: string) => {
-    const retro = new RetroModel(
-      -1,
+    const retro = new RetroCreateModel(
       content !== "" ? content : `New Retro`,
-      [],
       teamId
     );
 
@@ -79,14 +82,9 @@ const Team = () => {
   const handleRename = (newTitle: string, id: number) => {
     const retro = retros.find((r) => r.id === id);
     console.log(retro);
-    const retroUpdate = new RetroModel(
-      id,
-      newTitle,
-      retro?.sections ?? [],
-      teamId
-    );
+    const retroUpdate = new RetroUpdateModel(newTitle);
 
-    updateRetro(retroUpdate)
+    updateRetro(id, retroUpdate)
       .then(loadRetros)
       .then(() => setIsEditingEnabled(false))
       .catch((error) => console.log(error));
@@ -108,8 +106,8 @@ const Team = () => {
   };
 
   const handleTeamRename = (newTitle: string) => {
-    const updatedTeam = Object.assign({}, team, { name: newTitle });
-    updateTeam(updatedTeam)
+    const updatedTeam = new TeamCreateModel(newTitle);
+    updateTeam(team!.id, updatedTeam)
       .then(() => loadTeam(teamId))
       .catch((e) => console.log(e));
   };
@@ -124,6 +122,10 @@ const Team = () => {
           { link: "/home", text: "Home" },
           { link: `/teams/${teamId}`, text: `${team?.name ?? "Team"}` },
         ]}
+        onSort={(option) => {
+          setSortOption(option);
+          console.log("Sort option selected:", option);
+        }}
       />
       {dialog}
       <CardGrid
@@ -132,6 +134,7 @@ const Team = () => {
         onCreate={handleCreate}
         renderItem={renderRetro}
         isEditing={isEditingEnabled}
+        sortFunction={RetroModel.getSortFunction(sortOption) ?? undefined}
       ></CardGrid>
     </>
   );

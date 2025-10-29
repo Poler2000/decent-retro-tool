@@ -1,20 +1,24 @@
 import { useEffect, useState, type ChangeEvent } from "react";
 import { useParams } from "react-router";
 import RetroModel from "../../../models/RetroModel";
-import { downloadRetro, getRetro, updateRetro } from "../../../retroClient";
+import { downloadRetro, getRetro, updateRetro } from "../../../api/retroClient";
 import CardGrid from "../../Cards/CardGrid/CardGrid";
 import { getColorPair } from "../../../ColourSequence";
 import type Entity from "../../../models/Entity";
 import RetroCard from "../../Cards/RetroCard/RetroCard";
-import { createNote, deleteNote, updateNote } from "../../../noteClient";
+import { createNote, deleteNote, updateNote } from "../../../api/noteClient";
 import RetroNoteModel from "../../../models/RetroNoteModel";
 import "./Retro.css";
 import Header from "../../Header/Header";
 import type RetroSectionModel from "../../../models/RetroSection";
-import { getTeam } from "../../../teamClient";
+import { getTeam } from "../../../api/teamClient";
 import type TeamModel from "../../../models/TeamModel";
 import SectionConfigDialog from "../../Dialogs/SectionConfig/SectionConfigDialog/SectionConfigDialog";
-import { getSortFunction, type SortOption } from "../../../sortOptions";
+import type { SortOption } from "../../../sortOptions";
+import RetroUpdateModel from "../../../models/update/RetroUpdateModel";
+import RetroCreateModel from "../../../models/create/RetroCreateModel";
+import RetroNoteCreateModel from "../../../models/create/RetroNoteCreateModel";
+import SectionUpdateModel from "../../../models/update/SectionUpdateModel";
 
 const Retro = () => {
   const { teamId, retroId } = useParams();
@@ -42,14 +46,14 @@ const Retro = () => {
   useEffect(loadRetro, []);
 
   const handleRetroRename = (newTitle: string) => {
-    const updatedRetro = Object.assign({}, retro, { title: newTitle });
-    updateRetro(updatedRetro)
+    const updatedRetro = new RetroUpdateModel(newTitle);
+    updateRetro(retro!.id, updatedRetro)
       .then(loadRetro)
       .catch((e) => console.log(e));
   };
 
   const handleCreate = (content: string, sectionId: number) => {
-    const note = new RetroNoteModel(-1, content, 1, sectionId);
+    const note = new RetroNoteCreateModel(content, 1, sectionId);
 
     createNote(note)
       .then(loadRetro)
@@ -69,9 +73,9 @@ const Retro = () => {
     id: number,
     sectionId: number
   ) => {
-    const note = new RetroNoteModel(id, newTitle, score, sectionId);
+    const note = new RetroNoteCreateModel(newTitle, score, sectionId);
 
-    updateNote(note)
+    updateNote(id, note)
       .then(loadRetro)
       .then(() => setIsEditingEnabled(false))
       .catch((e) => console.log(e));
@@ -103,8 +107,22 @@ const Retro = () => {
     console.log("onSectionsEdited");
     console.log(sections);
 
-    const updatedRetro = Object.assign({}, retro, { sections: sections });
-    updateRetro(updatedRetro)
+    const updatedRetro = new RetroUpdateModel(
+      retro!.title,
+      sections.map(
+        (s) =>
+          new SectionUpdateModel(
+            s.id,
+            s.title,
+            s.isHidden,
+            s.notes.map(
+              (n) => new RetroNoteCreateModel(n.content, n.score, s.id)
+            )
+          )
+      )
+    );
+
+    updateRetro(retro!.id, updatedRetro)
       .then(loadRetro)
       .catch((e) => console.log(e));
     setDialog(null);
@@ -140,7 +158,23 @@ const Retro = () => {
         const importedRetro = RetroModel.fromJson(parsed);
         console.log("Loaded JSON:", parsed);
         console.log("Loaded RETRO:", importedRetro);
-        updateRetro(importedRetro)
+
+        const updatedRetro = new RetroUpdateModel(
+          importedRetro.title,
+          importedRetro.sections.map(
+            (s) =>
+              new SectionUpdateModel(
+                s.id,
+                s.title,
+                s.isHidden,
+                s.notes.map(
+                  (n) => new RetroNoteCreateModel(n.content, n.score, s.id)
+                )
+              )
+          )
+        );
+
+        updateRetro(retro!.id, updatedRetro)
           .then(loadRetro)
           .catch((err) => console.error("Error updating retro:", err));
 
@@ -202,7 +236,9 @@ const Retro = () => {
                   renderItem(item, isFocused, id)
                 }
                 isEditing={isEditingEnabled}
-                sortFunction={getSortFunction(sortOption) ?? undefined}
+                sortFunction={
+                  RetroNoteModel.getSortFunction(sortOption) ?? undefined
+                }
               ></CardGrid>
             </div>
           )

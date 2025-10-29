@@ -181,32 +181,35 @@ public static class RetroModule
             }
             
             retro.Title = retroUpdate.Title;
-            
-            retro.Sections = retroUpdate.Sections
-                .Select(s => retro.Sections.Any(section => section.Id == s.Id) 
-                    ? new Section() 
-                    {
-                        RetroId = id,
-                        Id = s.Id,
-                        IsHidden = s.IsHidden,
-                        Notes = s.Notes.Select(note => new Data.Models.Note
+
+            if (retroUpdate.Sections is not null)
+            {
+                retro.Sections = retroUpdate.Sections
+                    .Select(s => retro.Sections.Any(section => section.Id == s.Id) 
+                        ? new Section() 
                         {
-                            Content = note.Content,
-                            SectionId = s.Id,
-                            Score = note.Score
-                        }).ToList(),
-                        Title = s.Title 
-                    } : new Section()
-                    {
-                        RetroId = id,
-                        IsHidden = s.IsHidden,
-                        Notes = s.Notes.Select(note => new Data.Models.Note
+                            RetroId = id,
+                            Id = s.Id,
+                            IsHidden = s.IsHidden,
+                            Notes = s.Notes.Select(note => new Data.Models.Note
+                            {
+                                Content = note.Content,
+                                SectionId = s.Id,
+                                Score = note.Score
+                            }).ToList(),
+                            Title = s.Title 
+                        } : new Section()
                         {
-                            Content = note.Content,
-                            Score = note.Score
-                        }).ToList(),
-                        Title = s.Title 
-                    }).ToList();
+                            RetroId = id,
+                            IsHidden = s.IsHidden,
+                            Notes = s.Notes.Select(note => new Data.Models.Note
+                            {
+                                Content = note.Content,
+                                Score = note.Score
+                            }).ToList(),
+                            Title = s.Title 
+                        }).ToList();
+            }
             
             //dbContext.Update(team); // TODO[PP]: check if needed (relates to entity tracking)
             await dbContext.SaveChangesAsync();

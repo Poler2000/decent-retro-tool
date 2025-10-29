@@ -6,12 +6,13 @@ import {
   deleteTeam,
   getTeams,
   updateTeam,
-} from "../../../teamClient";
+} from "../../../api/teamClient";
 import TeamModel from "../../../models/TeamModel";
 import type Entity from "../../../models/Entity";
 import LinkCard from "../../Cards/LinkCard/LinkCard";
 import ConfirmationDialog from "../../Dialogs/ConfirmationDialog/ConfirmationDialog";
 import Header from "../../Header/Header";
+import TeamCreateModel from "../../../models/create/TeamCreateModel";
 
 const Home = () => {
   const [teams, setTeams] = useState<TeamModel[]>([]);
@@ -58,9 +59,9 @@ const Home = () => {
   };
 
   const handleRename = (newTitle: string, id: number) => {
-    const team = new TeamModel(id, newTitle);
+    const team = new TeamCreateModel(newTitle);
 
-    updateTeam(team)
+    updateTeam(id, team)
       .then(loadTeams)
       .then(() => setIsEditingEnabled(false))
       .catch((error) => console.log(error));
