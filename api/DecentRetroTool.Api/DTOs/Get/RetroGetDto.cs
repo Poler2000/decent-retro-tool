@@ -10,5 +10,5 @@ public record RetroGetDto
 
     public List<SectionGetDto> Sections { get; init; } = [];
     
-    public DateTime CreationDate { get; init; }
+    public DateTime CreationTime { get; init; }
 }

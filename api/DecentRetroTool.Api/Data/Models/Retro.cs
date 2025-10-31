@@ -6,9 +6,14 @@ public class Retro
 
     public string Title { get; set; }
     
-    public DateTime CreationDate { get; set; }
+    public DateTime CreationTime { get; set; }
 
     public ICollection<Section> Sections { get; set; }
 
     public int TeamId { get; set; }
+
+    public Retro()
+    {
+        CreationTime = DateTime.Now;
+    }
 }

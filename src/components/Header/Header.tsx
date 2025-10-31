@@ -16,11 +16,19 @@ export interface HeaderProps {
   onImport?: () => void;
   onExport?: () => void;
   onSort?: (option: SortOption) => void;
+  sortOptions?: SortOption[];
 }
 
 const Header = (props: HeaderProps) => {
-  const { breadcrumbs, onEdit, onEntityRename, onImport, onExport, onSort } =
-    props;
+  const {
+    breadcrumbs,
+    onEdit,
+    onEntityRename,
+    onImport,
+    onExport,
+    onSort,
+    sortOptions,
+  } = props;
 
   return (
     <div className="header">
@@ -33,7 +41,9 @@ const Header = (props: HeaderProps) => {
         <Breadcrumbs parts={breadcrumbs} onEdit={onEntityRename!} />
       )}
       <div className="menu-buttons">
-        {onSort && <SortMenu onSortChange={onSort} />}
+        {onSort && sortOptions && (
+          <SortMenu options={sortOptions} onSortChange={onSort} />
+        )}
         {onEdit && (
           <IconButton
             icon="edit"

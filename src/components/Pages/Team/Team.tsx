@@ -122,6 +122,7 @@ const Team = () => {
           { link: "/home", text: "Home" },
           { link: `/teams/${teamId}`, text: `${team?.name ?? "Team"}` },
         ]}
+        sortOptions={RetroModel.getSortOptions()}
         onSort={(option) => {
           setSortOption(option);
           console.log("Sort option selected:", option);

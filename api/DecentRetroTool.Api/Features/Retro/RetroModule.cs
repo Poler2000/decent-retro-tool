@@ -71,7 +71,7 @@ public static class RetroModule
                     Id = retro.Id,
                     Title = retro.Title, 
                     TeamId = retro.TeamId,
-                    CreationDate = retro.CreationDate,
+                    CreationTime = retro.CreationTime,
                     Sections = retro.Sections.Select(section => new SectionGetDto()
                     {
                         Id = section.Id,
@@ -111,7 +111,7 @@ public static class RetroModule
                 Id = retro.Id,
                 Title = retro.Title,
                 TeamId = retro.TeamId,
-                CreationDate = retro.CreationDate,
+                CreationTime = retro.CreationTime,
                 Sections = retro.Sections.Select(section => new SectionGetDto()
                 {
                     Id = section.Id,
@@ -151,7 +151,7 @@ public static class RetroModule
             var newRetro = dbContext.Retros.Add(new Data.Models.Retro()
             {
                 Title = retroCreate.Title,
-                CreationDate = DateTime.Now,
+                CreationTime = DateTime.Now,
                 TeamId = retroCreate.TeamId,
                 Sections = RetroConfiguration.DefaultSections.Select(title => new Section()
                 {

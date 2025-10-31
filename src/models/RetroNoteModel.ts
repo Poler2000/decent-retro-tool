@@ -27,9 +27,9 @@ export default class RetroNoteModel implements Entity {
   static getSortFunction(option?: SortOption) {
     switch (option) {
       case 'score-asc':
-        return (a: Entity, b: Entity) => (b as RetroNoteModel).score - (a as RetroNoteModel).score;
-      case 'score-desc':
         return (a: Entity, b: Entity) => (a as RetroNoteModel).score - (b as RetroNoteModel).score;
+      case 'score-desc':
+        return (a: Entity, b: Entity) => (b as RetroNoteModel).score - (a as RetroNoteModel).score;
       case 'date-asc':
         return (a: Entity, b: Entity) => (a as RetroNoteModel).creationTime.getTime() - (b as RetroNoteModel).creationTime.getTime();
       case 'date-desc':
@@ -44,8 +44,7 @@ export default class RetroNoteModel implements Entity {
   }    
 
   static fromJson(n: any) {
-    return new RetroNoteModel(n.id, n.content, n.score, n.sectionId, n.creationTime);
+    console.log("RetroNoteModel.fromJson", n);
+    return new RetroNoteModel(n.id, n.content, n.score, n.sectionId, new Date(n.creationTime));
   }
-
-
 }

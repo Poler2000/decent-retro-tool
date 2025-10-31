@@ -43,7 +43,7 @@ const CardGrid = (props: CardGridProps) => {
   const { entities, colors, onCreate, renderItem, isEditing, sortFunction } =
     props;
 
-  console.log("sort function:", sortFunction);
+  console.log(entities);
 
   const handleAdd = () => {
     setIsFocus(true);

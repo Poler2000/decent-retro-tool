@@ -215,6 +215,7 @@ const Retro = () => {
           console.log(JSON.stringify(retro));
           downloadRetro(retro?.id!);
         }}
+        sortOptions={RetroNoteModel.getSortOptions()}
         onSort={(option) => {
           setSortOption(option);
           console.log("Sort option selected:", option);

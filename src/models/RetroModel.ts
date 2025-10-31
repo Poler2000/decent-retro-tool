@@ -41,6 +41,6 @@ export default class RetroModel implements Entity {
   }    
 
   static fromJson(json: any): RetroModel {
-    return new RetroModel(json.id, json.title, json.sections?.map((s: any) => RetroSectionModel.fromJson(s)) ?? [], json.teamId, json.creationTime);
+    return new RetroModel(json.id, json.title, json.sections?.map((s: any) => RetroSectionModel.fromJson(s)) ?? [], json.teamId,  new Date(json.creationTime));
   }
 }

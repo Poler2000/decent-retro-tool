@@ -11,4 +11,9 @@ public class Note
     public int SectionId { get; set; }
     
     public DateTime CreationTime { get; set; }
+    
+    public Note()
+    {
+        CreationTime = DateTime.Now;
+    }
 }

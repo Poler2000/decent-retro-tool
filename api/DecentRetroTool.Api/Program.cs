@@ -60,7 +60,7 @@ using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.Creat
     {
         new()
         {
-            CreationDate = DateTime.Today,
+            CreationTime = DateTime.Today,
             Title = "Stork 1",
             Sections = new List<Section>()
             {
@@ -126,7 +126,7 @@ using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.Creat
         },
         new()
         {
-            CreationDate = DateTime.Today,
+            CreationTime = DateTime.Today,
             Title = "Stork 2",
             Sections = new List<Section>()
             {
@@ -150,7 +150,7 @@ using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.Creat
         },
         new()
         {
-            CreationDate = DateTime.Today,
+            CreationTime = DateTime.Today,
             Title = "Stork 3"
         }
     }});
@@ -158,12 +158,12 @@ using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.Creat
     {
         new()
         {
-            CreationDate = DateTime.Today,
+            CreationTime = DateTime.Today,
             Title = "Alpha 1"
         },
         new()
         {
-            CreationDate = DateTime.Today,
+            CreationTime = DateTime.Today,
             Title = "Alpha 2"
         },
     }});
@@ -171,7 +171,7 @@ using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.Creat
     {
         new()
         {
-            CreationDate = DateTime.Today,
+            CreationTime = DateTime.Today,
             Title = "Beta 1"
         },
     }});

@@ -1,12 +1,13 @@
-import type { SortOption } from "../../sortOptions";
+import { getSortOptionLabel, type SortOption } from "../../sortOptions";
 import "./SortMenu.css";
 
 export interface SortMenuProps {
+  options: SortOption[];
   onSortChange: (option: SortOption) => void;
 }
 
 const SortMenu = (props: SortMenuProps) => {
-  const { onSortChange } = props;
+  const { options, onSortChange } = props;
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value as SortOption;
@@ -24,12 +25,11 @@ const SortMenu = (props: SortMenuProps) => {
         <option disabled selected>
           Default
         </option>
-        <option value="score-asc">Highest Score</option>
-        <option value="score-desc">Lowest Score</option>
-        <option value="date-asc">Oldest First</option>
-        <option value="date-desc">Newest First</option>
-        <option value="name-asc">A to Z</option>
-        <option value="name-desc">Z to A</option>
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {getSortOptionLabel(option)}
+          </option>
+        ))}
       </select>
     </div>
   );
