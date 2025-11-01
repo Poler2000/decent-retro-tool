@@ -52,4 +52,7 @@ msbuild.wrn
 # Visual Studio 2015
 .vs/
 
+#db
+Retro.db*
+
 TODO.md
