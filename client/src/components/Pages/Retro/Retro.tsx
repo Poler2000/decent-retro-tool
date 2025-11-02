@@ -1,4 +1,4 @@
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import RetroModel from "../../../models/RetroModel";
 import { downloadRetro, getRetro, updateRetro } from "../../../api/retroClient";
@@ -16,7 +16,6 @@ import type TeamModel from "../../../models/TeamModel";
 import SectionConfigDialog from "../../Dialogs/SectionConfig/SectionConfigDialog/SectionConfigDialog";
 import type { SortOption } from "../../../sortOptions";
 import RetroUpdateModel from "../../../models/update/RetroUpdateModel";
-import RetroCreateModel from "../../../models/create/RetroCreateModel";
 import RetroNoteCreateModel from "../../../models/create/RetroNoteCreateModel";
 import SectionUpdateModel from "../../../models/update/SectionUpdateModel";
 
@@ -46,7 +45,7 @@ const Retro = () => {
   useEffect(loadRetro, []);
 
   const handleRetroRename = (newTitle: string) => {
-    const updatedRetro = new RetroUpdateModel(newTitle);
+    const updatedRetro = new RetroUpdateModel(newTitle, undefined);
     updateRetro(retro!.id, updatedRetro)
       .then(loadRetro)
       .catch((e) => console.log(e));

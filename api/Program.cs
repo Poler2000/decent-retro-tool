@@ -1,6 +1,6 @@
 using DecentRetroTool.Api.Configuration;
 using DecentRetroTool.Api.Data;
-using DecentRetroTool.Api.Data.Models;
+using DecentRetroTool.Api.Data.Extensions;
 using DecentRetroTool.Api.Features.Note;
 using DecentRetroTool.Api.Features.Retro;
 using DecentRetroTool.Api.Features.Team;
@@ -18,7 +18,8 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: AllowSpecificOrigins, policy =>
     {
-        policy.WithOrigins("https://localhost:5173", "http://localhost:5173")
+        policy.WithOrigins("https://localhost:5173", "http://localhost:5173", "https://localhost:3000",
+                "http://localhost:3000")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -30,7 +31,7 @@ var app = builder.Build();
 app.Map(ApiConfiguration.PathBase, retroApp =>
 {
     retroApp.UseRouting();
-    
+
     retroApp.UseCors(AllowSpecificOrigins);
 
     if (app.Environment.IsDevelopment())
@@ -53,130 +54,18 @@ app.Map(ApiConfiguration.PathBase, retroApp =>
 using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.CreateScope())
 {
     var context = serviceScope.ServiceProvider.GetRequiredService<RetroDbContext>();
-    context.Database.EnsureDeleted();
+
+    if (app.Environment.IsDevelopment())
+    {
+        context.Database.EnsureDeleted();
+    }
+
     context.Database.Migrate();
-    
-    context.Teams.Add(new Team() { Name = "Stork", Retros = new List<Retro>()
+
+    if (app.Environment.IsDevelopment())
     {
-        new()
-        {
-            CreationTime = DateTime.Today,
-            Title = "Stork 1",
-            Sections = new List<Section>()
-            {
-                new Section()
-                {
-                    Title = "Section 1",
-                    Notes = [
-                        new Note()
-                        {
-                            Score = 4,
-                            Content = "sdflksdfj asj sdhjhsdf hashjn jsdh sdh"
-                        },
-                        new Note()
-                        {
-                            Score = 2,
-                            Content = "Toto"
-                        },
-                        new Note()
-                        {
-                            Score = 3,
-                            Content = "fsdhjbh "
-                        }
-                    ]
-                },
-                new Section()
-                {
-                    Title = "Section 2 - Hello",
-                    Notes = []
-                },
-                new Section()
-                {
-                    Title = "Section 3",
-                    Notes = [
-                        new Note()
-                        {
-                            Score = 4,
-                            Content = "sdflksdfj asj sdhjhsdf hashjn jsdh sdh"
-                        },
-                        new Note()
-                        {
-                            Score = 2,
-                            Content = "Toto 2"
-                        }
-                    ]
-                },
-                new Section()
-                {
-                    Title = "Section 4",
-                    Notes = [
-                        new Note()
-                        {
-                            Score = 4,
-                            Content = "sdflksdfj asj sdhjhsdf hashjn jsdh sdh"
-                        },
-                        new Note()
-                        {
-                            Score = 2,
-                            Content = "Toto 3"
-                        }
-                    ]
-                },
-            }
-        },
-        new()
-        {
-            CreationTime = DateTime.Today,
-            Title = "Stork 2",
-            Sections = new List<Section>()
-            {
-                new Section()
-                {
-                    Title = "Section 1",
-                    Notes = [
-                        new Note()
-                        {
-                            Score = 4,
-                            Content = "sdflksdfj asj sdhjhsdf hashjn jsdh sdh"
-                        },
-                        new Note()
-                        {
-                            Score = 2,
-                            Content = "Toto"
-                        }
-                    ]
-                },
-            },
-        },
-        new()
-        {
-            CreationTime = DateTime.Today,
-            Title = "Stork 3"
-        }
-    }});
-    context.Teams.Add(new Team() { Name = "Alpha", Retros = new List<Retro>()
-    {
-        new()
-        {
-            CreationTime = DateTime.Today,
-            Title = "Alpha 1"
-        },
-        new()
-        {
-            CreationTime = DateTime.Today,
-            Title = "Alpha 2"
-        },
-    }});
-    context.Teams.Add(new Team() { Name = "Beta", Retros = new List<Retro>()
-    {
-        new()
-        {
-            CreationTime = DateTime.Today,
-            Title = "Beta 1"
-        },
-    }});
-    context.Teams.Add(new Team() { Name = "Omega" });
-    context.SaveChanges();
+        context.AddDefaultData();
+    }
 }
 
 app.Run();

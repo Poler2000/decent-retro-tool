@@ -1,12 +1,13 @@
 import type TeamCreateModel from "../models/create/TeamCreateModel"
 import TeamModel from "../models/TeamModel"
+import { API_BASE_URL } from "./apiConsts"
 
 export const getTeams = async (): Promise<TeamModel[]> => {
   const headers: Headers = new Headers()
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
 
-  const request: RequestInfo = new Request('https://localhost:7235/decent-retro-tool.api/teams', {
+  const request: RequestInfo = new Request(`${API_BASE_URL}/teams`, {
     method: 'GET',
     headers: headers
   });
@@ -21,7 +22,7 @@ export const getTeam = async (teamId: number): Promise<TeamModel> => {
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
 
-  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/teams/${teamId}`, {
+  const request: RequestInfo = new Request(`${API_BASE_URL}/teams/${teamId}`, {
     method: 'GET',
     headers: headers
   });
@@ -38,7 +39,7 @@ export const createTeam = async (team: TeamCreateModel): Promise<void> => {
 
   console.log(JSON.stringify(team))
 
-  const request: RequestInfo = new Request('https://localhost:7235/decent-retro-tool.api/teams', {
+  const request: RequestInfo = new Request(`${API_BASE_URL}/teams`, {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(team)
@@ -55,7 +56,7 @@ export const updateTeam = async (teamId: number, team: TeamCreateModel): Promise
 
   console.log(JSON.stringify(team))
 
-  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/teams/${teamId}`, {
+  const request: RequestInfo = new Request(`${API_BASE_URL}/teams/${teamId}`, {
     method: 'PUT',
     headers: headers,
     body: JSON.stringify(team)
@@ -70,7 +71,7 @@ export const deleteTeam = async (teamId: number): Promise<void> => {
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
 
-  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/teams/${teamId}`, {
+  const request: RequestInfo = new Request(`${API_BASE_URL}/teams/${teamId}`, {
     method: 'DELETE',
     headers: headers,
   });

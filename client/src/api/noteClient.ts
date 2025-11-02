@@ -1,11 +1,12 @@
 import type RetroNoteCreateModel from "../models/create/RetroNoteCreateModel";
+import { API_BASE_URL } from "./apiConsts";
 
 export const createNote = async (note: RetroNoteCreateModel) : Promise<void> => {
   const headers: Headers = new Headers()
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
 
-  const request: RequestInfo = new Request('https://localhost:7235/decent-retro-tool.api/notes', {
+  const request: RequestInfo = new Request(`${API_BASE_URL}/notes`, {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(note)
@@ -20,7 +21,7 @@ export const updateNote = async (noteId: number, note: RetroNoteCreateModel) : P
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
 
-  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/notes/${noteId}`, {
+  const request: RequestInfo = new Request(`${API_BASE_URL}/notes/${noteId}`, {
     method: 'PUT',
     headers: headers,
     body: JSON.stringify(note)
@@ -35,7 +36,7 @@ export const deleteNote = async (noteId: number) : Promise<void> => {
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
 
-  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/notes/${noteId}`, {
+  const request: RequestInfo = new Request(`${API_BASE_URL}/notes/${noteId}`, {
     method: 'DELETE',
     headers: headers,
   });
