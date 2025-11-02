@@ -82,7 +82,7 @@ const Team = () => {
   const handleRename = (newTitle: string, id: number) => {
     const retro = retros.find((r) => r.id === id);
     console.log(retro);
-    const retroUpdate = new RetroUpdateModel(newTitle);
+    const retroUpdate = new RetroUpdateModel(newTitle, undefined);
 
     updateRetro(id, retroUpdate)
       .then(loadRetros)

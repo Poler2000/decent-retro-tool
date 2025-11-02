@@ -1,13 +1,14 @@
 import RetroModel from "../models/RetroModel";
 import type RetroCreateModel from "../models/create/RetroCreateModel";
 import type RetroUpdateModel from "../models/update/RetroUpdateModel";
+import { API_BASE_URL } from "./apiConsts";
 
 export const getRetros = async (teamId: number): Promise<RetroModel[]> => {
   const headers: Headers = new Headers()
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
 
-  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/retros?teamId=${teamId}`, {
+  const request: RequestInfo = new Request(`${API_BASE_URL}/retros?teamId=${teamId}`, {
     method: 'GET',
     headers: headers
   });
@@ -22,7 +23,7 @@ export const getRetro = async (retroId: number): Promise<RetroModel> => {
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
 
-  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/retros/${retroId}`, {
+  const request: RequestInfo = new Request(`${API_BASE_URL}/retros/${retroId}`, {
     method: 'GET',
     headers: headers
   });
@@ -37,7 +38,7 @@ export const downloadRetro = async (retroId: number): Promise<void> => {
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
 
-  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/retros/${retroId}/download`, {
+  const request: RequestInfo = new Request(`${API_BASE_URL}/retros/${retroId}/download`, {
     method: 'GET',
     headers: headers
   });
@@ -59,7 +60,7 @@ export const createRetro = async (retro: RetroCreateModel): Promise<void> => {
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
 
-  const request: RequestInfo = new Request('https://localhost:7235/decent-retro-tool.api/retros', {
+  const request: RequestInfo = new Request(`${API_BASE_URL}/retros`, {
     method: 'POST',
     headers: headers,
     body: JSON.stringify(retro)
@@ -74,7 +75,7 @@ export const updateRetro = async (retroId: number, retro: RetroUpdateModel): Pro
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
 
-  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/retros/${retroId}`, {
+  const request: RequestInfo = new Request(`${API_BASE_URL}/retros/${retroId}`, {
     method: 'PUT',
     headers: headers,
     body: JSON.stringify(retro)
@@ -89,7 +90,7 @@ export const deleteRetro = async (retroId: number): Promise<void> => {
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
 
-  const request: RequestInfo = new Request(`https://localhost:7235/decent-retro-tool.api/retros/${retroId}`, {
+  const request: RequestInfo = new Request(`${API_BASE_URL}/retros/${retroId}`, {
     method: 'DELETE',
     headers: headers,
   });

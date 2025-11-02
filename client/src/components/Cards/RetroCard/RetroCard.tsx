@@ -1,4 +1,4 @@
-import type { Color, ColorPair } from "../../../Colour";
+import type { ColorPair } from "../../../Colour";
 import Card from "../Card/Card";
 import Counter from "../../Counter/Counter";
 import IconButton from "../../Buttons/IconButton/IconButton";
