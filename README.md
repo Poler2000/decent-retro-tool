@@ -1,69 +1,65 @@
-# React + TypeScript + Vite
+# Decent Retro Tool
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- [:bulb: Overview](#bulb-overview)
+- [:computer: Installation](#computer-installation)
+  - [:whale2: Installation with Docker](#whale2-installation-with-docker)
+  - [:wrench: Manual Installation](#wrench-manual-installation)
 
-Currently, two official plugins are available:
+## :bulb: Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Decent Retro Tool** is a simple application aimed to assist you with conducting scrum retrospective meetings.
 
-## Expanding the ESLint configuration
+Gather notes, vote and discuss! You can organize retros for multiple teams and easily export or import their contents as json files. Sections can be customized on the fly.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Simple**: Just what you need - no unnecessary feature bloat.
+- **Customizable**: You can modify the workflow to best suit your needs.
+- **Tested in practice**: I use it myself to help my team with Retro meetings.
+- **Easy to install**: With Docker!
+- **Secure**: Since you host the app locally, your data remains safe.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## :computer: Installation
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- Decent Retro Tool comes with docker support for easy build an usage
+- Alternatively, you can build the code yourself
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### :whale2: Installation with Docker
+
+#### Requirements:
+
+- You need to have Docker and Docker Compose installed. Easiest way to do so is with Docker Desktop.
+- Use Linux container mode in Docker (default).
+
+To build and run the app, run the following commands, while in repository's root directory:
+
+```bash
+docker-compose build
+docker-compose up
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Go to http://localhost:3000/ and enjoy using the app!
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### :wrench: Manual Installation
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+#### Requirements
+
+- **node.js**
+- **.NET 8 SDK** (or newer)
+
+To build and run the app, run the following commands, while in repository's root directory:
+
+Backend:
+
+```bash
+dotnet run --project .\api\DecentRetroTool.Api.csproj
 ```
+
+Frontend:
+
+```bash
+cd client
+npm install
+npm run build
+npm run dev
+```
+
+Go to https://localhost:5173/ and enjoy using the app!
