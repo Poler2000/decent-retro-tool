@@ -24,6 +24,7 @@ export interface CardGridProps {
   renderItem: (item: Entity, isFocused: boolean) => React.ReactNode;
   isEditing: boolean;
   sortFunction?: (a: Entity, b: Entity) => number;
+  onResetSort?: () => void;
 }
 
 const CardGrid = (props: CardGridProps) => {
@@ -40,8 +41,15 @@ const CardGrid = (props: CardGridProps) => {
 
   let [isFocus, setIsFocus] = useState(false);
 
-  const { entities, colors, onCreate, renderItem, isEditing, sortFunction } =
-    props;
+  const {
+    entities,
+    colors,
+    onCreate,
+    renderItem,
+    isEditing,
+    sortFunction,
+    onResetSort,
+  } = props;
 
   console.log(entities);
 
@@ -61,6 +69,7 @@ const CardGrid = (props: CardGridProps) => {
 
         return arrayMove(items, oldIndex, newIndex);
       });
+      onResetSort?.();
     }
   };
 

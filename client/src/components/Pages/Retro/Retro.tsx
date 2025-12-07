@@ -23,7 +23,7 @@ const Retro = () => {
   const { teamId, retroId } = useParams();
   const [isEditingEnabled, setIsEditingEnabled] = useState(true);
   const [dialog, setDialog] = useState<React.ReactNode>();
-  const [sortOption, setSortOption] = useState<SortOption>();
+  const [sortOption, setSortOption] = useState<SortOption>("default");
 
   const loadTeam = (teamId: number) => {
     getTeam(teamId)
@@ -159,7 +159,7 @@ const Retro = () => {
         console.log("Loaded RETRO:", importedRetro);
 
         const updatedRetro = new RetroUpdateModel(
-          importedRetro.title,
+          retro?.title!,
           importedRetro.sections.map(
             (s) =>
               new SectionUpdateModel(
@@ -186,6 +186,8 @@ const Retro = () => {
 
     reader.readAsText(file);
   };
+
+  const sortOptions = RetroNoteModel.getSortOptions();
 
   return (
     <>
@@ -214,10 +216,13 @@ const Retro = () => {
           console.log(JSON.stringify(retro));
           downloadRetro(retro?.id!);
         }}
-        sortOptions={RetroNoteModel.getSortOptions()}
-        onSort={(option) => {
-          setSortOption(option);
-          console.log("Sort option selected:", option);
+        sortConfig={{
+          options: sortOptions,
+          value: sortOption ?? "default",
+          onSortChange: (option: SortOption) => {
+            setSortOption(option);
+            console.log("Sort option selected:", option);
+          },
         }}
       />
       {dialog}
@@ -239,6 +244,7 @@ const Retro = () => {
                 sortFunction={
                   RetroNoteModel.getSortFunction(sortOption) ?? undefined
                 }
+                onResetSort={() => setSortOption("default")}
               ></CardGrid>
             </div>
           )
