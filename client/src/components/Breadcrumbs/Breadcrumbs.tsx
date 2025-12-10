@@ -44,6 +44,7 @@ const Breadcrumbs = (props: BreadcrumbsProps) => {
               onEdit(event.target.value);
             }}
             autoFocus={true}
+            maxLength={20}
           />
         </>
       ) : (

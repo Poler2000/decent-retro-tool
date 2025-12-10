@@ -29,7 +29,7 @@ const Header = (props: HeaderProps) => {
 
   return (
     <div className="header">
-      <div>
+      <div className="logo-container">
         <Link to="/home">
           <img src={mainLogo} className="logo" alt="Decent Retro Tool logo" />
         </Link>
