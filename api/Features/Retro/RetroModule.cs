@@ -47,6 +47,7 @@ public static class RetroModule
                 Id = retro.Id,
                 Title = retro.Title, 
                 TeamId = retro.TeamId,
+                CreationTime = retro.CreationTime,
                 Sections = retro.Sections.Select(section => new SectionGetDto
                 {
                     Id = section.Id,
