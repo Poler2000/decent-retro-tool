@@ -29,6 +29,7 @@ export interface CardGridProps {
 
 const CardGrid = (props: CardGridProps) => {
   const [items, setItems] = useState<Entity[]>([]);
+  const [lastEdited, setLastEdited] = useState<Entity>();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -38,8 +39,6 @@ const CardGrid = (props: CardGridProps) => {
       },
     })
   );
-
-  let [isFocus, setIsFocus] = useState(false);
 
   const {
     entities,
@@ -54,7 +53,6 @@ const CardGrid = (props: CardGridProps) => {
   console.log(entities);
 
   const handleAdd = () => {
-    setIsFocus(true);
     onCreate("");
   };
 
@@ -79,6 +77,7 @@ const CardGrid = (props: CardGridProps) => {
   };
 
   useEffect(() => {
+    setLastEdited(entities[entities.length - 1]);
     setItems(
       [...entities].sort(
         sortFunction ??
@@ -86,8 +85,6 @@ const CardGrid = (props: CardGridProps) => {
       )
     );
   }, [entities, sortFunction]);
-
-  const itemsCount = items.length;
 
   return (
     <div className="card-grid">
@@ -98,10 +95,11 @@ const CardGrid = (props: CardGridProps) => {
           onDragEnd={handleDragEnd}
         >
           <SortableContext items={items} strategy={rectSortingStrategy}>
-            {items
-              .slice(0, itemsCount - 1)
-              .map((item) => renderItem(item, false))}
-            {renderItem(items[itemsCount - 1], isFocus && isEditing)}
+            {items.map((item) =>
+              item.id === lastEdited?.id
+                ? renderItem(item, isEditing)
+                : renderItem(item, false)
+            )}
           </SortableContext>
         </DndContext>
       ) : (
