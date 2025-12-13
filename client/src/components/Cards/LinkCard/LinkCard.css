@@ -1,5 +1,13 @@
+.card-link-container .card-text {
+    padding: 0 1em 0.5em 1em; 
+}
+
+.card-link {
+    display: inline-block;
+    transition: transform 0.2s ease-in-out;
+}
+
 .card-link:hover {
-    scale: 1.05;
-    transition: all 0.2s ease-in-out;
+    transform: scale(1.1);
     color: var(--primary-text-colour);
 }

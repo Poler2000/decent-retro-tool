@@ -4,10 +4,11 @@ import "./SortMenu.css";
 export interface SortMenuProps {
   options: SortOption[];
   onSortChange: (option: SortOption) => void;
+  value: SortOption;
 }
 
 const SortMenu = (props: SortMenuProps) => {
-  const { options, onSortChange } = props;
+  const { options, onSortChange, value } = props;
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value as SortOption;
@@ -21,10 +22,11 @@ const SortMenu = (props: SortMenuProps) => {
         className="sort-select"
         name="sort-options"
         onChange={handleSortChange}
+        value={value}
       >
-        <option disabled selected>
-          Default
-        </option>
+        {options.includes(value) ? null : (
+          <option selected>{getSortOptionLabel(value)}</option>
+        )}
         {options.map((option) => (
           <option key={option} value={option}>
             {getSortOptionLabel(option)}

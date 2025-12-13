@@ -24,7 +24,7 @@ const Home = () => {
   };
 
   const [dialog, setDialog] = useState<React.ReactNode>();
-  const [isEditingEnabled, setIsEditingEnabled] = useState(true);
+  const [isEditingEnabled, setIsEditingEnabled] = useState(false);
 
   useEffect(loadTeams, []);
 

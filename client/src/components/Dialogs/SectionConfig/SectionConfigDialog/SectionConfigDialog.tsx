@@ -22,7 +22,10 @@ const SectionConfigDialog = (props: SectionConfigDialogProps) => {
     console.log(newCount);
     console.log(sections.length);
     if (newCount > sections.length) {
-      const newSection = new RetroSectionModel(-1, "", [], false, retroId);
+      const newSection =
+        newCount > retroSections.length
+          ? new RetroSectionModel(-1, "", [], false, retroId)
+          : retroSections[newCount - 1];
       setSections([...sections, newSection]);
     } else if (newCount < sections.length) {
       const updatedSections = sections.slice(0, newCount);

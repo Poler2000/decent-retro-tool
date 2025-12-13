@@ -44,7 +44,6 @@ export default class RetroNoteModel implements Entity {
   }    
 
   static fromJson(n: any) {
-    console.log("RetroNoteModel.fromJson", n);
     return new RetroNoteModel(n.id, n.content, n.score, n.sectionId, new Date(n.creationTime));
   }
 }

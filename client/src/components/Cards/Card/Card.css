@@ -10,7 +10,6 @@
 }
 
 .card-text {
-    align-self: stretch;
     flex: 1; 
     background-color: transparent;
     border: none;
