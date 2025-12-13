@@ -50,8 +50,6 @@ const CardGrid = (props: CardGridProps) => {
     onResetSort,
   } = props;
 
-  console.log(entities);
-
   const handleAdd = () => {
     onCreate("");
   };

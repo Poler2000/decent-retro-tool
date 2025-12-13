@@ -35,7 +35,7 @@ const Team = () => {
 
   const [retros, setRetros] = useState<RetroModel[]>([]);
   const [dialog, setDialog] = useState<React.ReactNode>();
-  const [isEditingEnabled, setIsEditingEnabled] = useState(true);
+  const [isEditingEnabled, setIsEditingEnabled] = useState(false);
   const [sortOption, setSortOption] = useState<SortOption>();
 
   const loadRetros = () => {
@@ -80,8 +80,6 @@ const Team = () => {
   };
 
   const handleRename = (newTitle: string, id: number) => {
-    const retro = retros.find((r) => r.id === id);
-    console.log(retro);
     const retroUpdate = new RetroUpdateModel(newTitle, undefined);
 
     updateRetro(id, retroUpdate)
@@ -112,7 +110,6 @@ const Team = () => {
       .catch((e) => console.log(e));
   };
 
-  console.log(retros);
   const sortOptions = RetroModel.getSortOptions();
 
   return (
@@ -128,7 +125,6 @@ const Team = () => {
           value: sortOption ?? "default",
           onSortChange: (option: SortOption) => {
             setSortOption(option);
-            console.log("Sort option selected:", option);
           },
         }}
       />

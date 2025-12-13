@@ -21,7 +21,7 @@ import SectionUpdateModel from "../../../models/update/SectionUpdateModel";
 
 const Retro = () => {
   const { teamId, retroId } = useParams();
-  const [isEditingEnabled, setIsEditingEnabled] = useState(true);
+  const [isEditingEnabled, setIsEditingEnabled] = useState(false);
   const [dialog, setDialog] = useState<React.ReactNode>();
   const [sortOption, setSortOption] = useState<SortOption>("default");
 
@@ -103,9 +103,6 @@ const Retro = () => {
   };
 
   const onSectionsEdited = (sections: RetroSectionModel[]) => {
-    console.log("onSectionsEdited");
-    console.log(sections);
-
     const updatedRetro = new RetroUpdateModel(
       retro!.title,
       sections.map(
@@ -155,8 +152,6 @@ const Retro = () => {
         const text = e.target?.result as string;
         const parsed = JSON.parse(text);
         const importedRetro = RetroModel.fromJson(parsed);
-        console.log("Loaded JSON:", parsed);
-        console.log("Loaded RETRO:", importedRetro);
 
         const updatedRetro = new RetroUpdateModel(
           retro?.title!,
@@ -212,8 +207,6 @@ const Retro = () => {
           document.body.removeChild(input);
         }}
         onExport={() => {
-          console.log("export");
-          console.log(JSON.stringify(retro));
           downloadRetro(retro?.id!);
         }}
         sortConfig={{
@@ -221,7 +214,6 @@ const Retro = () => {
           value: sortOption ?? "default",
           onSortChange: (option: SortOption) => {
             setSortOption(option);
-            console.log("Sort option selected:", option);
           },
         }}
       />

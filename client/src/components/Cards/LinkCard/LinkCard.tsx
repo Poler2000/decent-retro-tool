@@ -33,26 +33,28 @@ const LinkCard = (props: LinkCardProps) => {
           icon="delete"
           onClick={() => onDelete(id)}
         />
-        {isFocused ? (
-          <textarea
-            className="card-text "
-            id="name"
-            placeholder="title"
-            required
-            maxLength={100}
-            onBlur={(event) => onEditTitle(event.target.value, id)}
-            autoFocus={true}
-            onFocus={(e) => {
-              e.currentTarget.selectionStart = 0;
-              e.currentTarget.selectionEnd = e.currentTarget.value.length;
-            }}
-            defaultValue={title}
-          />
-        ) : (
-          <Link to={linkAddress} className="card-text card-link">
-            {title}
-          </Link>
-        )}
+        <div className="card-link-container">
+          {isFocused ? (
+            <textarea
+              className="card-text "
+              id="name"
+              placeholder="title"
+              required
+              maxLength={100}
+              onBlur={(event) => onEditTitle(event.target.value, id)}
+              autoFocus={true}
+              onFocus={(e) => {
+                e.currentTarget.selectionStart = 0;
+                e.currentTarget.selectionEnd = e.currentTarget.value.length;
+              }}
+              defaultValue={title}
+            />
+          ) : (
+            <Link to={linkAddress} className="card-text card-link">
+              {title}
+            </Link>
+          )}
+        </div>
       </Card>
     </>
   );

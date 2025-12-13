@@ -15,9 +15,6 @@ const SortMenu = (props: SortMenuProps) => {
     onSortChange(value);
   };
 
-  console.log("Rendering SortMenu with value:", value);
-  console.log("Available options:", options);
-
   return (
     <div className="sort-options">
       <label htmlFor="sort-options">Sort:</label>

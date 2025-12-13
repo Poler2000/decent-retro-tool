@@ -77,5 +77,5 @@ export const deleteTeam = async (teamId: number): Promise<void> => {
   });
 
   return fetch(request)
-    .then(res => {console.log(res); console.log("DELETED!!!!!!!")})
+    .then(res => {console.log(res); })
 }
