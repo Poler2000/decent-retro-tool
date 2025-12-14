@@ -18,8 +18,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="app\data\" />
-      <Folder Include="Migrations\" />
+      <Content Include="Test\DecentRetroTool.Api.Test.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="DecentRetro.Api.Test" />
     </ItemGroup>
 
 </Project>

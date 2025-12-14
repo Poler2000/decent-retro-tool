@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /source
 
 COPY *.sln ./api/
-COPY *.csproj ./api/
+COPY Main/*.csproj ./api/
 WORKDIR /source/api
 RUN dotnet restore
 
