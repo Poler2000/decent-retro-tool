@@ -13,10 +13,15 @@ public class TestAppFactory : WebApplicationFactory<Program>
     {
         builder.ConfigureAppConfiguration(config =>
         {
+            var inMemorySettings = new Dictionary<string, string?>
+            {
+                ["ConnectionStrings:RetroDbConnectionString"] = $"Data Source=retroTest_{Guid.NewGuid()}.db"
+            };
+
             Configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.Test.json")
+                .AddInMemoryCollection(inMemorySettings)
                 .Build();
- 
+            
             config.AddConfiguration(Configuration);
         });
         builder.ConfigureTestServices(_ => { });

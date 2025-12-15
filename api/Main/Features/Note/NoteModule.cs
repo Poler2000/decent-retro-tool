@@ -1,4 +1,5 @@
-﻿using DecentRetroTool.Api.Data;
+﻿using DecentRetroTool.Api.Configuration;
+using DecentRetroTool.Api.Data;
 using DecentRetroTool.Api.DTOs;
 using DecentRetroTool.Api.DTOs.Create;
 using DecentRetroTool.Api.DTOs.Get;
@@ -61,7 +62,7 @@ public static class NoteModule
                 return TypedResults.NotFound();
             }
             
-            dbContext.Notes.Add(new Data.Models.Note()
+            var result = dbContext.Notes.Add(new Data.Models.Note()
             {
                 Score = noteCreate.Score,
                 Content = noteCreate.Content,
@@ -71,7 +72,7 @@ public static class NoteModule
 
             await dbContext.SaveChangesAsync();
 
-            return TypedResults.Created();
+            return TypedResults.Created($"{ApiConfiguration.PathBase}/notes/{result.Entity.Id}");
         });
     }
     

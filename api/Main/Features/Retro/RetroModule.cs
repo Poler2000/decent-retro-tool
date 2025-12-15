@@ -38,7 +38,7 @@ public static class RetroModule
         builder.MapGet("/", async Task<Ok<List<RetroGetDto>>>(RetroDbContext dbContext, [FromQuery] int? teamId) =>
         {
             var retros = await dbContext.Retros
-                .Where(retro => retro.TeamId == teamId)
+                .Where(retro => teamId == null || retro.TeamId == teamId)
                 .Include(retro => retro.Sections)
                 .ToListAsync();
             
@@ -147,8 +147,13 @@ public static class RetroModule
     
     private static void MapPost(RouteGroupBuilder builder)
     {
-        builder.MapPost("/", async Task<Created> (RetroDbContext dbContext, [FromBody] RetroCreateDto retroCreate) =>
+        builder.MapPost("/", async Task<Results<Created, NotFound>> (RetroDbContext dbContext, [FromBody] RetroCreateDto retroCreate) =>
         {
+            if (dbContext.Teams.Any(t => t.Id == retroCreate.TeamId) == false)
+            {
+                return TypedResults.NotFound();
+            }
+            
             var newRetro = dbContext.Retros.Add(new Data.Models.Retro()
             {
                 Title = retroCreate.Title,
@@ -212,7 +217,6 @@ public static class RetroModule
                         }).ToList();
             }
             
-            //dbContext.Update(team); // TODO[PP]: check if needed (relates to entity tracking)
             await dbContext.SaveChangesAsync();
             return TypedResults.Ok();
         });

@@ -53,6 +53,7 @@ public class NoteModuleTests(TestAppFactory fixture) : IntegrationTestBase(fixtu
 
         // Assert
         postResult.StatusCode.Should().Be(HttpStatusCode.Created);
+        var createdResourceUrl = postResult.Headers.GetValues("Location").FirstOrDefault();
         var note = await GetNoteByContentFromDbAsync(noteCreate.Content);
 
         using (new AssertionScope())
@@ -61,6 +62,7 @@ public class NoteModuleTests(TestAppFactory fixture) : IntegrationTestBase(fixtu
             note.Score.Should().Be(noteCreate.Score);
             note.SectionId.Should().Be(noteCreate.SectionId);
             note.Id.Should().BePositive();
+            createdResourceUrl.Should().Be($"{BaseRoute}/{note.Id}");
         }
     }
 
