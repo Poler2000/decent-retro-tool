@@ -18,9 +18,6 @@ const SectionConfigDialog = (props: SectionConfigDialogProps) => {
   const [sections, setSections] = useState(() => retroSections);
 
   const handleCountChange = (newCount: number) => {
-    console.log("handleCountChange");
-    console.log(newCount);
-    console.log(sections.length);
     if (newCount > sections.length) {
       const newSection =
         newCount > retroSections.length
@@ -32,9 +29,6 @@ const SectionConfigDialog = (props: SectionConfigDialogProps) => {
       setSections(updatedSections);
     }
   };
-
-  console.log(sections);
-  console.log(retroSections);
 
   const handleUpdate = (order: number, newTitle: string, newState: boolean) => {
     const updatedSections = sections.map((s, idx) => {
