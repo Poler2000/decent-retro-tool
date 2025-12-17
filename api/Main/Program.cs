@@ -1,6 +1,5 @@
 using DecentRetroTool.Api.Configuration;
 using DecentRetroTool.Api.Data;
-using DecentRetroTool.Api.Data.Extensions;
 using DecentRetroTool.Api.Features.Note;
 using DecentRetroTool.Api.Features.Retro;
 using DecentRetroTool.Api.Features.Team;
@@ -14,7 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<RetroDbContext>(
-    o => o.UseSqlite(builder.Configuration.GetConnectionString("DataDbConnectionString")));
+    o => o.UseSqlite(builder.Configuration.GetConnectionString("RetroDbConnectionString")));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: AllowSpecificOrigins, policy =>
@@ -62,11 +61,8 @@ using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.Creat
     }
 
     context.Database.Migrate();
-
-    if (app.Environment.IsDevelopment())
-    {
-        context.AddDefaultData();
-    }
 }
 
 app.Run();
+
+public partial class Program { }

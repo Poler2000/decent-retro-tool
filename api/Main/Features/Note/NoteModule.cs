@@ -1,7 +1,9 @@
-﻿using DecentRetroTool.Api.Data;
+﻿using DecentRetroTool.Api.Configuration;
+using DecentRetroTool.Api.Data;
 using DecentRetroTool.Api.DTOs;
 using DecentRetroTool.Api.DTOs.Create;
 using DecentRetroTool.Api.DTOs.Get;
+using DecentRetroTool.Api.DTOs.Update;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,9 +31,10 @@ public static class NoteModule
 
     private static void MapGet(RouteGroupBuilder builder)
     {
-        builder.MapGet("/{id:int}", async Task<Results<Ok<NoteGetDto>, NotFound>> (RetroDbContext dbContext, [FromQuery] int id) =>
+        builder.MapGet("/{id:int}", async Task<Results<Ok<NoteGetDto>, NotFound>> (RetroDbContext dbContext, int id) =>
         {
             var note = await dbContext.Notes
+                .AsNoTracking()
                 .SingleOrDefaultAsync(n => n.Id == id);
 
             if (note is null)
@@ -52,9 +55,14 @@ public static class NoteModule
     
     private static void MapPost(RouteGroupBuilder builder)
     {
-        builder.MapPost("/", async Task<Created> (RetroDbContext dbContext, [FromBody] NoteCreateDto noteCreate) =>
+        builder.MapPost("/", async Task<Results<Created, NotFound>> (RetroDbContext dbContext, [FromBody] NoteCreateDto noteCreate) =>
         {
-            dbContext.Notes.Add(new Data.Models.Note()
+            if (dbContext.Sections.Any(s => s.Id == noteCreate.SectionId) == false)
+            {
+                return TypedResults.NotFound();
+            }
+            
+            var result = dbContext.Notes.Add(new Data.Models.Note()
             {
                 Score = noteCreate.Score,
                 Content = noteCreate.Content,
@@ -64,13 +72,13 @@ public static class NoteModule
 
             await dbContext.SaveChangesAsync();
 
-            return TypedResults.Created();
+            return TypedResults.Created($"{ApiConfiguration.PathBase}/notes/{result.Entity.Id}");
         });
     }
     
     private static void MapPut(RouteGroupBuilder builder)
     {
-        builder.MapPut("/{id:int}", async Task<Results<Ok, NotFound>> (RetroDbContext dbContext, int id, [FromBody] NoteCreateDto noteUpdate) =>
+        builder.MapPut("/{id:int}", async Task<Results<Ok, NotFound>> (RetroDbContext dbContext, int id, [FromBody] NoteUpdateDto noteUpdate) =>
         {
             var note = await dbContext.Notes
                 .SingleOrDefaultAsync(n => n.Id == id);
@@ -83,7 +91,6 @@ public static class NoteModule
             note.Score = noteUpdate.Score;
             note.Content = noteUpdate.Content;
 
-            //dbContext.Update(team); // TODO[PP]: check if needed (relates to entity tracking)
             await dbContext.SaveChangesAsync();
 
             return TypedResults.Ok();

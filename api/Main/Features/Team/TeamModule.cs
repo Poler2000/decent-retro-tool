@@ -1,4 +1,5 @@
-﻿using DecentRetroTool.Api.Data;
+﻿using DecentRetroTool.Api.Configuration;
+using DecentRetroTool.Api.Data;
 using DecentRetroTool.Api.DTOs.Create;
 using DecentRetroTool.Api.DTOs.Get;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -48,7 +49,7 @@ public static class TeamModule
     
     private static void MapPost(RouteGroupBuilder builder)
     {
-        builder.MapPost("/", async Task<Ok<int>> (RetroDbContext dbContext, [FromBody] TeamCreateDto teamCreate) =>
+        builder.MapPost("/", async Task<Created> (RetroDbContext dbContext, [FromBody] TeamCreateDto teamCreate) =>
         {
             var newTeam = new Data.Models.Team()
             {
@@ -57,8 +58,8 @@ public static class TeamModule
             };
             var result = dbContext.Teams.Add(newTeam);
             await dbContext.SaveChangesAsync();
-            
-            return TypedResults.Ok(result.Entity.Id);
+
+            return TypedResults.Created($"{ApiConfiguration.PathBase}/teams/{result.Entity.Id}");
         });
     }
     
@@ -76,7 +77,6 @@ public static class TeamModule
             }
             
             team.Name = teamUpdate.Name;
-            //dbContext.Update(team); // TODO[PP]: check if needed (relates to entity tracking)
             await dbContext.SaveChangesAsync();
             return TypedResults.Ok();
         });
