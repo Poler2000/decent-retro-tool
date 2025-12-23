@@ -1,4 +1,5 @@
 # Decent Retro Tool
+[![CI](https://github.com/Poler2000/decent-retro-tool/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Poler2000/decent-retro-tool/actions/workflows/dotnet.yml)
 
 - [:bulb: Overview](#bulb-overview)
 - [:computer: Installation](#computer-installation)
