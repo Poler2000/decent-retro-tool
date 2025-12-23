@@ -7,6 +7,8 @@
 
 ## :bulb: Overview
 
+![Decent Retro Tool GIF](res/decent-retro-tool.gif)
+
 **Decent Retro Tool** is a simple application aimed to assist you with conducting scrum retrospective meetings.
 
 Gather notes, vote and discuss! You can organize retros for multiple teams and easily export or import their contents as json files. Sections can be customized on the fly.
