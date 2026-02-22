@@ -84,7 +84,7 @@ const Home = () => {
 
   return (
     <>
-      <Header onImport={() => {}} onExport={() => {}} />
+      <Header />
       {dialog}
       <CardGrid
         entities={teams}
