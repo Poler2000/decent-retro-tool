@@ -3,7 +3,7 @@ import SectionConfigItem from "../SectionConfigItem/SectionConfigItem";
 import "./SectionConfigDialog.css";
 import RetroSectionModel from "../../../../models/RetroSection";
 import Counter from "../../../Counter/Counter";
-import Button from "../../../Buttons/Button/Button";
+import Dialog from "../../Dialog/Dialog";
 
 export interface SectionConfigDialogProps {
   retroId: number;
@@ -46,59 +46,35 @@ const SectionConfigDialog = (props: SectionConfigDialogProps) => {
   };
 
   return (
-    <div className="section-config-dialog-backdrop">
-      <div className="section-config-dialog">
-        <span className="section-config-count-label">Sections</span>
-        <Counter
-          colors={{
-            background: "var(--primary-background-colour)",
-            text: "var(--primary-text-colour)",
-          }}
-          score={sections?.length ?? 0}
-          onUpdate={handleCountChange}
-          delayUpdate={false}
-        ></Counter>
-        <ul className="section-list">
-          {sections?.map((section, order) => (
-            <li key={order}>
-              <SectionConfigItem
-                id={order}
-                title={section.getContent()}
-                isChecked={!section.isHidden}
-                onToggle={(order: number, newState: boolean) =>
-                  handleUpdate(order, section.getContent(), newState)
-                }
-                onEditTitle={(order: number, newTitle: string) =>
-                  handleUpdate(order, newTitle, section.isHidden)
-                }
-              />
-            </li>
-          ))}
-        </ul>
-        <div className="confirm-dialog-btn-container">
-          <Button
-            colors={{
-              background: "var(--primary-background-colour)",
-              text: "var(--primary-text-colour)",
-            }}
-            onClick={onCancel}
-            additionalClass="confirm-dialog-btn confirm-dialog-btn-cancel"
-          >
-            Cancel
-          </Button>
-          <Button
-            colors={{
-              background: "var(--primary-background-colour)",
-              text: "var(--primary-text-colour)",
-            }}
-            onClick={() => onConfirm(sections)}
-            additionalClass="confirm-dialog-btn confirm-dialog-btn-confirm"
-          >
-            Confirm
-          </Button>
-        </div>
-      </div>
-    </div>
+    <Dialog onConfirm={() => onConfirm(sections)} onCancel={onCancel}>
+      <span className="section-config-count-label">Sections</span>
+      <Counter
+        colors={{
+          background: "var(--primary-background-colour)",
+          text: "var(--primary-text-colour)",
+        }}
+        score={sections?.length ?? 0}
+        onUpdate={handleCountChange}
+        delayUpdate={false}
+      ></Counter>
+      <ul className="section-list">
+        {sections?.map((section, order) => (
+          <li key={order}>
+            <SectionConfigItem
+              id={order}
+              title={section.getContent()}
+              isChecked={!section.isHidden}
+              onToggle={(order: number, newState: boolean) =>
+                handleUpdate(order, section.getContent(), newState)
+              }
+              onEditTitle={(order: number, newTitle: string) =>
+                handleUpdate(order, newTitle, section.isHidden)
+              }
+            />
+          </li>
+        ))}
+      </ul>
+    </Dialog>
   );
 };
 
