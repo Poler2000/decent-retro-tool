@@ -54,8 +54,6 @@ export const updateTeam = async (teamId: number, team: TeamCreateModel): Promise
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
 
-  console.log(JSON.stringify(team))
-
   const request: RequestInfo = new Request(`${API_BASE_URL}/teams/${teamId}`, {
     method: 'PUT',
     headers: headers,
