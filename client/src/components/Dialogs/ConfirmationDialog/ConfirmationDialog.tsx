@@ -1,5 +1,4 @@
 import Dialog from "../Dialog/Dialog";
-import "./ConfirmationDialog.css";
 
 export interface ConfirmationDialogProps {
   message: string;
@@ -12,8 +11,8 @@ const ConfirmationDialog = (props: ConfirmationDialogProps) => {
 
   return (
     <Dialog onConfirm={onConfirm} onCancel={onCancel}>
-      <div className="confirm-dialog-msg-container">
-        <span className="confirm-dialog-msg">{message}</span>
+      <div className="dialog-msg-container">
+        <span className="dialog-msg">{message}</span>
       </div>
     </Dialog>
   );

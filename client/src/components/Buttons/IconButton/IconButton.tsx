@@ -26,7 +26,7 @@ const IconButton = (props: IconButtonProps) => {
       additionalClass={`icon-button ${additionalClass}`}
       onClick={onClick}
     >
-      <span className="material-icons-outlined" style={iconStyle}>
+      <span className="material-symbols-outlined" style={iconStyle}>
         {icon}
       </span>
     </Button>

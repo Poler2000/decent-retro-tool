@@ -14,6 +14,7 @@ export interface HeaderProps {
   onEntityRename?: (newTitle: string) => void;
   onImport?: () => void;
   onExport?: () => void;
+  onMarkdown?: () => void;
   sortConfig?: SortMenuProps;
 }
 
@@ -24,6 +25,7 @@ const Header = (props: HeaderProps) => {
     onEntityRename,
     onImport,
     onExport,
+    onMarkdown,
     sortConfig,
   } = props;
 
@@ -43,6 +45,16 @@ const Header = (props: HeaderProps) => {
           <IconButton
             icon="edit"
             onClick={onEdit}
+            colors={{
+              background: "var(--primary-background-colour)",
+              text: "var(--primary-text-colour)",
+            }}
+          />
+        )}
+        {onMarkdown && (
+          <IconButton
+            icon="markdown"
+            onClick={onMarkdown}
             colors={{
               background: "var(--primary-background-colour)",
               text: "var(--primary-text-colour)",

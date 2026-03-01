@@ -33,6 +33,22 @@ export const getRetro = async (retroId: number): Promise<RetroModel> => {
   return RetroModel.fromJson(resJson);
 } 
 
+export const getRetroMarkdown = async (retroId: number): Promise<string> => {
+  const headers: Headers = new Headers()
+  headers.set('Content-Type', 'application/json')
+  headers.set('Accept', 'application/json')
+
+  const request: RequestInfo = new Request(`${API_BASE_URL}/retros/${retroId}/markdown`, {
+    method: 'GET',
+    headers: headers
+  });
+
+  const res = await fetch(request)
+  const markdown = await res.json()
+  console.log(markdown);
+  return markdown;
+} 
+
 export const downloadRetro = async (retroId: number): Promise<void> => {
   const headers: Headers = new Headers()
   headers.set('Content-Type', 'application/json')

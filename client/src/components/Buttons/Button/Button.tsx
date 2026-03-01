@@ -7,6 +7,8 @@ export interface ButtonProps extends React.PropsWithChildren {
   colors: ColorPair;
   additionalClass?: string | undefined;
   onClick: () => void;
+  /** optional animation end handler forwarded to <button> */
+  onAnimationEnd?: React.AnimationEventHandler<HTMLButtonElement>;
 }
 
 const Button = (props: ButtonProps) => {
@@ -36,6 +38,7 @@ const Button = (props: ButtonProps) => {
       onMouseLeave={() => {
         setHover(false);
       }}
+      onAnimationEnd={props.onAnimationEnd}
     >
       {children}
     </button>

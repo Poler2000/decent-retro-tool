@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import RetroModel from "../../../models/RetroModel";
-import { downloadRetro, getRetro, updateRetro } from "../../../api/retroClient";
+import {
+  downloadRetro,
+  getRetro,
+  getRetroMarkdown,
+  updateRetro,
+} from "../../../api/retroClient";
 import CardGrid from "../../Cards/CardGrid/CardGrid";
 import { getColorPair } from "../../../ColourSequence";
 import type Entity from "../../../models/Entity";
@@ -18,6 +23,7 @@ import type { SortOption } from "../../../sortOptions";
 import RetroUpdateModel from "../../../models/update/RetroUpdateModel";
 import RetroNoteCreateModel from "../../../models/create/RetroNoteCreateModel";
 import SectionUpdateModel from "../../../models/update/SectionUpdateModel";
+import MarkdownDialog from "../../Dialogs/MarkdownDialog/MarkdownDialog";
 
 const Retro = () => {
   const { teamId, retroId } = useParams();
@@ -70,7 +76,7 @@ const Retro = () => {
     newTitle: string,
     score: number,
     id: number,
-    sectionId: number
+    sectionId: number,
   ) => {
     const note = new RetroNoteCreateModel(newTitle, score, sectionId);
 
@@ -83,7 +89,7 @@ const Retro = () => {
   const renderItem = (
     item: Entity,
     isFocused: boolean,
-    sectionSequence: number
+    sectionSequence: number,
   ) => {
     const note = item as RetroNoteModel;
     return (
@@ -112,10 +118,10 @@ const Retro = () => {
             s.title,
             s.isHidden,
             s.notes.map(
-              (n) => new RetroNoteCreateModel(n.content, n.score, s.id)
-            )
-          )
-      )
+              (n) => new RetroNoteCreateModel(n.content, n.score, s.id),
+            ),
+          ),
+      ),
     );
 
     updateRetro(retro!.id, updatedRetro)
@@ -162,10 +168,10 @@ const Retro = () => {
                 s.title,
                 s.isHidden,
                 s.notes.map(
-                  (n) => new RetroNoteCreateModel(n.content, n.score, s.id)
-                )
-              )
-          )
+                  (n) => new RetroNoteCreateModel(n.content, n.score, s.id),
+                ),
+              ),
+          ),
         );
 
         updateRetro(retro!.id, updatedRetro)
@@ -209,6 +215,23 @@ const Retro = () => {
         onExport={() => {
           downloadRetro(retro?.id!);
         }}
+        onMarkdown={() => {
+          getRetroMarkdown(retro?.id!)
+            .then((markdown) =>
+              setDialog(() => (
+                <MarkdownDialog
+                  message={markdown}
+                  onCopy={() => {
+                    navigator.clipboard.writeText(markdown);
+                  }}
+                  onCancel={() => {
+                    setDialog(null);
+                  }}
+                />
+              )),
+            )
+            .catch((error) => console.log(error));
+        }}
         sortConfig={{
           options: sortOptions,
           value: sortOption ?? "default",
@@ -239,7 +262,7 @@ const Retro = () => {
                 onResetSort={() => setSortOption("default")}
               ></CardGrid>
             </div>
-          )
+          ),
         )}
       </div>
     </>
