@@ -8,27 +8,32 @@ import Breadcrumbs, {
 } from "../Breadcrumbs/Breadcrumbs";
 import SortMenu, { type SortMenuProps } from "../SortMenu/SortMenu";
 
-export interface HeaderProps {
-  breadcrumbs?: BreadcrumbFragment[];
+export type HeaderProps = {
   onEdit?: () => void;
-  onEntityRename?: (newTitle: string) => void;
   onImport?: () => void;
   onExport?: () => void;
   onMarkdown?: () => void;
   sortConfig?: SortMenuProps;
-}
+} & (
+  | {
+      breadcrumbs: BreadcrumbFragment[];
+      onEntityRename: (newTitle: string) => void;
+    }
+  | {
+      breadcrumbs?: never;
+      onEntityRename?: never;
+    }
+);
 
-const Header = (props: HeaderProps) => {
-  const {
-    breadcrumbs,
-    onEdit,
-    onEntityRename,
-    onImport,
-    onExport,
-    onMarkdown,
-    sortConfig,
-  } = props;
-
+const Header = ({
+  breadcrumbs,
+  onEdit,
+  onEntityRename,
+  onImport,
+  onExport,
+  onMarkdown,
+  sortConfig,
+}: HeaderProps) => {
   return (
     <div className="header">
       <div className="logo-container">
@@ -37,30 +42,12 @@ const Header = (props: HeaderProps) => {
         </Link>
       </div>
       {breadcrumbs && (
-        <Breadcrumbs parts={breadcrumbs} onEdit={onEntityRename!} />
+        <Breadcrumbs parts={breadcrumbs} onEdit={onEntityRename} />
       )}
       <div className="menu-buttons">
         {sortConfig && <SortMenu {...sortConfig} />}
-        {onEdit && (
-          <IconButton
-            icon="edit"
-            onClick={onEdit}
-            colors={{
-              background: "var(--primary-background-colour)",
-              text: "var(--primary-text-colour)",
-            }}
-          />
-        )}
-        {onMarkdown && (
-          <IconButton
-            icon="markdown"
-            onClick={onMarkdown}
-            colors={{
-              background: "var(--primary-background-colour)",
-              text: "var(--primary-text-colour)",
-            }}
-          />
-        )}
+        {onEdit && <IconButton icon="edit" onClick={onEdit} />}
+        {onMarkdown && <IconButton icon="markdown" onClick={onMarkdown} />}
         <SettingsMenu onImport={onImport} onExport={onExport} />
       </div>
     </div>

@@ -13,28 +13,8 @@ const ExportImport = (props: ExportImportProps) => {
     <div className="export-import-container">
       <span>Export / Import:</span>
       <div className="export-import-buttons">
-        {onExport && (
-          <IconButton
-            icon="download"
-            onClick={() => {
-              onExport();
-            }}
-            colors={{
-              background: "var(--primary-background-colour)",
-              text: "var(--primary-text-colour)",
-            }}
-          />
-        )}
-        {onImport && (
-          <IconButton
-            icon="upload"
-            onClick={onImport}
-            colors={{
-              background: "var(--primary-background-colour)",
-              text: "var(--primary-text-colour)",
-            }}
-          />
-        )}
+        {onExport && <IconButton icon="download" onClick={onExport} />}
+        {onImport && <IconButton icon="upload" onClick={onImport} />}
       </div>
     </div>
   );

@@ -39,10 +39,6 @@ const Dialog = (props: SectionConfigDialogProps) => {
         <div className="dialog-btn-container">
           {onCancel && (
             <Button
-              colors={{
-                background: "var(--primary-background-colour)",
-                text: "var(--primary-text-colour)",
-              }}
               onClick={onCancel}
               additionalClass="dialog-btn dialog-btn-cancel"
             >
@@ -51,10 +47,6 @@ const Dialog = (props: SectionConfigDialogProps) => {
           )}
           {onCopy && (
             <Button
-              colors={{
-                background: "var(--primary-background-colour)",
-                text: "var(--primary-text-colour)",
-              }}
               onClick={handleCopyClick}
               onAnimationEnd={handleAnimationEnd}
               additionalClass={`dialog-btn dialog-btn-copy ${
@@ -66,10 +58,6 @@ const Dialog = (props: SectionConfigDialogProps) => {
           )}
           {onConfirm && (
             <Button
-              colors={{
-                background: "var(--primary-background-colour)",
-                text: "var(--primary-text-colour)",
-              }}
               onClick={onConfirm}
               additionalClass="dialog-btn dialog-btn-confirm"
             >

@@ -49,10 +49,6 @@ const SectionConfigDialog = (props: SectionConfigDialogProps) => {
     <Dialog onConfirm={() => onConfirm(sections)} onCancel={onCancel}>
       <span className="section-config-count-label">Sections</span>
       <Counter
-        colors={{
-          background: "var(--primary-background-colour)",
-          text: "var(--primary-text-colour)",
-        }}
         score={sections?.length ?? 0}
         onUpdate={handleCountChange}
         delayUpdate={false}

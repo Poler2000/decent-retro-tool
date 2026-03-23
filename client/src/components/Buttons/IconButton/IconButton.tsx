@@ -1,4 +1,4 @@
-import type { ColorPair } from "../../../Colour";
+import { type ColorPair, DEFAULT_COLORS } from "../../../Colour";
 import "./IconButton.css";
 import Button from "../Button/Button";
 
@@ -6,12 +6,18 @@ export interface IconButtonProps {
   icon: string;
   additionalClass?: string | undefined;
   iconSize?: string;
-  colors: ColorPair;
+  colors?: ColorPair;
   onClick: () => void;
 }
 
 const IconButton = (props: IconButtonProps) => {
-  const { icon, additionalClass, colors, iconSize, onClick } = props;
+  const {
+    icon,
+    additionalClass,
+    colors = DEFAULT_COLORS,
+    iconSize,
+    onClick,
+  } = props;
 
   const iconStyle = iconSize
     ? {
