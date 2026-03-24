@@ -45,7 +45,6 @@ export const getRetroMarkdown = async (retroId: number): Promise<string> => {
 
   const res = await fetch(request)
   const markdown = await res.json()
-  console.log(markdown);
   return markdown;
 } 
 

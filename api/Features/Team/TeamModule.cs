@@ -76,7 +76,6 @@ public static class TeamModule
             }
             
             team.Name = teamUpdate.Name;
-            //dbContext.Update(team); // TODO[PP]: check if needed (relates to entity tracking)
             await dbContext.SaveChangesAsync();
             return TypedResults.Ok();
         });

@@ -37,8 +37,6 @@ export const createTeam = async (team: TeamCreateModel): Promise<void> => {
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
 
-  console.log(JSON.stringify(team))
-
   const request: RequestInfo = new Request(`${API_BASE_URL}/teams`, {
     method: 'POST',
     headers: headers,
