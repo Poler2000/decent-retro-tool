@@ -47,7 +47,9 @@ public class RetroMarkdownFormatterTests
         var expectedLines = new[]
         {
             "# Sprint Retro",
+            "",
             "### 21/02/2026 Saturday",
+            "",
             "|What went well?|What could be improved?|",
             "|---|---|",
             "|[3] Note 1-1|[1] Note 2-1|",

@@ -1,12 +1,12 @@
-﻿using DecentRetroTool.Api.Data.Models;
+using DecentRetroTool.Api.Data.Models;
 
-namespace DecentRetroTool.Api.Data.Extensions;
+namespace DecentRetroTool.Api.Test.TestData;
 
-public static class RetroDbContextExtensions
+public static class TestData
 {
-    public static void AddDefaultData(this RetroDbContext context)
-    { 
-        context.Teams.Add(new Team()
+    public static List<Team> Teams =
+    [
+        new()
         {
             Name = "Stork", Retros = new List<Retro>()
             {
@@ -110,8 +110,8 @@ public static class RetroDbContextExtensions
                     Title = "Stork 3"
                 }
             }
-        });
-        context.Teams.Add(new Team()
+        },
+        new()
         {
             Name = "Alpha", Retros = new List<Retro>()
             {
@@ -126,8 +126,8 @@ public static class RetroDbContextExtensions
                     Title = "Alpha 2"
                 },
             }
-        });
-        context.Teams.Add(new Team()
+        },
+        new()
         {
             Name = "Beta", Retros = new List<Retro>()
             {
@@ -137,8 +137,6 @@ public static class RetroDbContextExtensions
                     Title = "Beta 1"
                 },
             }
-        });
-        context.Teams.Add(new Team() { Name = "Omega" });
-        context.SaveChanges();
-    }
+        }
+    ];
 }

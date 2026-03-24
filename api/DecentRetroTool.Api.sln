@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecentRetroTool.Api", "DecentRetroTool.Api.csproj", "{FBA05836-0227-4749-A3C1-805FEC9A4122}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecentRetroTool.Api", "Main\DecentRetroTool.Api.csproj", "{FBA05836-0227-4749-A3C1-805FEC9A4122}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecentRetroTool.Api.Test", "Test\DecentRetroTool.Api.Test.csproj", "{2C339C2A-B552-43C1-85C0-9FEE939B2A0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +20,9 @@ Global
 		{FBA05836-0227-4749-A3C1-805FEC9A4122}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBA05836-0227-4749-A3C1-805FEC9A4122}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBA05836-0227-4749-A3C1-805FEC9A4122}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C339C2A-B552-43C1-85C0-9FEE939B2A0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C339C2A-B552-43C1-85C0-9FEE939B2A0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C339C2A-B552-43C1-85C0-9FEE939B2A0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C339C2A-B552-43C1-85C0-9FEE939B2A0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

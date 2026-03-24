@@ -50,7 +50,7 @@ To build and run the app, run the following commands, while in repository's root
 Backend:
 
 ```bash
-dotnet run --project .\api\DecentRetroTool.Api.csproj
+dotnet run --project .\api\Main\DecentRetroTool.Api.csproj
 ```
 
 Frontend:
