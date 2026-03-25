@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import type { ColorPair } from "../../../Colour";
+import { type ColorPair, DEFAULT_COLORS } from "../../../Colour";
 import { highlightMap } from "../../../highlightMap";
 import "./Button.css";
 
 export interface ButtonProps extends React.PropsWithChildren {
-  colors: ColorPair;
+  colors?: ColorPair;
   additionalClass?: string | undefined;
   onClick: () => void;
+  onAnimationEnd?: React.AnimationEventHandler<HTMLButtonElement>;
 }
 
 const Button = (props: ButtonProps) => {
   const [hover, setHover] = useState(false);
-  const { colors, additionalClass, onClick, children } = props;
+  const { colors = DEFAULT_COLORS, additionalClass, onClick, children } = props;
 
   const style = hover
     ? {
@@ -36,6 +37,7 @@ const Button = (props: ButtonProps) => {
       onMouseLeave={() => {
         setHover(false);
       }}
+      onAnimationEnd={props.onAnimationEnd}
     >
       {children}
     </button>

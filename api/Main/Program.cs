@@ -25,6 +25,7 @@ builder.Services.AddCors(options =>
     });
 });
 builder.Services.AddHttpLogging(o => { });
+builder.Services.AddScoped<IRetroMarkdownFormatter, RetroMarkdownFormatter>();
 
 var app = builder.Build();
 
@@ -40,7 +41,7 @@ app.Map(ApiConfiguration.PathBase, retroApp =>
         retroApp.UseSwaggerUI();
         retroApp.UseHttpLogging();
     }
-
+    
     retroApp.UseEndpoints(endpoints =>
     {
         endpoints.RegisterTeamEndpoints();

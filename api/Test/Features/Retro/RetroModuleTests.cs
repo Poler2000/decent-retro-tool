@@ -48,6 +48,22 @@ public class RetroModuleTests(TestAppFactory fixture) : IntegrationTestBase(fixt
     }
     
     [Fact]
+    public async Task Get_AsMarkdown_ReturnsMarkdownRetro()
+    {
+        // Arrange
+        var existing = await GetFirstRetroFromDbAsync();
+
+        // Act
+        var result = await _client.GetAsync($"{BaseRoute}/{existing.Id}/markdown");
+
+        // Assert
+        result.IsSuccessStatusCode.Should().BeTrue();
+        var markdown = await result.Content.ReadAsStringAsync();
+        markdown.Should().NotBeNullOrWhiteSpace();
+        markdown.Should().Contain(existing.Title);
+    }
+    
+    [Fact]
     public async Task Get_ListWithNoFiltering_ReturnsAllRetros()
     {
         // Act

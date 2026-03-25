@@ -1,0 +1,15 @@
+.markdown-msg-container {
+  max-height: 50vh;
+  overflow-y: auto;
+  font-size: 0.5em;
+}
+
+.markdown-msg-container th {
+  border: 3px solid var(--primary-text-colour);
+  padding: 0.5em;
+}
+
+.markdown-msg-container td {
+  border: 1px solid var(--primary-text-colour);
+  padding: 0 0.5em;
+}

@@ -17,10 +17,6 @@ const Dropdown = (props: DropdownProps) => {
         onClick={() => {
           setOpen(!isOpen);
         }}
-        colors={{
-          background: "var(--primary-background-colour)",
-          text: "var(--primary-text-colour)",
-        }}
       />
       {isOpen ? <div className="setting-dropdown">{children}</div> : <></>}
     </div>

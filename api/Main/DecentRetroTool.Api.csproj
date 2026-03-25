@@ -18,10 +18,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Test\DecentRetroTool.Api.Test.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
         <InternalsVisibleTo Include="DecentRetro.Api.Test" />
     </ItemGroup>
 

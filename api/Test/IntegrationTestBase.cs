@@ -7,12 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace DecentRetroTool.Api.Test;
 
 [Trait("Category", "Integration")]
-public class IntegrationTestBase : IClassFixture<TestAppFactory>
+public abstract class IntegrationTestBase : IClassFixture<TestAppFactory>, IDisposable
 {
     protected readonly TestAppFactory _fixture;
     protected readonly HttpClient _client;
 
-    public IntegrationTestBase(TestAppFactory fixture)
+    protected IntegrationTestBase(TestAppFactory fixture)
     {
         _fixture = fixture;
         _client = fixture.CreateClient();

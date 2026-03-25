@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import IconButton from "../Buttons/IconButton/IconButton";
 import "./Breadcrumbs.css";
 
@@ -19,12 +20,10 @@ const Breadcrumbs = (props: BreadcrumbsProps) => {
   const partsCount = parts.length;
 
   const renderPart = (part: BreadcrumbFragment, index: number) => (
-    <>
+    <span key={index}>
       <span> / </span>
-      <a href={part.link} key={index}>
-        {part.text}
-      </a>
-    </>
+      <Link to={part.link}>{part.text}</Link>
+    </span>
   );
 
   return (
@@ -54,10 +53,6 @@ const Breadcrumbs = (props: BreadcrumbsProps) => {
         additionalClass="title-edit-button"
         icon="edit"
         onClick={() => setIsEditing(!isEditing)}
-        colors={{
-          background: "var(--primary-background-colour)",
-          text: "var(--primary-text-colour)",
-        }}
       />
     </div>
   );

@@ -3,7 +3,6 @@ using System.Text.Json;
 using DecentRetroTool.Api.Configuration;
 using DecentRetroTool.Api.Data;
 using DecentRetroTool.Api.Data.Models;
-using DecentRetroTool.Api.DTOs;
 using DecentRetroTool.Api.DTOs.Create;
 using DecentRetroTool.Api.DTOs.Get;
 using DecentRetroTool.Api.DTOs.Update;
@@ -89,6 +88,21 @@ public static class RetroModule
                         RetroId = section.RetroId
                     }).ToList()
                 })
+                : TypedResults.NotFound();
+        });
+        
+        builder.MapGet("/{id:int}/markdown", async Task<Results<Ok<string>, NotFound>>(
+            RetroDbContext dbContext,
+            [FromServices] IRetroMarkdownFormatter formatter,
+            int id) =>
+        {
+            var retro = await dbContext.Retros
+                .Include(retro => retro.Sections)
+                .ThenInclude(section => section.Notes)
+                .SingleOrDefaultAsync(retro => retro.Id == id);
+            
+            return retro is not null 
+                ? TypedResults.Ok(formatter.ToMarkdown(retro))
                 : TypedResults.NotFound();
         });
     }
