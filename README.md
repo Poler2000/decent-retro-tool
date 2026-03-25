@@ -1,4 +1,5 @@
 # Decent Retro Tool
+[![CI](https://github.com/Poler2000/decent-retro-tool/actions/workflows/dotnet.yml/badge.svg)](https://github.com/Poler2000/decent-retro-tool/actions/workflows/dotnet.yml)
 
 - [:bulb: Overview](#bulb-overview)
 - [:computer: Installation](#computer-installation)
@@ -6,6 +7,8 @@
   - [:wrench: Manual Installation](#wrench-manual-installation)
 
 ## :bulb: Overview
+
+![Decent Retro Tool GIF](res/decent-retro-tool.gif)
 
 **Decent Retro Tool** is a simple application aimed to assist you with conducting scrum retrospective meetings.
 
