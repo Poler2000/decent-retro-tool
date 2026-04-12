@@ -30,7 +30,7 @@ public class RetroMarkdownFormatter : IRetroMarkdownFormatter
             var rowNotes = sectionNotes
                 .Select(notes => notes.ElementAtOrDefault(i))
                 .Select(note => note is not null 
-                    ? $"[{note.Score}] {note.Content}" 
+                    ? $"[{note.Score}] {note.Content.Trim()}" 
                     : string.Empty)
                 .ToList();
             builder.AppendLine($"|{string.Join('|', rowNotes)}|");
